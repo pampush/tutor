@@ -1,25 +1,21 @@
 import React from 'react';
 import Hidden from '@material-ui/core/Hidden';
 
-import MenuBar from './MenuBar';
-import MenuDrawer from './MenuDrawer';
-import MenuDrawerMobile from './MenuDrawerMobile';
+import MenuDrawer from './MenuLgDrawer';
+import MenuDrawerMobile from './MenuSmDrawer';
+import MenuMdDrawer from './MenuMdDrawer';
 
 const Header = () => {
-  const [drawer, setDrawer] = React.useState(false);
-
-  function handleDrawerOpen() {
-    setDrawer((prev) => !prev);
-  }
   return (
     <React.Fragment>
       <Hidden smUp>
-        <MenuBar handleDrawerOpen={handleDrawerOpen} />
-        <MenuDrawerMobile open={drawer} handleDrawerOpen={handleDrawerOpen}/>
+        <MenuDrawerMobile />
       </Hidden>
-
-      <Hidden xsDown>
-        <MenuDrawer open={drawer} handleDrawerOpen={handleDrawerOpen}/>
+      <Hidden only={['xs', 'lg', 'xl']}>
+        <MenuMdDrawer />
+      </Hidden>
+      <Hidden mdDown>
+        <MenuDrawer />
       </Hidden>
     </React.Fragment>
   );

@@ -4,39 +4,23 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
 
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import FaceIcon from '@material-ui/icons/Face';
 import ShowChartIcon from '@material-ui/icons/ShowChart';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import SettingsIcon from '@material-ui/icons/Settings';
-import MenuIcon from '@material-ui/icons/Menu';
 
-const useStyles = makeStyles({
-  drawerPaper: {
-    position: 'fixed',
-    top: 'auto',
-  },
-});
+import React from 'react';
 
-function MenuDrawerMobile({ open, handleDrawerOpen }) {
-  const classes = useStyles();
+function MenuDrawer() {
   return (
-    <Drawer
-      variant="persistent"
-      open={open}
-      onClose={handleDrawerOpen}
-      classes={{
-        paper: classes.drawerPaper,
-      }}>
-      <List className={classNames('menu__list', { 'menu__list--closed': open })}>
+    <Drawer variant="permanent" anchor="left">
+      <List className={classNames('menu__list')}>
         <ListItem>
           <Grid container className="menu__header">
             <Grid item xs={6} className="menu__avatar">
@@ -50,6 +34,8 @@ function MenuDrawerMobile({ open, handleDrawerOpen }) {
             </Grid>
           </Grid>
         </ListItem>
+
+        <Divider />
 
         <ListItem button className="menu--center">
           <ListItemIcon className="menu--center">
@@ -71,17 +57,9 @@ function MenuDrawerMobile({ open, handleDrawerOpen }) {
           </ListItemIcon>
           <ListItemText primary="Финансы" />
         </ListItem>
-
-        <Hidden lgUp>
-          <ListItem button className="menu--center">
-            <ListItemIcon className="menu--center">
-              <SettingsIcon className="menu--svg" />
-            </ListItemIcon>
-          </ListItem>
-        </Hidden>
       </List>
     </Drawer>
   );
 }
 
-export default MenuDrawerMobile;
+export default MenuDrawer;
