@@ -1,0 +1,12 @@
+@use 'components/infoPanel'
+@use 'components/calendar'
+@use 'components/lesson'
+@use 'components/lessons'
+@use 'mixins'
+
+.content
+  margin-left: 300px
+  @include mixins.md
+    margin-left: 50px
+  @include mixins.xs
+    margin-left: 0

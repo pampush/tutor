@@ -1,0 +1,25 @@
+@use '../mixins'
+
+.info
+  &__container
+    margin-left: 0
+    padding: 20px 0 0 0
+  &__card
+    @include mixins.sm
+      height: 200px
+  &__title
+    text-align: center
+    @include mixins.sm
+      font-size: 1rem
+      font-weight: 400
+  &__subtitle
+    text-align: center
+  &__svg-container
+    display: flex
+    justify-content: center
+  &__svg
+    @include mixins.svgSize(80, 80)
+    @include mixins.md
+      @include mixins.svgSize(60, 60)
+    @include mixins.sm
+      @include mixins.svgSize(40, 40)

@@ -1,0 +1,37 @@
+@use 'mixins'
+
+.menu__list
+  overflow: hidden
+  transition: all .1s linear
+  max-width: 300px
+  @include mixins.md 
+    max-width: 50px
+  &--opened
+    @include mixins.md
+      max-width: 300px
+
+.menu
+  &--center
+    justify-content: center
+  &--svg
+    @include mixins.svgSize(40, 40)
+  &__avatar
+    display: flex
+    align-items: center
+    & svg
+      @include mixins.svgSize(80, 80)
+  &__settings
+    display: flex
+    align-items: flex-start
+    justify-content: flex-end
+    & svg
+      @include mixins.svgSize(40, 40)
+  &__button
+    padding-left: 0
+    padding-right: 0
+    justify-content: center
+
+  &__mobile
+    margin-top: 100px
+  
+  

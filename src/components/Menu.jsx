@@ -1,11 +1,11 @@
 import React from 'react';
 import Hidden from '@material-ui/core/Hidden';
 
-import MenuDrawer from './MenuLgDrawer';
-import MenuDrawerMobile from './MenuSmDrawer';
-import MenuMdDrawer from './MenuMdDrawer';
+import MenuDrawer from './Menu/MenuLgDrawer';
+import MenuDrawerMobile from './Menu/MenuSmDrawer';
+import MenuMdDrawer from './Menu/MenuMdDrawer';
 
-const Header = () => {
+const Menu = () => {
   return (
     <React.Fragment>
       <Hidden smUp>
@@ -21,4 +21,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Menu;

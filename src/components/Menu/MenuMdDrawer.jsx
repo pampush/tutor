@@ -9,6 +9,7 @@ import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import Collapse from '@material-ui/core/Collapse';
 
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import FaceIcon from '@material-ui/icons/Face';
@@ -51,28 +52,34 @@ function MenuMdDrawer() {
 
         <Divider />
 
-        <ListItem button className="menu--center">
+        <ListItem button className="menu__button">
           <ListItemIcon className="menu--center">
             <CalendarTodayIcon className="menu--svg" />
           </ListItemIcon>
-          <ListItemText primary="Расписание" />
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <ListItemText primary="Расписание" />
+          </Collapse>
         </ListItem>
 
-        <ListItem button className="menu--center">
+        <ListItem button className="menu__button">
           <ListItemIcon className="menu--center">
             <FaceIcon className="menu--svg" />
           </ListItemIcon>
-          <ListItemText primary="Ученики" />
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <ListItemText primary="Ученики" />
+          </Collapse>
         </ListItem>
 
-        <ListItem button className="menu--center">
+        <ListItem button className="menu__button">
           <ListItemIcon className="menu--center">
             <ShowChartIcon className="menu--svg" />
           </ListItemIcon>
-          <ListItemText primary="Финансы" />
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <ListItemText primary="Финансы" />
+          </Collapse>
         </ListItem>
 
-        <ListItem button className="menu--center">
+        <ListItem button className="menu__button">
           <ListItemIcon className="menu--center">
             <SettingsIcon className="menu--svg" />
           </ListItemIcon>

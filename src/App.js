@@ -1,14 +1,19 @@
-import './App.css';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { StylesProvider } from "@material-ui/core/styles";
-import Header from './components/Menu';
+import { StylesProvider } from '@material-ui/core/styles';
+
+import { Menu } from './components';
+import Schedule from './pages/Schedule';
+import Box from '@material-ui/core/Box';
 
 function App() {
   return (
     <StylesProvider injectFirst>
       <div className="App">
         <CssBaseline />
-        <Header />
+        <Menu />
+        <Box className="content">
+          <Schedule />
+        </Box>
       </div>
     </StylesProvider>
   );

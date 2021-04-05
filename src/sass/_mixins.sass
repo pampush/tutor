@@ -1,0 +1,21 @@
+@use 'vars'
+
+@mixin xs
+  @media (max-width: vars.$screen-xs-max) 
+    @content
+
+@mixin sm
+  @media (max-width: vars.$screen-sm-max) 
+    @content
+
+@mixin md
+  @media (max-width: vars.$screen-md-max)
+    @content
+
+@mixin lg
+  @media (max-width: vars.$screen-lg-max) 
+    @content
+
+@mixin svgSize($width: 40, $height: 40)
+  height: #{$height} + 'px'
+  width: #{$width} + 'px'
