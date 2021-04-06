@@ -1,0 +1,30 @@
+@use '../mixins'
+@use '../utils'
+@use '../vars'
+
+.pupils
+  &__header
+    margin-bottom: 20px 
+    font-weight: 800  
+      
+  &__container
+    padding: 20px 0 0 0
+  &__button-text
+    @extend %add-button
+  &__card
+    &-container
+      margin-top: 20px
+    &-header div:nth-child(2) span
+      font-size: 1.3rem
+      @include mixins.md
+        font-size: 1rem
+        
+    &-avatar
+      background-color: vars.$bgPrimary
+    &-content > p
+      @include mixins.md
+        font-size: 1rem
+
+  &__homework
+    display: flex
+    justify-content: flex-end

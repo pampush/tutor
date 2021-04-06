@@ -1,5 +1,5 @@
 import React from 'react';
-import { InfoPanel, Calendar, Lessons } from '../components';
+import { Calendar, Lessons } from '../components';
 
 import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
@@ -7,35 +7,37 @@ import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 
 function Schedule() {
-  return (
-    <Container maxWidth="xl">
-      <Container maxWidth="md" className="info__container">
-        <Grid container spacing={2}>
-          <Hidden xsDown>
-            <Grid item>
-              <InfoPanel />
-            </Grid>
-            <Grid item>
-              <InfoPanel />
-            </Grid>
-            <Grid item>
-              <InfoPanel />
-            </Grid>
-          </Hidden>
-        </Grid>
-      </Container>
+  const [anchorCalendar, setAnchorEl] = React.useState(null);
 
+  function handleCalendarClick(e) {
+    setAnchorEl(e.currentTarget);
+  }
+
+  function handleCalendarClose() {
+    setAnchorEl(null);
+  }
+
+  return (
+    <React.Fragment>
       <Container maxWidth="xl" className="lessons__container">
         <Grid container spacing={2}>
           <Hidden only={['xs', 'sm']}>
             <Grid item xs={8}>
-              <Lessons />
+              <Lessons
+                anchor={anchorCalendar}
+                handleClick={handleCalendarClick}
+                handleClose={handleCalendarClose}
+              />
             </Grid>
           </Hidden>
 
           <Hidden mdUp>
             <Grid item xs={12}>
-              <Lessons />
+              <Lessons
+                anchor={anchorCalendar}
+                handleClick={handleCalendarClick}
+                handleClose={handleCalendarClose}
+              />
             </Grid>
           </Hidden>
 
@@ -48,7 +50,7 @@ function Schedule() {
           </Hidden>
         </Grid>
       </Container>
-    </Container>
+    </React.Fragment>
   );
 }
 

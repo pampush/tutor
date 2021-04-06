@@ -3,8 +3,9 @@ import { StylesProvider, createMuiTheme, ThemeProvider } from '@material-ui/core
 import blue from '@material-ui/core/colors/blue';
 import orange from '@material-ui/core/colors/orange';
 
-import { Menu } from './components';
+import { Menu, InfoPanel } from './components';
 import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
 
 import Schedule from './pages/Schedule';
 import Pupils from './pages/Pupils';
@@ -31,7 +32,7 @@ const theme = createMuiTheme({
     },
     text: {
       primary: '#000000',
-      secondary: '#FFFFFF',
+      secondary: '#9E9E9E',
     },
   },
   typography: {
@@ -70,20 +71,23 @@ function App() {
           <CssBaseline />
           <Menu />
           <Box className="content">
-            <Switch>
-              <Route exact path="/">
-                <Schedule />
-              </Route>
-              <Route path="/schedule">
-                <Schedule />
-              </Route>
-              <Route path="/pupils">
-                <Pupils />
-              </Route>
-              <Route path="/finance">
-                <Finance />
-              </Route>
-            </Switch>
+            <Container maxWidth="xl">
+              <InfoPanel />
+              <Switch>
+                <Route exact path="/">
+                  <Schedule />
+                </Route>
+                <Route path="/schedule">
+                  <Schedule />
+                </Route>
+                <Route path="/pupils">
+                  <Pupils />
+                </Route>
+                <Route path="/finance">
+                  <Finance />
+                </Route>
+              </Switch>
+            </Container>
           </Box>
         </div>
       </ThemeProvider>

@@ -1,32 +1,28 @@
 import React from 'react';
 
-import Card from '@material-ui/core/Card';
-import Typography from '@material-ui/core/Typography';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
+import Hidden from '@material-ui/core/Hidden';
 
-import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+import InfoPanelCard from './InfoPanelCard';
 
 function InfoPanel() {
   return (
-    <Card className="info__card">
-      <Box className="info__svg-container">
-        <CardMedia
-          component={CalendarTodayIcon}
-          title="Contemplative Reptile"
-          className="info__svg"
-        />
-      </Box>
-      <CardContent className="info__content">
-        <Typography gutterBottom variant="h5" component="h2" className="info__title">
-          Понедельник
-        </Typography>
-        <Typography variant="body2" component="p" className="info__subtitle">
-          02.05.2021
-        </Typography>
-      </CardContent>
-    </Card>
+    <Container maxWidth="md" className="info__container">
+      <Grid container spacing={2}>
+        <Hidden xsDown>
+          <Grid item>
+            <InfoPanelCard />
+          </Grid>
+          <Grid item>
+            <InfoPanelCard />
+          </Grid>
+          <Grid item>
+            <InfoPanelCard />
+          </Grid>
+        </Hidden>
+      </Grid>
+    </Container>
   );
 }
 

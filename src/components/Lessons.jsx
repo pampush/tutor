@@ -21,24 +21,15 @@ const pupils = {
   1: {
     name: 'Алеся Петрова',
     address: 'Калинина 12, 4 этаж, кв 40',
-    class: '10',
+    grade: '10',
     parents: ['мама'],
     contacts: ['+79999999999'],
   },
 };
 
 lesson = { ...lesson, pupil: pupils[lesson.pupil] };
-console.log(lesson);
-function Lessons() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
 
-  function handleClick(e) {
-    setAnchorEl(e.currentTarget);
-  }
-
-  function handleClose() {
-    setAnchorEl(null);
-  }
+function Lessons({ anchor, handleClick, handleClose }) {
   return (
     <div>
       <Typography variant="h5" className="lessons__header">
@@ -64,12 +55,12 @@ function Lessons() {
           </Button>
           <Menu
             id="simple-menu"
-            anchorEl={anchorEl}
+            anchorEl={anchor}
             keepMounted
             getContentAnchorEl={null}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
             transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-            open={Boolean(anchorEl)}
+            open={Boolean(anchor)}
             onClose={handleClose}>
             <Calendar />
           </Menu>
