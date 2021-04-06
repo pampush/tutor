@@ -6,7 +6,6 @@ import Box from '@material-ui/core/Box';
 import Hidden from '@material-ui/core/Hidden';
 import AddIcon from '@material-ui/icons/Add';
 import Menu from '@material-ui/core/Menu';
-import Grid from '@material-ui/core/Grid';
 
 import Calendar from './Calendar';
 import LessonCard from './LessonCard';
@@ -47,7 +46,11 @@ function Lessons() {
       </Typography>
 
       <Box className="lessons__buttons-container">
-        <Button variant="contained" color="secondary" startIcon={<AddIcon />}>
+        <Button
+          variant="contained"
+          color="secondary"
+          startIcon={<AddIcon />}
+          className="lessons__button-text">
           Новый урок
         </Button>
         <Hidden mdUp>
@@ -56,7 +59,7 @@ function Lessons() {
             color="secondary"
             onClick={handleClick}
             startIcon={<CalendarTodayIcon />}
-            className="">
+            className="lessons__button-text">
             Выбрать день
           </Button>
           <Menu
@@ -68,14 +71,13 @@ function Lessons() {
             transformOrigin={{ vertical: 'top', horizontal: 'center' }}
             open={Boolean(anchorEl)}
             onClose={handleClose}>
-            <Grid item xs={3}>
-              <Calendar />
-            </Grid>
+            <Calendar />
           </Menu>
         </Hidden>
       </Box>
 
       <Container className="lessons__items-container">
+        <LessonCard {...lesson} />
         <LessonCard {...lesson} />
         <LessonCard {...lesson} />
         <LessonCard {...lesson} />

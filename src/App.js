@@ -1,20 +1,92 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { StylesProvider } from '@material-ui/core/styles';
+import { StylesProvider, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import blue from '@material-ui/core/colors/blue';
+import orange from '@material-ui/core/colors/orange';
 
 import { Menu } from './components';
-import Schedule from './pages/Schedule';
 import Box from '@material-ui/core/Box';
+
+import Schedule from './pages/Schedule';
+import Pupils from './pages/Pupils';
+import Finance from './pages/Finance';
+import { Switch, Route, useRouteMatch, Redirect } from 'react-router-dom';
+
+const theme = createMuiTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920,
+    },
+  },
+
+  palette: {
+    primary: {
+      main: blue[500],
+    },
+    secondary: {
+      main: orange[500],
+    },
+    text: {
+      primary: '#000000',
+      secondary: '#FFFFFF',
+    },
+  },
+  typography: {
+    body1: { fontSize: '1.3rem' },
+  },
+
+  overrides: {
+    MuiDrawer: {
+      paper: {
+        backgroundColor: '#F5F5F5',
+      },
+    },
+    MuiButton: {
+      label: { color: '#ffffff' },
+      // iconSizeMedium: {
+      //   '& > *:first-child': {
+      //     fontSize: '24px',
+      //   },
+      // },
+    },
+    MuiIconButton: {
+      root: {
+        '&:hover': {
+          backgroundColor: 'rgba(255, 192, 70, 0.5)',
+        },
+      },
+    },
+  },
+});
 
 function App() {
   return (
     <StylesProvider injectFirst>
-      <div className="App">
-        <CssBaseline />
-        <Menu />
-        <Box className="content">
-          <Schedule />
-        </Box>
-      </div>
+      <ThemeProvider theme={theme}>
+        <div className="App">
+          <CssBaseline />
+          <Menu />
+          <Box className="content">
+            <Switch>
+              <Route exact path="/">
+                <Schedule />
+              </Route>
+              <Route path="/schedule">
+                <Schedule />
+              </Route>
+              <Route path="/pupils">
+                <Pupils />
+              </Route>
+              <Route path="/finance">
+                <Finance />
+              </Route>
+            </Switch>
+          </Box>
+        </div>
+      </ThemeProvider>
     </StylesProvider>
   );
 }

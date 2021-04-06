@@ -4,12 +4,12 @@ import classNames from 'classnames';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import Collapse from '@material-ui/core/Collapse';
+import IconButton from '@material-ui/core/IconButton';
+import Box from '@material-ui/core/Box';
 
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import FaceIcon from '@material-ui/icons/Face';
@@ -17,6 +17,8 @@ import ShowChartIcon from '@material-ui/icons/ShowChart';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import SettingsIcon from '@material-ui/icons/Settings';
 import MenuIcon from '@material-ui/icons/Menu';
+
+import MenuItem from './MenuItem';
 
 function MenuMdDrawer() {
   const [open, setOpen] = React.useState(false);
@@ -41,49 +43,29 @@ function MenuMdDrawer() {
                 <AccountCircleIcon />
               </Grid>
               <Grid item xs={6} className="menu__settings">
-                <SettingsIcon />
+                <IconButton>
+                  <SettingsIcon />
+                </IconButton>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="h6">Евгений Робертович Поганин</Typography>
+                <Typography variant="h5">Евгений Робертович Поганин</Typography>
               </Grid>
             </Grid>
           </ListItem>
         )}
 
         <Divider />
-
-        <ListItem button className="menu__button">
-          <ListItemIcon className="menu--center">
+        <Box className="menu__nav-container">
+          <MenuItem open={open} name="Расписание" to="/schedule">
             <CalendarTodayIcon className="menu--svg" />
-          </ListItemIcon>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <ListItemText primary="Расписание" />
-          </Collapse>
-        </ListItem>
-
-        <ListItem button className="menu__button">
-          <ListItemIcon className="menu--center">
+          </MenuItem>
+          <MenuItem open={open} name="Ученики" to="/pupils">
             <FaceIcon className="menu--svg" />
-          </ListItemIcon>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <ListItemText primary="Ученики" />
-          </Collapse>
-        </ListItem>
-
-        <ListItem button className="menu__button">
-          <ListItemIcon className="menu--center">
+          </MenuItem>
+          <MenuItem open={open} name="Финансы" to="/finance">
             <ShowChartIcon className="menu--svg" />
-          </ListItemIcon>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <ListItemText primary="Финансы" />
-          </Collapse>
-        </ListItem>
-
-        <ListItem button className="menu__button">
-          <ListItemIcon className="menu--center">
-            <SettingsIcon className="menu--svg" />
-          </ListItemIcon>
-        </ListItem>
+          </MenuItem>
+        </Box>
       </List>
     </Drawer>
   );

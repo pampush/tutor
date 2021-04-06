@@ -1,4 +1,16 @@
+@use '../vars'
+
 .lesson
   &__container
     max-width: 1000px
     margin-top: 20px
+    &:hover
+      background-color: vars.$bgPrimaryHover
+  &__header
+    display: flex
+    justify-content: space-between
+    &-text
+      font-weight: 800
+  &__menu-container
+    & li:hover
+      background-color: vars.$bgSecondaryHover

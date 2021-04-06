@@ -1,5 +1,3 @@
-import classNames from 'classnames';
-
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -18,7 +16,10 @@ import FaceIcon from '@material-ui/icons/Face';
 import ShowChartIcon from '@material-ui/icons/ShowChart';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import SettingsIcon from '@material-ui/icons/Settings';
+
 import React from 'react';
+import classNames from 'classnames';
+import MenuItem from './MenuItem';
 
 const useStyles = makeStyles({
   drawerPaper: {
@@ -63,34 +64,25 @@ function MenuDrawerMobile() {
                 <AccountCircleIcon />
               </Grid>
               <Grid item xs={6} className="menu__settings">
-                <SettingsIcon />
+                <IconButton>
+                  <SettingsIcon />
+                </IconButton>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="h6">Евгений Робертович Поганин</Typography>
+                <Typography variant="h5">Евгений Робертович Поганин</Typography>
               </Grid>
             </Grid>
           </ListItem>
 
-          <ListItem button className="menu--center">
-            <ListItemIcon className="menu--center">
-              <CalendarTodayIcon className="menu--svg" />
-            </ListItemIcon>
-            <ListItemText primary="Расписание" />
-          </ListItem>
-
-          <ListItem button className="menu--center">
-            <ListItemIcon className="menu--center">
-              <FaceIcon className="menu--svg" />
-            </ListItemIcon>
-            <ListItemText primary="Ученики" />
-          </ListItem>
-
-          <ListItem button className="menu--center">
-            <ListItemIcon className="menu--center">
-              <ShowChartIcon className="menu--svg" />
-            </ListItemIcon>
-            <ListItemText primary="Финансы" />
-          </ListItem>
+          <MenuItem open={open} name="Расписание" to="/schedule">
+            <CalendarTodayIcon className="menu--svg" />
+          </MenuItem>
+          <MenuItem open={open} name="Ученики" to="/pupils">
+            <FaceIcon className="menu--svg" />
+          </MenuItem>
+          <MenuItem open={open} name="Финансы" to="/finance">
+            <ShowChartIcon className="menu--svg" />
+          </MenuItem>
         </List>
       </Drawer>
     </React.Fragment>

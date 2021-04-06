@@ -10,7 +10,7 @@ import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 
 function InfoPanel() {
   return (
-    <Card>
+    <Card className="info__card">
       <Box className="info__svg-container">
         <CardMedia
           component={CalendarTodayIcon}
@@ -18,11 +18,11 @@ function InfoPanel() {
           className="info__svg"
         />
       </Box>
-      <CardContent>
+      <CardContent className="info__content">
         <Typography gutterBottom variant="h5" component="h2" className="info__title">
           Понедельник
         </Typography>
-        <Typography variant="body2" color="textSecondary" component="p" className="info__subtitle">
+        <Typography variant="body2" component="p" className="info__subtitle">
           02.05.2021
         </Typography>
       </CardContent>

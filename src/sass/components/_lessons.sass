@@ -1,3 +1,5 @@
+@use '../mixins'
+
 .lessons
   &__container
     padding: 20px 0 0 0
@@ -5,6 +7,7 @@
       min-width: 325px
   &__header
     margin-bottom: 20px 
+    font-weight: 800
   &__items-container
     padding: 0
     margin-top: 20px
@@ -12,3 +15,13 @@
     display: flex
     & button:last-child
       margin-left: auto
+    & button:only-child
+      margin-left: 0
+  &__button-text
+    font-weight: 600
+    & svg
+      font-size: 24px !important
+    @include mixins.xs
+      font-weight: 400
+      & svg
+        font-size: 20px !important
