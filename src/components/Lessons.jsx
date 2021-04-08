@@ -6,6 +6,7 @@ import Box from '@material-ui/core/Box';
 import Hidden from '@material-ui/core/Hidden';
 import AddIcon from '@material-ui/icons/Add';
 import Menu from '@material-ui/core/Menu';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 import Calendar from './Calendar';
 import LessonCard from './LessonCard';
@@ -19,11 +20,12 @@ function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalend
   const lessonsLoaded = useSelector(({ lessons }) => lessons.isLoaded);
   const pupils = useSelector(({ pupils }) => pupils.items);
   const pupilsLoaded = useSelector(({ pupils }) => pupils.isLoaded);
+  const schedules = useSelector(({ schedules }) => schedules.items);
+  const schedulesLoaded = useSelector(({ schedules }) => schedules.isLoaded);
 
-  const isLoaded = lessons && pupilsLoaded;
-
+  const isLoaded = lessonsLoaded && pupilsLoaded && schedulesLoaded;
   const calendar = React.useRef(null);
-  console.log(pupils);
+
   return (
     <div>
       <Typography variant="h5" className="lessons__header">
@@ -62,16 +64,21 @@ function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalend
       </Box>
 
       <Container className="lessons__items-container">
-        {isLoaded &&
-          Object.keys(lessons).map((key) => (
-            <LessonCard
-              key={key}
-              time={lessons[key].date}
-              theme={lessons[key].theme}
-              name={pupils[lessons[key].pupil].name}
-              address={pupils[lessons[key].pupil].address}
-            />
-          ))}
+        {isLoaded
+          ? Object.keys(lessons).map((key) => (
+              <LessonCard
+                key={key}
+                time={schedules[lessons[key].schedule].time}
+                theme={lessons[key].theme}
+                name={pupils[lessons[key].pupil].name}
+                address={pupils[lessons[key].pupil].address}
+              />
+            ))
+          : Array(4)
+              .fill(0)
+              .map((_, index) => (
+                <Skeleton key={index} variant="rect" className="lessons__skeleton" />
+              ))}
       </Container>
     </div>
   );

@@ -16,6 +16,7 @@ import React from 'react';
 
 import { fetchLessons } from './redux/actions/lessons';
 import { fetchPupils } from './redux/actions/pupils';
+import { fetchSchedules } from './redux/actions/schedules';
 
 const theme = createMuiTheme({
   breakpoints: {
@@ -74,6 +75,7 @@ function App() {
   React.useEffect(() => {
     dispatch(fetchLessons(new Date()));
     dispatch(fetchPupils());
+    dispatch(fetchSchedules());
   }, []);
 
   return (

@@ -22,7 +22,6 @@ function Schedule() {
   }
 
   function handleCalendarClick(date) {
-    console.log(date);
     dispatch(fetchLessons(date));
   }
 
@@ -36,6 +35,7 @@ function Schedule() {
                 anchor={anchorCalendar}
                 handleClick={handleCalendarOpen}
                 handleClose={handleCalendarClose}
+                handleCalendarClick = {handleCalendarClick}
               />
             </Grid>
           </Hidden>
@@ -46,6 +46,7 @@ function Schedule() {
                 anchor={anchorCalendar}
                 handleCalendarOpen={handleCalendarOpen}
                 handleCalendarClose={handleCalendarClose}
+                handleCalendarClick={handleCalendarClick}
               />
             </Grid>
           </Hidden>

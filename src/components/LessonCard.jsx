@@ -41,10 +41,10 @@ function LessonCard({ time, theme, name, address }) {
       </Menu>
       <CardContent>
         <Box className="lesson__header">
-          <Typography gutterBottom variant="h5" component="h2" className="lesson__header-text">
+          <Typography gutterBottom variant="h5" className="lesson__header-text">
             {time}
           </Typography>
-          <IconButton aria-label="menu" onClick={handleClick}>
+          <IconButton aria-label="menu" className="lesson__header-more" onClick={handleClick}>
             <MoreVertIcon />
           </IconButton>
         </Box>
