@@ -11,25 +11,19 @@ import Calendar from './Calendar';
 import LessonCard from './LessonCard';
 import { Container } from '@material-ui/core';
 
-let lesson = {
-  time: '15:00',
-  theme: 'Дробно-рациональные выражения',
-  pupil: '1',
-};
+import { useDispatch, useSelector } from 'react-redux';
 
-const pupils = {
-  1: {
-    name: 'Алеся Петрова',
-    address: 'Калинина 12, 4 этаж, кв 40',
-    grade: '10',
-    parents: ['мама'],
-    contacts: ['+79999999999'],
-  },
-};
+function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalendarClick }) {
+  const dispatch = useDispatch();
+  const lessons = useSelector(({ lessons }) => lessons.items);
+  const lessonsLoaded = useSelector(({ lessons }) => lessons.isLoaded);
+  const pupils = useSelector(({ pupils }) => pupils.items);
+  const pupilsLoaded = useSelector(({ pupils }) => pupils.isLoaded);
 
-lesson = { ...lesson, pupil: pupils[lesson.pupil] };
+  const isLoaded = lessons && pupilsLoaded;
 
-function Lessons({ anchor, handleClick, handleClose }) {
+  const calendar = React.useRef(null);
+  console.log(pupils);
   return (
     <div>
       <Typography variant="h5" className="lessons__header">
@@ -48,7 +42,7 @@ function Lessons({ anchor, handleClick, handleClose }) {
           <Button
             variant="contained"
             color="secondary"
-            onClick={handleClick}
+            onClick={handleCalendarOpen}
             startIcon={<CalendarTodayIcon />}
             className="lessons__button-text">
             Выбрать день
@@ -61,18 +55,23 @@ function Lessons({ anchor, handleClick, handleClose }) {
             anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
             transformOrigin={{ vertical: 'top', horizontal: 'center' }}
             open={Boolean(anchor)}
-            onClose={handleClose}>
-            <Calendar />
+            onClose={handleCalendarClose}>
+            <Calendar ref={calendar} handleClick={handleCalendarClick} />
           </Menu>
         </Hidden>
       </Box>
 
       <Container className="lessons__items-container">
-        <LessonCard {...lesson} />
-        <LessonCard {...lesson} />
-        <LessonCard {...lesson} />
-        <LessonCard {...lesson} />
-        <LessonCard {...lesson} />
+        {isLoaded &&
+          Object.keys(lessons).map((key) => (
+            <LessonCard
+              key={key}
+              time={lessons[key].date}
+              theme={lessons[key].theme}
+              name={pupils[lessons[key].pupil].name}
+              address={pupils[lessons[key].pupil].address}
+            />
+          ))}
       </Container>
     </div>
   );

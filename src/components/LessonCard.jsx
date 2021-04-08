@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
@@ -10,7 +11,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 
-function LessonCard({ time, theme, pupil }) {
+function LessonCard({ time, theme, name, address }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   function handleClick(e) {
@@ -32,7 +33,7 @@ function LessonCard({ time, theme, pupil }) {
         transformOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={Boolean(anchorEl)}
         onClose={handleClose}>
-        <MenuList autoFocus={true} autoFocusItem={anchorEl} className="lesson__menu-container">
+        <MenuList autoFocus={true} className="lesson__menu-container">
           <MenuItem onClick={handleClose}>Profile</MenuItem>
           <MenuItem onClick={handleClose}>My account</MenuItem>
           <MenuItem onClick={handleClose}>Logout</MenuItem>
@@ -51,11 +52,18 @@ function LessonCard({ time, theme, pupil }) {
           {theme}
         </Typography>
         <Typography variant="subtitle2" color="textPrimary" component="p">
-          {pupil.name}, {pupil.address}
+          {name}, {address}
         </Typography>
       </CardContent>
     </Card>
   );
 }
+
+LessonCard.propTypes = {
+  time: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  address: PropTypes.string.isRequired,
+  theme: PropTypes.string.isRequired,
+};
 
 export default LessonCard;

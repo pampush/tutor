@@ -21,23 +21,36 @@ const theme = createMuiTheme({
   },
 });
 
-function Calendar() {
+function MuiCalendar({ handleClick }) {
   const [date, changeDate] = React.useState(new Date());
+
+  const handleCellClick = (date) => {
+    changeDate(date);
+    handleClick(date);
+  };
+
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ruLocale}>
       <ThemeProvider theme={theme}>
         <DatePicker
           autoOk
           disableToolbar
-          // orientation="landscape"
           variant="static"
           openTo="date"
           value={date}
-          onChange={changeDate}
-        />  
+          onChange={handleCellClick}
+        />
       </ThemeProvider>
     </MuiPickersUtilsProvider>
   );
 }
+
+const Calendar = React.forwardRef((props, ref) => {
+  return (
+    <MuiCalendar useRef={ref} {...props}>
+      {props.children}
+    </MuiCalendar>
+  );
+});
 
 export default Calendar;

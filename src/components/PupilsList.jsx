@@ -48,25 +48,25 @@ function PupilsList({ anchor, handleClick }) {
       </Button>
       <Grid container spacing={2} className="pupils__card-container">
         <Grid item md={4} sm={6} xs={12}>
-          <PupilCard pupil={pupils[1]} />
+          <PupilCard {...pupils[1]} />
         </Grid>
         <Grid item md={4} sm={6} xs={12}>
-          <PupilCard pupil={pupils[1]} />
+          <PupilCard {...pupils[1]} />
         </Grid>
         <Grid item md={4} sm={6} xs={12}>
-          <PupilCard pupil={pupils[1]} />
+          <PupilCard {...pupils[1]} />
         </Grid>
         <Grid item md={4} sm={6} xs={12}>
-          <PupilCard pupil={pupils[1]} />
+          <PupilCard {...pupils[1]} />
         </Grid>
         <Grid item md={4} sm={6} xs={12}>
-          <PupilCard pupil={pupils[1]} />
+          <PupilCard {...pupils[1]} />
         </Grid>
         <Grid item md={4} sm={6} xs={12}>
-          <PupilCard pupil={pupils[1]} />
+          <PupilCard {...pupils[1]} />
         </Grid>
         <Grid item md={4} sm={6} xs={12}>
-          <PupilCard pupil={pupils[1]} />
+          <PupilCard {...pupils[1]} />
         </Grid>
       </Grid>
     </div>

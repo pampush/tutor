@@ -11,6 +11,11 @@ import Schedule from './pages/Schedule';
 import Pupils from './pages/Pupils';
 import Finance from './pages/Finance';
 import { Switch, Route, useRouteMatch, Redirect } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import React from 'react';
+
+import { fetchLessons } from './redux/actions/lessons';
+import { fetchPupils } from './redux/actions/pupils';
 
 const theme = createMuiTheme({
   breakpoints: {
@@ -64,6 +69,13 @@ const theme = createMuiTheme({
 });
 
 function App() {
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(fetchLessons(new Date()));
+    dispatch(fetchPupils());
+  }, []);
+
   return (
     <StylesProvider injectFirst>
       <ThemeProvider theme={theme}>

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -14,7 +15,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 
-function PupilCard({ pupil }) {
+function PupilCard({ name, schedule, grade, parents, address, contacts }) {
   return (
     <Card>
       <CardHeader
@@ -29,24 +30,33 @@ function PupilCard({ pupil }) {
             <MoreVertIcon />
           </IconButton>
         }
-        title={pupil.name}
-        subheader={`Класс: ${pupil.grade}`}
+        title={name}
+        subheader={`Класс: ${grade}`}
       />
       <CardContent className="pupils__card-content">
         <Typography component="p">
-          {Object.keys(pupil.schedule).map((key) => `${key}-${pupil.schedule[key]} `)}
+          {Object.keys(schedule).map((key) => `${key}-${schedule[key]} `)}
         </Typography>
-        <Typography component="p">{`Родители: ${pupil.parents}`}</Typography>
-        <Typography component="p">{`Контакты: ${pupil.contacts}`}</Typography>
-        <Typography component="p">{`Адрес: ${pupil.address}`}</Typography>
+        <Typography component="p">{`Родители: ${parents}`}</Typography>
+        <Typography component="p">{`Контакты: ${contacts}`}</Typography>
+        <Typography component="p">{`Адрес: ${address}`}</Typography>
         <Box className="pupils__homework">
           <IconButton>
-            <MenuBookIcon aria-label="homework" onClick />
+            <MenuBookIcon aria-label="homework" />
           </IconButton>
         </Box>
       </CardContent>
     </Card>
   );
 }
+
+PupilCard.propTypes = {
+  name: PropTypes.string.isRequired,
+  schedule: PropTypes.object.isRequired,
+  grade: PropTypes.string.isRequired,
+  parents: PropTypes.arrayOf(PropTypes.string).isRequired,
+  address: PropTypes.string.isRequired,
+  contacts: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
 
 export default PupilCard;

@@ -40,7 +40,7 @@ function MenuDrawer() {
 
         <Divider />
 
-        <Box class="menu__nav-container">
+        <Box className="menu__nav-container">
           <MenuItem open={false} name="Расписание" to="/schedule">
             <CalendarTodayIcon className="menu--svg" />
           </MenuItem>
