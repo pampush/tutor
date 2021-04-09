@@ -25,17 +25,18 @@
   &__title
     text-align: center
     @include mixins.sm
-      font-size: 1rem
+      font-size: 1.1rem
       font-weight: 400
   &__subtitle
     text-align: center
+    font-size: 1rem
   &__svg-container
     display: flex
     justify-content: center
     
   &__svg
-    @include mixins.svgSize(80, 80)
+    @include mixins.svgSize(60, 60)
     @include mixins.md
       @include mixins.svgSize(60, 60)
     @include mixins.sm
-      @include mixins.svgSize(40, 40)
+      @include mixins.svgSize(50, 50)

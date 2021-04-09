@@ -18,17 +18,10 @@ import { fetchLessons } from './redux/actions/lessons';
 import { fetchPupils } from './redux/actions/pupils';
 import { fetchSchedules } from './redux/actions/schedules';
 
+/**
+ * Global material ui styles overrides
+ */
 const theme = createMuiTheme({
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 960,
-      lg: 1280,
-      xl: 1920,
-    },
-  },
-
   palette: {
     primary: {
       main: blue[500],
@@ -53,17 +46,17 @@ const theme = createMuiTheme({
     },
     MuiButton: {
       label: { color: '#ffffff' },
-      // iconSizeMedium: {
-      //   '& > *:first-child': {
-      //     fontSize: '24px',
-      //   },
-      // },
     },
     MuiIconButton: {
       root: {
         '&:hover': {
           backgroundColor: 'rgba(255, 192, 70, 0.5)',
         },
+      },
+    },
+    MuiCardContent: {
+      root: {
+        '&:last-child': { paddingBottom: '16px' },
       },
     },
   },
@@ -88,7 +81,7 @@ function App() {
             <Container maxWidth="xl">
               <InfoPanel />
               <Switch>
-                <Route exact path="/">
+                <Route exact path="/tutor">
                   <Schedule />
                 </Route>
                 <Route path="/schedule">

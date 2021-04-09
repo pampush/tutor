@@ -6,18 +6,16 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
 import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuList from '@material-ui/core/MenuList';
-import MenuItem from '@material-ui/core/MenuItem';
 
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 
-function PupilCard({ name, schedule, grade, parents, address, contacts }) {
+function PupilCard({ name, schedulesId, grade, parents, address, contacts, schedules }) {
   return (
-    <Card>
+    <Card className="pupils__card">
       <CardHeader
         className="pupils__card-header"
         avatar={
@@ -35,26 +33,27 @@ function PupilCard({ name, schedule, grade, parents, address, contacts }) {
       />
       <CardContent className="pupils__card-content">
         <Typography component="p">
-          {Object.keys(schedule).map((key) => `${key}-${schedule[key]} `)}
+          {schedulesId.map((id) => `${schedules[id].day}-${schedules[id].time} `)}
         </Typography>
         <Typography component="p">{`Родители: ${parents}`}</Typography>
-        <Typography component="p">{`Контакты: ${contacts}`}</Typography>
+        <Typography component="p">{`Контакты: ${contacts.join(',')}`}</Typography>
         <Typography component="p">{`Адрес: ${address}`}</Typography>
-        <Box className="pupils__homework">
-          <IconButton>
-            <MenuBookIcon aria-label="homework" />
-          </IconButton>
-        </Box>
       </CardContent>
+      <CardActions className="pupils__homework">
+        <IconButton>
+          <MenuBookIcon aria-label="homework" />
+        </IconButton>
+      </CardActions>
     </Card>
   );
 }
 
 PupilCard.propTypes = {
   name: PropTypes.string.isRequired,
-  schedule: PropTypes.object.isRequired,
-  grade: PropTypes.string.isRequired,
-  parents: PropTypes.arrayOf(PropTypes.string).isRequired,
+  schedulesId: PropTypes.arrayOf(PropTypes.string).isRequired,
+  schedules: PropTypes.object.isRequired,
+  grade: PropTypes.number.isRequired,
+  parents: PropTypes.string.isRequired,
   address: PropTypes.string.isRequired,
   contacts: PropTypes.arrayOf(PropTypes.string).isRequired,
 };

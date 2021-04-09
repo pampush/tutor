@@ -12,10 +12,9 @@ import Calendar from './Calendar';
 import LessonCard from './LessonCard';
 import { Container } from '@material-ui/core';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalendarClick }) {
-  const dispatch = useDispatch();
   const lessons = useSelector(({ lessons }) => lessons.items);
   const lessonsLoaded = useSelector(({ lessons }) => lessons.isLoaded);
   const pupils = useSelector(({ pupils }) => pupils.items);
