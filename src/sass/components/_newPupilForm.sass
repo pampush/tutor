@@ -1,5 +1,15 @@
 @use '../vars'
 
 .pupil-form
-  width: 800px
+  &__dialog-content
+    padding-bottom: 24px
+  &__controls
+    display: flex
+    justify-content: flex-end
+    margin-top: 20px
+    & > button
+      margin-left: 20px
+    & button:first-child 
+      margin-left:0
+      margin-right: auto
   
