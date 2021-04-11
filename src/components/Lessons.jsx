@@ -13,6 +13,7 @@ import LessonCard from './LessonCard';
 import { Container } from '@material-ui/core';
 
 import { useSelector } from 'react-redux';
+import AddLessonForm from './addLessonForm/AddLessonForm';
 
 function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalendarClick }) {
   const lessons = useSelector(({ lessons }) => lessons.items);
@@ -23,7 +24,17 @@ function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalend
   const schedulesLoaded = useSelector(({ schedules }) => schedules.isLoaded);
 
   const isLoaded = lessonsLoaded && pupilsLoaded && schedulesLoaded;
+
+  const [viewAddLessonForm, setViewAddLessonForm] = React.useState(false);
   const calendar = React.useRef(null);
+
+  function handleAddLessonFormClick() {
+    setViewAddLessonForm(true);
+  }
+
+  function handleCloseAddLessonForm() {
+    setViewAddLessonForm(false);
+  }
 
   return (
     <div>
@@ -36,7 +47,8 @@ function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalend
           variant="contained"
           color="secondary"
           startIcon={<AddIcon />}
-          className="lessons__button-text">
+          className="lessons__button-text"
+          onClick={handleAddLessonFormClick}>
           Новый урок
         </Button>
         <Hidden mdUp>
@@ -62,12 +74,20 @@ function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalend
         </Hidden>
       </Box>
 
+      {viewAddLessonForm && (
+        <AddLessonForm
+          open={viewAddLessonForm}
+          handleClose={handleCloseAddLessonForm}
+          handleSnack
+        />
+      )}
+
       <Container className="lessons__items-container">
         {isLoaded
           ? Object.keys(lessons).map((key) => (
               <LessonCard
                 key={key}
-                time={schedules[lessons[key].schedule].time}
+                time={lessons[key].time}
                 theme={lessons[key].theme}
                 name={pupils[lessons[key].pupil].name}
                 address={pupils[lessons[key].pupil].address}

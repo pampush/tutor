@@ -5,6 +5,8 @@ import MenuDrawer from './Menu/MenuLgDrawer';
 import MenuDrawerMobile from './Menu/MenuSmDrawer';
 import MenuMdDrawer from './Menu/MenuMdDrawer';
 
+//FIXME: implement clickAwayListener
+
 const Menu = () => {
   return (
     <React.Fragment>

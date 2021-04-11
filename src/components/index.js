@@ -4,6 +4,5 @@ import Lessons from './Lessons';
 import LessonCard from './LessonCard';
 import Menu from './Menu';
 import PupilsList from './PupilsList';
-import AddPupil from './addPupilForm/AddPupil';
 
-export { InfoPanel, Calendar, Lessons, LessonCard, Menu, PupilsList, AddPupil };
+export { InfoPanel, Calendar, Lessons, LessonCard, Menu, PupilsList };

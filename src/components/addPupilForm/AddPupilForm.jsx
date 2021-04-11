@@ -1,64 +1,111 @@
 import React from 'react';
-import { useField, FieldArray, useFormikContext } from 'formik';
-import TextField from '@material-ui/core/TextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
+import { Formik, Form } from 'formik';
+import { useDispatch } from 'react-redux';
+
 import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Box from '@material-ui/core/Box';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
 
-function MyTextField({ ...props }) {
-  const [field, meta, helpers] = useField(props.name);
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
+
+import AddPupilInputs from './AddPupilInputs';
+import AddScheduleInputs from './AddScheduleInputs';
+import validationSchema from './validationSchema';
+import formInitialValues from './formInitialValues';
+import formHandler from '../../redux/actions/newPupil';
+
+const steps = ['Информация об ученике', 'Расписание'];
+function getForm(step) {
+  switch (step) {
+    case 0:
+      return <AddPupilInputs />;
+    case 1:
+      return <AddScheduleInputs />;
+    default:
+      return null;
+  }
+}
+
+function AddPupilForm({ open, handleClose, width, handleSnack }) {
+  const dispatch = useDispatch();
+  const [activeStep, setActiveStep] = React.useState(0);
+  const currentValidationSchema = validationSchema[activeStep];
+  const isLastStep = activeStep === steps.length - 1;
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleSubmit = (values, actions) => {
+    if (isLastStep) {
+      submitForm(values, actions);
+      handleSnack(true);
+      setTimeout(() => handleSnack(false), 3000);
+      handleClose();
+    } else {
+      setActiveStep(activeStep + 1);
+      actions.setTouched({});
+      actions.setSubmitting(false);
+    }
+  };
+
+  function submitForm(values, actions) {
+    actions.setSubmitting(false);
+    setActiveStep(activeStep + 1);
+    dispatch(formHandler(values));
+  }
   return (
-    <TextField
-      {...field}
-      {...props}
-      error={meta.touched && Boolean(meta.error)}
-      helperText={meta.touched && meta.error}
-    />
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="form-dialog-title"
+      className="pupil-form__dialog"
+      maxWidth="sm"
+      fullScreen={isWidthDown('sm', width) ? true : false}>
+      <DialogTitle>Введите информацию об ученике</DialogTitle>
+      <DialogContent className="pupil-form__dialog-content">
+        <Stepper activeStep={activeStep}>
+          {steps.map((label, index) => {
+            const stepProps = {};
+            const labelProps = {};
+
+            return (
+              <Step key={label} {...stepProps}>
+                <StepLabel {...labelProps}>{label}</StepLabel>
+              </Step>
+            );
+          })}
+        </Stepper>
+        <Formik
+          initialValues={formInitialValues}
+          validationSchema={currentValidationSchema}
+          onSubmit={handleSubmit}>
+          <Form>
+            {getForm(activeStep)}
+
+            <Box className="pupil-form__controls">
+              <Button variant="contained" color="secondary" onClick={handleClose}>
+                Закрыть
+              </Button>
+              {activeStep !== 0 && (
+                <Button variant="contained" color="secondary" onClick={handleBack}>
+                  Назад
+                </Button>
+              )}
+              <Button variant="contained" color="secondary" type="submit">
+                {isLastStep ? 'Подтвердить' : 'Далее'}
+              </Button>
+            </Box>
+          </Form>
+        </Formik>
+      </DialogContent>
+    </Dialog>
   );
 }
 
-function AddPupilForm() {
-  const { values } = useFormikContext();
-
-  return (
-    <React.Fragment>
-      <MyTextField autoFocus margin="normal" name="name" label="Имя" autoComplete="off" fullWidth />
-      <MyTextField margin="normal" name="grade" label="Класс" autoComplete="off" fullWidth />
-      <MyTextField margin="normal" name="address" label="Адрес" autoComplete="off" fullWidth />
-      <MyTextField margin="normal" name="parents" label="Родитель" autoComplete="off" fullWidth />
-
-      <FieldArray name="contacts">
-        {({ insert, remove, push }) => (
-          <React.Fragment>
-            {values.contacts.length > 0 &&
-              values.contacts.map((contact, index) => (
-                <React.Fragment>
-                  <MyTextField
-                    margin="normal"
-                    name={`contacts[${index}]`}
-                    label="Контакты"
-                    autoComplete="off"
-                    InputProps={{
-                      startAdornment: <InputAdornment position="start">+7</InputAdornment>,
-                    }}
-                    fullWidth
-                  />
-                  <Button
-                    type="button"
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => remove(index)}>
-                    X
-                  </Button>
-                </React.Fragment>
-              ))}
-            <Button type="button" variant="contained" color="secondary" onClick={() => push('')}>
-              Add Friend
-            </Button>
-          </React.Fragment>
-        )}
-      </FieldArray>
-    </React.Fragment>
-  );
-}
-
-export default AddPupilForm;
+export default withWidth()(AddPupilForm);

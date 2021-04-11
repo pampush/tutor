@@ -22,10 +22,10 @@ const theme = createMuiTheme({
 });
 
 function MuiCalendar({ handleClick }) {
-  const [date, changeDate] = React.useState(new Date());
+  const [date, setDate] = React.useState(new Date());
 
   const handleCellClick = (date) => {
-    changeDate(date);
+    setDate(date);
     handleClick(date);
   };
 

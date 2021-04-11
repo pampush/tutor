@@ -16,6 +16,21 @@ const schedules = (state = initialState, action) => {
         ...state,
         isLoaded: action.payload,
       };
+    case 'ADD_SCHEDULE': {
+      let schedules = {};
+      action.payload.forEach(
+        (item) =>
+          (schedules = {
+            ...schedules,
+            [item.id]: item,
+          }),
+      );
+      return {
+        ...state,
+        items: { ...state.items, ...schedules },
+        isLoaded: true,
+      };
+    }
     default:
       return state;
   }

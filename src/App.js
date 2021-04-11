@@ -1,66 +1,21 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { StylesProvider, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import blue from '@material-ui/core/colors/blue';
-import orange from '@material-ui/core/colors/orange';
+import { StylesProvider, ThemeProvider } from '@material-ui/core/styles';
+import theme from './stylesOverride';
 
 import { Menu, InfoPanel } from './components';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 
+import React from 'react';
 import Schedule from './pages/Schedule';
 import Pupils from './pages/Pupils';
 import Finance from './pages/Finance';
-import { Switch, Route, useRouteMatch, Redirect } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import React from 'react';
 
 import { fetchLessons } from './redux/actions/lessons';
 import { fetchPupils } from './redux/actions/pupils';
 import { fetchSchedules } from './redux/actions/schedules';
-
-/**
- * Global material ui styles overrides
- */
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: blue[500],
-    },
-    secondary: {
-      main: orange[500],
-    },
-    text: {
-      primary: '#000000',
-      secondary: '#9E9E9E',
-    },
-  },
-  typography: {
-    body1: { fontSize: '1.3rem' },
-  },
-
-  overrides: {
-    MuiDrawer: {
-      paper: {
-        backgroundColor: '#F5F5F5',
-      },
-    },
-    MuiButton: {
-      label: { color: '#ffffff' },
-    },
-    MuiIconButton: {
-      root: {
-        '&:hover': {
-          backgroundColor: 'rgba(255, 192, 70, 0.5)',
-        },
-      },
-    },
-    MuiCardContent: {
-      root: {
-        '&:last-child': { paddingBottom: '16px' },
-      },
-    },
-  },
-});
 
 function App() {
   const dispatch = useDispatch();

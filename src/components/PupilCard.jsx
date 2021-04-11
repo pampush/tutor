@@ -7,7 +7,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -24,7 +23,7 @@ function PupilCard({ name, schedulesId, grade, parents, address, contacts, sched
           </Avatar>
         }
         action={
-          <IconButton aria-label="settings">
+          <IconButton aria-label="Меню">
             <MoreVertIcon />
           </IconButton>
         }
@@ -40,7 +39,7 @@ function PupilCard({ name, schedulesId, grade, parents, address, contacts, sched
         <Typography component="p">{`Адрес: ${address}`}</Typography>
       </CardContent>
       <CardActions className="pupils__homework">
-        <IconButton>
+        <IconButton color="secondary" aria-label="Домашняя работа">
           <MenuBookIcon aria-label="homework" />
         </IconButton>
       </CardActions>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Calendar, Lessons } from '../components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { fetchLessons } from '../redux/actions/lessons';
 
@@ -35,7 +35,7 @@ function Schedule() {
                 anchor={anchorCalendar}
                 handleClick={handleCalendarOpen}
                 handleClose={handleCalendarClose}
-                handleCalendarClick = {handleCalendarClick}
+                handleCalendarClick={handleCalendarClick}
               />
             </Grid>
           </Hidden>
