@@ -1,4 +1,6 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
@@ -7,34 +9,57 @@ import Hidden from '@material-ui/core/Hidden';
 import AddIcon from '@material-ui/icons/Add';
 import Menu from '@material-ui/core/Menu';
 import Skeleton from '@material-ui/lab/Skeleton';
+import Container from '@material-ui/core/Container';
 
 import Calendar from './Calendar';
 import LessonCard from './LessonCard';
-import { Container } from '@material-ui/core';
-
-import { useSelector } from 'react-redux';
+import LessonTemplateCard from './LessonTemplateCard';
 import AddLessonForm from './addLessonForm/AddLessonForm';
+import SnackPopup from './SnackPopup';
 
 function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalendarClick }) {
   const lessons = useSelector(({ lessons }) => lessons.items);
   const lessonsLoaded = useSelector(({ lessons }) => lessons.isLoaded);
+
   const pupils = useSelector(({ pupils }) => pupils.items);
   const pupilsLoaded = useSelector(({ pupils }) => pupils.isLoaded);
-  const schedules = useSelector(({ schedules }) => schedules.items);
-  const schedulesLoaded = useSelector(({ schedules }) => schedules.isLoaded);
 
-  const isLoaded = lessonsLoaded && pupilsLoaded && schedulesLoaded;
+  const scheduledLessons = useSelector(({ scheduledLessons }) => scheduledLessons.items);
+  const scheduledLessonsLoaded = useSelector(({ scheduledLessons }) => scheduledLessons.isLoaded);
+
+  const isLoaded = lessonsLoaded && pupilsLoaded && scheduledLessonsLoaded;
 
   const [viewAddLessonForm, setViewAddLessonForm] = React.useState(false);
+  const [viewThemeChangeForm, setViewThemeChangeForm] = React.useState(false);
+  const [snackView, setSnackView] = React.useState(false);
+  const [snackThemeView, setSnackThemeView] = React.useState(false);
   const calendar = React.useRef(null);
 
-  function handleAddLessonFormClick() {
-    setViewAddLessonForm(true);
-  }
+  React.useEffect(() => {
+    let timer;
+    timer = setTimeout(() => {
+      setSnackView(false);
+    }, 5000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [snackView]);
 
-  function handleCloseAddLessonForm() {
-    setViewAddLessonForm(false);
-  }
+  React.useEffect(() => {
+    let timer;
+    timer = setTimeout(() => {
+      setSnackThemeView(false);
+    }, 5000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [snackThemeView]);
+
+  const handleAddLessonFormClick = () => setViewAddLessonForm(true);
+  const handleCloseAddLessonForm = () => setViewAddLessonForm(false);
+
+  const handleThemeChange = () => setViewThemeChangeForm(true);
+  const handleCloseThemeChangeForm = () => setViewThemeChangeForm(false);
 
   return (
     <div>
@@ -78,26 +103,53 @@ function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalend
         <AddLessonForm
           open={viewAddLessonForm}
           handleClose={handleCloseAddLessonForm}
-          handleSnack
+          handleSnack={setSnackView}
         />
       )}
 
+      <SnackPopup open={snackView} message="Урок добавлен" />
+      <SnackPopup open={snackThemeView} message="Тема измененена" />
+
       <Container className="lessons__items-container">
-        {isLoaded
-          ? Object.keys(lessons).map((key) => (
+        {isLoaded ? (
+          <React.Fragment>
+            {Object.entries(lessons).map(([key, value]) => (
               <LessonCard
                 key={key}
-                time={lessons[key].time}
-                theme={lessons[key].theme}
-                name={pupils[lessons[key].pupil].name}
-                address={pupils[lessons[key].pupil].address}
+                id= {key}
+                time={value.time}
+                theme={value.theme}
+                subject={value.subject}
+                schedule={value.schedule}
+                name={pupils[value.pupil].name}
+                address={pupils[value.pupil].address}
               />
+            ))}
+            {Object.entries(scheduledLessons).map(([key, value]) => {
+              return (
+                <LessonTemplateCard
+                  key={key}
+                  time={value.time}
+                  scheduleId={value.id}
+                  pupilId={pupils[value.pupil].id}
+                  name={pupils[value.pupil].name}
+                  subject={value.subject}
+                  address={pupils[value.pupil].address}
+                  handleSnack={setSnackThemeView}
+                />
+              );
+            })}
+            {!(Object.keys(lessons).length || Object.keys(scheduledLessons).length) ? (
+              <Typography>На текущий день уроков не запланировано</Typography>
+            ) : null}
+          </React.Fragment>
+        ) : (
+          Array(4)
+            .fill(0)
+            .map((_, index) => (
+              <Skeleton key={index} variant="rect" className="lessons__skeleton" />
             ))
-          : Array(4)
-              .fill(0)
-              .map((_, index) => (
-                <Skeleton key={index} variant="rect" className="lessons__skeleton" />
-              ))}
+        )}
       </Container>
     </div>
   );

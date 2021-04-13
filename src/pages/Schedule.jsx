@@ -3,6 +3,7 @@ import { Calendar, Lessons } from '../components';
 import { useDispatch } from 'react-redux';
 
 import { fetchLessons } from '../redux/actions/lessons';
+import { fetchScheduledLessons } from '../redux/actions/scheduledLessons';
 
 import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
@@ -23,6 +24,8 @@ function Schedule() {
 
   function handleCalendarClick(date) {
     dispatch(fetchLessons(date));
+    dispatch(fetchScheduledLessons(date));
+    setAnchorEl(null);
   }
 
   return (

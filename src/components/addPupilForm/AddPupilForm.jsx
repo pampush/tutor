@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -18,6 +18,8 @@ import AddScheduleInputs from './AddScheduleInputs';
 import validationSchema from './validationSchema';
 import formInitialValues from './formInitialValues';
 import formHandler from '../../redux/actions/newPupil';
+import { fetchScheduledLessons } from '../../redux/actions/scheduledLessons';
+import { combineDispatches } from '../../redux/actions/combineDispatches';
 
 const steps = ['Информация об ученике', 'Расписание'];
 function getForm(step) {
@@ -37,6 +39,8 @@ function AddPupilForm({ open, handleClose, width, handleSnack }) {
   const currentValidationSchema = validationSchema[activeStep];
   const isLastStep = activeStep === steps.length - 1;
 
+  const today = useSelector(({ date }) => date.selected);
+
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
@@ -45,7 +49,6 @@ function AddPupilForm({ open, handleClose, width, handleSnack }) {
     if (isLastStep) {
       submitForm(values, actions);
       handleSnack(true);
-      setTimeout(() => handleSnack(false), 3000);
       handleClose();
     } else {
       setActiveStep(activeStep + 1);
@@ -57,8 +60,12 @@ function AddPupilForm({ open, handleClose, width, handleSnack }) {
   function submitForm(values, actions) {
     actions.setSubmitting(false);
     setActiveStep(activeStep + 1);
-    dispatch(formHandler(values));
+    combineDispatches(
+      () => dispatch(formHandler(values)),
+      () => dispatch(fetchScheduledLessons(today)),
+    );
   }
+
   return (
     <Dialog
       open={open}

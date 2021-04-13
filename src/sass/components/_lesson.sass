@@ -1,11 +1,12 @@
 @use '../vars'
+@use '../mixins'
 
 .lesson
   &__container
     max-width: 1000px
     margin-top: 20px
-    &:hover
-      background-color: vars.$bgPrimaryHover
+    &--template
+      background-color: vars.$bgSecondaryHover
   &__header
     display: flex
     justify-content: space-between
@@ -13,8 +14,15 @@
       padding: 6px
     &-text
       font-weight: 800
+      @include mixins.sm
+        font-weight: 600
+        font-size: 1.4rem
+  &__theme
+    font-size: 1.4rem
   &__menu-container
     & li
       font-size: 1rem
     & li:hover
       background-color: vars.$bgSecondaryHover
+  
+    

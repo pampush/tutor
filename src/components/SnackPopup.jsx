@@ -2,7 +2,7 @@ import React from 'react';
 import { IconButton, Snackbar, Button } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 
-function SnackPopup({ open }) {
+function SnackPopup({ open, message }) {
   return (
     <Snackbar
       anchorOrigin={{
@@ -10,7 +10,7 @@ function SnackPopup({ open }) {
         horizontal: 'center',
       }}
       open={open}
-      message="Ученик добавлен"
+      message={message}
       action={
         <React.Fragment>
           <Button color="secondary" size="small">

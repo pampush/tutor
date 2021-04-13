@@ -1,5 +1,6 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
 import uniqid from 'uniqid';
 
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
@@ -9,31 +10,51 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Box from '@material-ui/core/Box';
 
-import AddLessonInputs from './AddLessonInputs';
+import ThemeChangeInputs from './ThemeChangeInputs';
 import formInitialValues from './formInitialValues';
 import validationSchema from './validationSchema';
-import { useDispatch, useSelector } from 'react-redux';
-import { postLesson } from '../../redux/actions/lessons';
 
-function AddLessonForm({ width, open, handleClose, handleSnack }) {
+import { postLesson } from '../../redux/actions/lessons';
+import { updDbSchedule } from '../../redux/actions/schedules';
+import { fetchScheduledLessons } from '../../redux/actions/scheduledLessons';
+import { combineDispatches } from '../../redux/actions/combineDispatches';
+import { setScheduledLessonsLoaded } from '../../redux/actions/scheduledLessons';
+
+function ThemeChangeForm({ width, open, handleClose, pupilId, scheduleId, handleSnack }) {
   const dispatch = useDispatch();
+
+  const schedule = useSelector(({ schedules }) => schedules.items[scheduleId]);
   const date = useSelector(({ date }) => date.selected);
-  formInitialValues.date = date.toISOString().slice(0, 10);
 
   function handleSubmit(values, actions) {
     const lesson = {
       id: uniqid(),
+      date: date.toISOString().slice(0, 10),
+      time: schedule.time,
+      schedule: scheduleId,
+      pupil: pupilId,
       theme: values.theme,
-      date: values.date,
-      time: values.time,
-      pupil: values.pupil,
-      schedule: null,
-      subject: values.subject,
+      subject: schedule.subject,
     };
-    handleSnack(true);
+
     actions.setSubmitting(false);
-    dispatch(postLesson(lesson));
-    handleClose();
+    handleSnack(true);
+
+    /**
+     * bicycle for async chained invocations
+     * preventIsLoaded prevents isLoaded redux property action call
+     */
+    combineDispatches(
+      () => dispatch(setScheduledLessonsLoaded(false)),
+      () => dispatch(postLesson(lesson, { preventIsLoaded: true })),
+      () =>
+        dispatch(updDbSchedule({ date: lesson.date, id: scheduleId }, { preventIsLoaded: true })),
+      () => dispatch(fetchScheduledLessons(date, { preventIsLoaded: true })),
+    );
+
+    //dispatch(postLesson(lesson));
+    //dispatch(updDbSchedule({ date: lesson.date, id: scheduleId }));
+    //dispatch(fetchScheduledLessons(date));
   }
 
   return (
@@ -51,7 +72,7 @@ function AddLessonForm({ width, open, handleClose, handleSnack }) {
           validationSchema={validationSchema}
           onSubmit={handleSubmit}>
           <Form>
-            <AddLessonInputs />
+            <ThemeChangeInputs />
             <Box className="lesson-form__controls">
               <Button variant="contained" color="secondary" onClick={handleClose}>
                 Закрыть
@@ -67,4 +88,4 @@ function AddLessonForm({ width, open, handleClose, handleSnack }) {
   );
 }
 
-export default withWidth()(AddLessonForm);
+export default withWidth()(ThemeChangeForm);

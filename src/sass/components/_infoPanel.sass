@@ -13,7 +13,8 @@
     padding: 10px
     flex-direction: column
     justify-content: center
-    max-width: 200px
+    min-width: 160px
+    min-height: 160px
     color: vars.$textSecondary
     
     @include mixins.sm
@@ -21,6 +22,7 @@
       max-width: 150px 
   &__content
     &:last-child
+      margin-top: auto
       padding: 10px 
   &__title
     text-align: center
@@ -33,7 +35,14 @@
   &__svg-container
     display: flex
     justify-content: center
-    
+    align-items: center
+    font-size: 2.4rem
+    & svg
+      @include mixins.svgSize(60, 60)
+      @include mixins.md
+        @include mixins.svgSize(60, 60)
+      @include mixins.sm
+        @include mixins.svgSize(50, 50)
   &__svg
     @include mixins.svgSize(60, 60)
     @include mixins.md

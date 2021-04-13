@@ -16,12 +16,14 @@ import { useDispatch } from 'react-redux';
 import { fetchLessons } from './redux/actions/lessons';
 import { fetchPupils } from './redux/actions/pupils';
 import { fetchSchedules } from './redux/actions/schedules';
+import { fetchScheduledLessons } from './redux/actions/scheduledLessons';
 
 function App() {
   const dispatch = useDispatch();
 
   React.useEffect(() => {
     dispatch(fetchLessons(new Date()));
+    dispatch(fetchScheduledLessons(new Date()));
     dispatch(fetchPupils());
     dispatch(fetchSchedules());
   }, []);

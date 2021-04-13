@@ -10,7 +10,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 
 import PupilCard from './PupilCard';
 import AddPupilForm from './addPupilForm/AddPupilForm';
-import SnackPopup from './addPupilForm/SnackPopup';
+import SnackPopup from './SnackPopup';
 
 function PupilsList() {
   const pupils = useSelector(({ pupils }) => pupils.items);
@@ -18,6 +18,19 @@ function PupilsList() {
   const schedules = useSelector(({ schedules }) => schedules.items);
   const schedulesLoaded = useSelector(({ schedules }) => schedules.isLoaded);
   const [snackView, setSnackView] = React.useState(false);
+
+  /**
+   * prevent React state update on unmounted component!
+   */
+  React.useEffect(() => {
+    let timer;
+    timer = setTimeout(() => {
+      setSnackView(false);
+    }, 5000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [snackView]);
 
   const isLoaded = pupilsLoaded && schedulesLoaded;
 
@@ -60,6 +73,8 @@ function PupilsList() {
         />
       )}
 
+      <SnackPopup open={snackView} message="Ученик добавлен"/>
+
       <Grid container spacing={2} className="pupils__card-container">
         {isLoaded
           ? Object.keys(pupils).map((key) => (
@@ -73,8 +88,6 @@ function PupilsList() {
               </Grid>
             ))}
       </Grid>
-
-      <SnackPopup open={snackView} />
     </div>
   );
 }

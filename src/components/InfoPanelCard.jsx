@@ -6,24 +6,16 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Box from '@material-ui/core/Box';
 
-import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
-
-function InfoPanelCard() {
+function InfoPanelCard({ children, header, subheader }) {
   return (
     <Card className="info__card">
-      <Box className="info__svg-container">
-        <CardMedia
-          component={CalendarTodayIcon}
-          title="Contemplative Reptile"
-          className="info__svg"
-        />
-      </Box>
+      <Box className="info__svg-container">{children}</Box>
       <CardContent className="info__content">
         <Typography gutterBottom variant="h5" component="h2" className="info__title">
-          Понедельник
+          {header}
         </Typography>
         <Typography variant="body2" component="p" className="info__subtitle">
-          02.05.2021
+          {new Date().toISOString().slice(0, 10)}
         </Typography>
       </CardContent>
     </Card>

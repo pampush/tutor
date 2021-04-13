@@ -9,27 +9,25 @@ import { db } from '../../firebase';
  */
 //TODO: integrate with auth
 export const fetchLessons = (date) => async (dispatch) => {
-  const tzoffset = new Date().getTimezoneOffset() * 60000;
-  const localISOTime = new Date(date.getTime() - tzoffset).toISOString().slice(0, 10);
-  
+  // const tzoffset = new Date().getTimezoneOffset() * 60000;
+  // const localISOTime = new Date(date.getTime() - tzoffset).toISOString().slice(0, 10);
+  const ISODate = date.toISOString().slice(0, 10);
   dispatch({ type: 'SET_LESSONS_LOADED', payload: false });
   const user = await db.doc('/users/Uyv2wLqViEmqMjoWvjz3/').get();
   const timer = stopwatch(fastRetrieveLessons);
-  const query = ['date', '==', `${localISOTime}`];
+  const query = ['date', '==', `${ISODate}`];
   const lessons = await timer(user, query);
 
   dispatch(setLessons(lessons));
 };
 
-export const postLessons = (lessons) => async (dispatch) => {
-  dispatch({ type: 'SET_LESSONS_LOADED', payload: false });
+export const postLesson = (lesson, { preventIsLoaded } = {}) => async (dispatch) => {
+  if (!preventIsLoaded) dispatch({ type: 'SET_LESSONS_LOADED', payload: false });
   const user = await db.doc('/users/Uyv2wLqViEmqMjoWvjz3/').get();
-  const schPromises = lessons.map((schedule) =>
-    db.doc(`/users/${user.id}/schedules/${schedule.id}`).set({ ...schedule }),
-  );
-  await Promise.all(schPromises);
-  dispatch(addLessons(lessons))
-} 
+  await db.doc(`/users/${user.id}/lessons/${lesson.id}`).set(lesson);
+  dispatch(addLesson(lesson));
+};
+
 /**
  * retrieve lessons using collectionGroup method
  * @param {object} user
@@ -42,12 +40,21 @@ async function fastRetrieveLessons(user, query) {
   const lessonsSnapshot = await db
     .collection(`/users/${user.id}/lessons`)
     .where(...query)
+    .orderBy('time')
     .get();
-  lessonsSnapshot.forEach(
-    (lessonDoc) => (retrievedLessons = { ...retrievedLessons, [lessonDoc.id]: lessonDoc.data() }),
-  );
+  lessonsSnapshot.forEach((lessonDoc) => {
+    retrievedLessons = { ...retrievedLessons, [lessonDoc.id]: lessonDoc.data() };
+  });
   return retrievedLessons;
 }
+
+export const deleteLesson = (id) => async (dispatch) => {
+  dispatch({ type: 'SET_LESSONS_LOADED', payload: false });
+  const user = await db.doc('/users/Uyv2wLqViEmqMjoWvjz3/').get();
+  await db.doc(`/users/${user.id}/lessons/${id}`).delete();
+
+  await dispatch(deleteLessonAction(id));
+};
 
 /**
  * @param {object[]} items lessons array
@@ -58,11 +65,15 @@ export const setLessons = (items) => ({
   payload: items,
 });
 
-export const addLessons = (items) => ({
-  type: 'ADD_LESSONS',
-  payload: items,
-})
+export const addLesson = (item) => ({
+  type: 'ADD_LESSON',
+  payload: item,
+});
 
+export const deleteLessonAction = (id) => ({
+  type: 'DELETE_LESSON',
+  payload: id,
+});
 /**
  * util func for performance measuring needs
  * @param {*} fn

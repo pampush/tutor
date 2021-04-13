@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+
+import { deleteLesson } from '../redux/actions/lessons';
 
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
@@ -10,8 +13,10 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
+import { updDbSchedule } from '../redux/actions/schedules';
 
-function LessonCard({ time, theme, name, address }) {
+function LessonCard({ id, time, theme, name, address, subject, schedule }) {
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   function handleClick(e) {
@@ -20,6 +25,11 @@ function LessonCard({ time, theme, name, address }) {
 
   function handleClose() {
     setAnchorEl(null);
+  }
+
+  function handleDelete() {
+    dispatch(deleteLesson(id));
+    if (schedule) dispatch(updDbSchedule());
   }
 
   return (
@@ -34,21 +44,23 @@ function LessonCard({ time, theme, name, address }) {
         open={Boolean(anchorEl)}
         onClose={handleClose}>
         <MenuList autoFocus={true} className="lesson__menu-container">
-          <MenuItem onClick={handleClose}>Profile</MenuItem>
-          <MenuItem onClick={handleClose}>My account</MenuItem>
-          <MenuItem onClick={handleClose}>Logout</MenuItem>
+          <MenuItem onClick={handleClose}>Домашняя работа</MenuItem>
+          <MenuItem onClick={handleClose}>Заметки</MenuItem>
+          <MenuItem onClick={handleClose}>push</MenuItem>
+          <MenuItem onClick={handleClose}>Редактировать</MenuItem>
+          <MenuItem onClick={handleDelete}>Удалить</MenuItem>
         </MenuList>
       </Menu>
       <CardContent>
         <Box className="lesson__header">
           <Typography gutterBottom variant="h5" className="lesson__header-text">
-            {time}
+            {time} {subject}
           </Typography>
           <IconButton aria-label="menu" className="lesson__header-more" onClick={handleClick}>
             <MoreVertIcon />
           </IconButton>
         </Box>
-        <Typography variant="h5" color="textPrimary" component="p">
+        <Typography variant="h5" color="textPrimary" className="lesson__theme" component="p">
           {theme}
         </Typography>
         <Typography variant="subtitle2" color="textPrimary" component="p">

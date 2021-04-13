@@ -8,7 +8,7 @@ const schedules = (state = initialState, action) => {
     case 'SET_SCHEDULES':
       return {
         ...state,
-        items: { ...state.items, ...action.payload },
+        items: { ...action.payload },
         isLoaded: true,
       };
     case 'SET_SCHEDULES_LOADED':
@@ -28,6 +28,21 @@ const schedules = (state = initialState, action) => {
       return {
         ...state,
         items: { ...state.items, ...schedules },
+        isLoaded: true,
+      };
+    }
+    case 'UPD_SCHEDULE': {
+      const newLessons = [...state.items[action.payload.id].lessons];
+      newLessons.push(action.payload.date);
+      return {
+        ...state,
+        items: {
+          ...state.items,
+          [action.payload.id]: {
+            ...state.items[action.payload.id],
+            lessons: newLessons,
+          },
+        },
         isLoaded: true,
       };
     }
