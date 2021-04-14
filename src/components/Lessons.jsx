@@ -30,9 +30,9 @@ function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalend
   const isLoaded = lessonsLoaded && pupilsLoaded && scheduledLessonsLoaded;
 
   const [viewAddLessonForm, setViewAddLessonForm] = React.useState(false);
-  const [viewThemeChangeForm, setViewThemeChangeForm] = React.useState(false);
   const [snackView, setSnackView] = React.useState(false);
   const [snackThemeView, setSnackThemeView] = React.useState(false);
+  const [snackNotesView, setSnackNotesView] = React.useState(false);
   const calendar = React.useRef(null);
 
   React.useEffect(() => {
@@ -55,11 +55,18 @@ function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalend
     };
   }, [snackThemeView]);
 
+  React.useEffect(() => {
+    let timer;
+    timer = setTimeout(() => {
+      setSnackNotesView(false);
+    }, 5000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [snackNotesView]);
+
   const handleAddLessonFormClick = () => setViewAddLessonForm(true);
   const handleCloseAddLessonForm = () => setViewAddLessonForm(false);
-
-  const handleThemeChange = () => setViewThemeChangeForm(true);
-  const handleCloseThemeChangeForm = () => setViewThemeChangeForm(false);
 
   return (
     <div>
@@ -108,7 +115,8 @@ function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalend
       )}
 
       <SnackPopup open={snackView} message="Урок добавлен" />
-      <SnackPopup open={snackThemeView} message="Тема измененена" />
+      <SnackPopup open={snackThemeView} message="Тема изменена" />
+      <SnackPopup open={snackNotesView} message="Заметка изменена" />
 
       <Container className="lessons__items-container">
         {isLoaded ? (
@@ -116,13 +124,10 @@ function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalend
             {Object.entries(lessons).map(([key, value]) => (
               <LessonCard
                 key={key}
-                id= {key}
-                time={value.time}
-                theme={value.theme}
-                subject={value.subject}
-                schedule={value.schedule}
                 name={pupils[value.pupil].name}
                 address={pupils[value.pupil].address}
+                handleSnack={setSnackNotesView}
+                {...value}
               />
             ))}
             {Object.entries(scheduledLessons).map(([key, value]) => {

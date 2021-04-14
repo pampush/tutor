@@ -1,23 +1,12 @@
 import React from 'react';
-import { useField, FieldArray, useFormikContext } from 'formik';
-import TextField from '@material-ui/core/TextField';
+import { FieldArray, useFormikContext } from 'formik';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import ClearIcon from '@material-ui/icons/Clear';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 
-function MyTextField({ ...props }) {
-  const [field, meta, helpers] = useField(props.name);
-  return (
-    <TextField
-      {...field}
-      {...props}
-      error={meta.touched && Boolean(meta.error)}
-      helperText={meta.touched && meta.error}
-    />
-  );
-}
+import { MyTextField } from '../CustomInputs';
 
 function AddPupilInputs() {
   const { values } = useFormikContext();

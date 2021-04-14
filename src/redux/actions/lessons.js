@@ -56,6 +56,12 @@ export const deleteLesson = (id) => async (dispatch) => {
   await dispatch(deleteLessonAction(id));
 };
 
+export const changeLesson = ({ id, field, value }) => async (dispatch) => {
+  dispatch({ type: 'SET_LESSONS_LOADED', payload: false });
+  const user = await db.doc('/users/Uyv2wLqViEmqMjoWvjz3/').get();
+  await db.doc(`/users/${user.id}/lessons/${id}`).update({ [field]: value });
+  dispatch(updateLesson({ id, field, value }));
+};
 /**
  * @param {object[]} items lessons array
  * @returns {object} - send action object to reducer
@@ -73,6 +79,11 @@ export const addLesson = (item) => ({
 export const deleteLessonAction = (id) => ({
   type: 'DELETE_LESSON',
   payload: id,
+});
+
+export const updateLesson = ({ id, field, value }) => ({
+  type: 'UPDATE_LESSON',
+  payload: { id, field, value },
 });
 /**
  * util func for performance measuring needs

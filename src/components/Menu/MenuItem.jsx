@@ -8,22 +8,20 @@ import Hidden from '@material-ui/core/Hidden';
 
 import { NavLink } from 'react-router-dom';
 
-function MenuItem(props) {
+function MenuItem({ children, name, open, to }) {
   return (
     <ListItem
       button
-      className="menu__button"
+      className={open ? '' : 'menu__button'}
       component={NavLink}
-      to={props.to}
-      activeStyle={{
-        
-      }}>
-      <ListItemIcon className="menu--center">{props.children}</ListItemIcon>
+      to={to}
+      activeStyle={{}}>
+      <ListItemIcon className="menu--center">{children}</ListItemIcon>
       <Hidden mdDown>
-        <ListItemText primary={props.name} />
+        <ListItemText primary={name} />
       </Hidden>
-      <Collapse in={props.open} timeout="auto" unmountOnExit>
-        <ListItemText primary={props.name} />
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <ListItemText primary={name} />
       </Collapse>
     </ListItem>
   );

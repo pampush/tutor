@@ -11,7 +11,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import ThemeChangeForm from './themeChangeForm/ThemeChangeForm';
+import LessonFromTemplateForm from './lessonFromTemplateForm/LessonFromTemplateForm';
 
 function LessonTemplateCard({ time, pupilId, scheduleId, subject, name, address, handleSnack }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -25,15 +25,14 @@ function LessonTemplateCard({ time, pupilId, scheduleId, subject, name, address,
 
   return (
     <React.Fragment>
-      {viewForm && (
-        <ThemeChangeForm
-          open={viewForm}
-          pupilId={pupilId}
-          scheduleId={scheduleId}
-          handleClose={handleCloseForm}
-          handleSnack={handleSnack}
-        />
-      )}
+      <LessonFromTemplateForm
+        open={viewForm}
+        pupilId={pupilId}
+        scheduleId={scheduleId}
+        handleClose={handleCloseForm}
+        handleSnack={handleSnack}
+      />
+
       <Card className="lesson__container lesson__container--template">
         <Menu
           id="simple-menu"

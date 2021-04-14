@@ -28,22 +28,23 @@ export const postSchedule = (schedules) => async (dispatch) => {
   dispatch(addSchedule(schedules));
 };
 
-export const updDbSchedule = ({ id, date }, { preventIsLoaded } = {}) => async (dispatch) => {
+export const addLessonToSchedule = ({ id, date }, { preventIsLoaded } = {}) => async (dispatch) => {
   if (!preventIsLoaded) dispatch({ type: 'SET_SCHEDULES_LOADED', payload: false });
   await db
     .doc(`/users/Uyv2wLqViEmqMjoWvjz3/schedules/${id}/`)
     .update({ lessons: firebase.firestore.FieldValue.arrayUnion(date) });
 
-  dispatch(updSchedule({ id, date }));
+  dispatch(updateLessonsField({ procedure: 'push', id, date }));
 };
 
-export const deleteLessonFromSchedule = (lesson, schedule) => async (dispatch) => {
+export const deleteLessonFromSchedule = ({ date, id }) => async (dispatch) => {
+  dispatch({ type: 'SET_SCHEDULES_LOADED', payload: false });
   await db
-    .doc(`/users/Uyv2wLqViEmqMjoWvjz3/schedules/${schedule}/`)
-    .update({ lessons: firebase.firestore.FieldValue.arrayRemove(lesson) });
-  
-  dispatch(updSchedule({}))
-}
+    .doc(`/users/Uyv2wLqViEmqMjoWvjz3/schedules/${id}/`)
+    .update({ lessons: firebase.firestore.FieldValue.arrayRemove(date) });
+
+  dispatch(updateLessonsField({ procedure: 'pop', date, id }));
+};
 
 export const setSchedules = (items) => ({
   type: 'SET_SCHEDULES',
@@ -55,7 +56,7 @@ export const addSchedule = (data) => ({
   payload: data,
 });
 
-export const updSchedule = (data) => ({
-  type: 'UPD_SCHEDULE',
+export const updateLessonsField = (data) => ({
+  type: 'UPDATE_LESSONS_FIELD',
   payload: data,
 });

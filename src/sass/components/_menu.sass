@@ -1,5 +1,5 @@
-@use 'mixins'
-@use 'vars'
+@use '../mixins'
+@use '../vars'
 
 .menu__list
   overflow: hidden
@@ -30,6 +30,8 @@
       @include mixins.svgSize(40, 40)
   &__button
     justify-content: center
+    @include mixins.xs
+      justify-content: flex-start
     &.active
       color: vars.$bgPrimary
       & svg

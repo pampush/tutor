@@ -10,17 +10,17 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Box from '@material-ui/core/Box';
 
-import ThemeChangeInputs from './ThemeChangeInputs';
+import LessonFromTemplateInputs from './LessonFromTemplateInputs';
 import formInitialValues from './formInitialValues';
 import validationSchema from './validationSchema';
 
 import { postLesson } from '../../redux/actions/lessons';
-import { updDbSchedule } from '../../redux/actions/schedules';
+import { addLessonToSchedule } from '../../redux/actions/schedules';
 import { fetchScheduledLessons } from '../../redux/actions/scheduledLessons';
 import { combineDispatches } from '../../redux/actions/combineDispatches';
 import { setScheduledLessonsLoaded } from '../../redux/actions/scheduledLessons';
 
-function ThemeChangeForm({ width, open, handleClose, pupilId, scheduleId, handleSnack }) {
+function LessonFromTemplateForm({ width, open, handleClose, pupilId, scheduleId, handleSnack }) {
   const dispatch = useDispatch();
 
   const schedule = useSelector(({ schedules }) => schedules.items[scheduleId]);
@@ -35,6 +35,7 @@ function ThemeChangeForm({ width, open, handleClose, pupilId, scheduleId, handle
       pupil: pupilId,
       theme: values.theme,
       subject: schedule.subject,
+      note: values.note,
     };
 
     actions.setSubmitting(false);
@@ -48,13 +49,9 @@ function ThemeChangeForm({ width, open, handleClose, pupilId, scheduleId, handle
       () => dispatch(setScheduledLessonsLoaded(false)),
       () => dispatch(postLesson(lesson, { preventIsLoaded: true })),
       () =>
-        dispatch(updDbSchedule({ date: lesson.date, id: scheduleId }, { preventIsLoaded: true })),
+        dispatch(addLessonToSchedule({ date: lesson.date, id: scheduleId }, { preventIsLoaded: true })),
       () => dispatch(fetchScheduledLessons(date, { preventIsLoaded: true })),
     );
-
-    //dispatch(postLesson(lesson));
-    //dispatch(updDbSchedule({ date: lesson.date, id: scheduleId }));
-    //dispatch(fetchScheduledLessons(date));
   }
 
   return (
@@ -72,7 +69,7 @@ function ThemeChangeForm({ width, open, handleClose, pupilId, scheduleId, handle
           validationSchema={validationSchema}
           onSubmit={handleSubmit}>
           <Form>
-            <ThemeChangeInputs />
+            <LessonFromTemplateInputs />
             <Box className="lesson-form__controls">
               <Button variant="contained" color="secondary" onClick={handleClose}>
                 Закрыть
@@ -88,4 +85,4 @@ function ThemeChangeForm({ width, open, handleClose, pupilId, scheduleId, handle
   );
 }
 
-export default withWidth()(ThemeChangeForm);
+export default withWidth()(LessonFromTemplateForm);

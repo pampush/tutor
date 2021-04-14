@@ -9,7 +9,7 @@ import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import InfoPanelCard from './InfoPanelCard';
 import lessons from '../redux/reducers/lessons';
 
-const days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+const days = ['воскресенье', 'понедельник', 'вторник', 'cреда', 'четверг', 'пятница', 'суббота'];
 const endings = ['урок', 'урока', 'уроков'];
 
 function endingsForm(n) {

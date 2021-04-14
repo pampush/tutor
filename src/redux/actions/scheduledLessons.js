@@ -5,7 +5,7 @@ async function retrieveSchedulesByDay(user, date) {
   let schedules = {};
   const today = getISODay(date);
   const localISODate = date.toISOString().slice(0, 10);
-  //TODO:
+
   const snapshot = await db
     .collection(`/users/${user.id}/schedules/`)
     .where('day', '==', today)
@@ -21,9 +21,9 @@ async function retrieveSchedulesByDay(user, date) {
 export const fetchScheduledLessons = (date, { preventIsLoaded } = {}) => async (dispatch) => {
   if (!preventIsLoaded) dispatch({ type: 'SET_SCHEDULED_LESSONS_LOADED', payload: false });
   const user = await db.doc('/users/Uyv2wLqViEmqMjoWvjz3/').get();
-
   const schedules = await retrieveSchedulesByDay(user, date);
-  await dispatch(setScheduledLessons(schedules));
+  
+  dispatch(setScheduledLessons(schedules));
 };
 
 export const setScheduledLessons = (items) => ({

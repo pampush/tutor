@@ -20,17 +20,35 @@ import MenuIcon from '@material-ui/icons/Menu';
 
 import MenuItem from './MenuItem';
 
+function MenuControls({ open }) {
+  return (
+    <Box className="menu__nav-container">
+      <MenuItem open={open} name="Расписание" to="/schedule">
+        <CalendarTodayIcon className="menu--svg" />
+      </MenuItem>
+      <MenuItem open={open} name="Ученики" to="/pupils">
+        <FaceIcon className="menu--svg" />
+      </MenuItem>
+      <MenuItem open={open} name="Финансы" to="/finance">
+        <ShowChartIcon className="menu--svg" />
+      </MenuItem>
+    </Box>
+  );
+}
+
 function MenuMdDrawer() {
   const [open, setOpen] = React.useState(false);
 
-  function handleDrawerOpen() {
-    setOpen((prev) => !prev);
-  }
+  const handleDrawer = () => setOpen((prev) => !prev);
 
   return (
-    <Drawer variant="permanent" anchor="left" open={open}>
+    <Drawer
+      variant={open ? 'temporary' : 'permanent'}
+      anchor="left"
+      open={open}
+      onClose={handleDrawer}>
       <List className={classNames('menu__list', { 'menu__list--opened': open })}>
-        <ListItem button className="menu--center" onClick={handleDrawerOpen}>
+        <ListItem button className={open ? '' : 'menu--center'} onClick={handleDrawer}>
           <ListItemIcon className="menu--center">
             <MenuIcon className="menu--svg" />
           </ListItemIcon>
@@ -55,17 +73,7 @@ function MenuMdDrawer() {
         )}
 
         <Divider />
-        <Box className="menu__nav-container">
-          <MenuItem open={open} name="Расписание" to="/schedule">
-            <CalendarTodayIcon className="menu--svg" />
-          </MenuItem>
-          <MenuItem open={open} name="Ученики" to="/pupils">
-            <FaceIcon className="menu--svg" />
-          </MenuItem>
-          <MenuItem open={open} name="Финансы" to="/finance">
-            <ShowChartIcon className="menu--svg" />
-          </MenuItem>
-        </Box>
+        <MenuControls open={open} />
       </List>
     </Drawer>
   );

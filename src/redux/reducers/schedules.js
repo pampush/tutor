@@ -31,9 +31,11 @@ const schedules = (state = initialState, action) => {
         isLoaded: true,
       };
     }
-    case 'UPD_SCHEDULE': {
-      const newLessons = [...state.items[action.payload.id].lessons];
-      newLessons.push(action.payload.date);
+    case 'UPDATE_LESSONS_FIELD': {
+      let newLessons = [...state.items[action.payload.id].lessons];
+      if (action.payload.procedure === 'push') newLessons.push(action.payload.date);
+      if (action.payload.procedure === 'pop')
+        newLessons = newLessons.filter((item) => item !== action.payload.date);
       return {
         ...state,
         items: {

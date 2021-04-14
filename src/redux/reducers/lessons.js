@@ -23,6 +23,16 @@ const lessons = (state = initialState, action) => {
         isLoaded: true,
       };
     }
+    case 'UPDATE_LESSON': {
+      const newItem = { ...state.items[action.payload.id] };
+      newItem[action.payload.field] = action.payload.value;
+      return {
+        ...state,
+        items: { ...state.items, [action.payload.id]: newItem },
+        isLoaded: true,
+      };
+    }
+
     case 'DELETE_LESSON': {
       const newState = { ...state.items };
       delete newState[action.payload];

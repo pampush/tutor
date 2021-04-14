@@ -29,32 +29,37 @@ const useStyles = makeStyles({
 function MenuDrawerMobile() {
   const [open, setOpen] = React.useState(false);
 
-  function handleDrawerOpen() {
-    setOpen((prev) => !prev);
-  }
+  const handleDrawer = () => setOpen((prev) => !prev);
 
   const classes = useStyles();
   return (
     <React.Fragment>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}>
+          <IconButton edge="start" color="inherit" aria-label="open drawer" onClick={handleDrawer}>
             <MenuIcon />
           </IconButton>
         </Toolbar>
       </AppBar>
 
       <Drawer
-        variant="persistent"
+        variant="temporary"
         open={open}
-        onClose={handleDrawerOpen}
+        onClose={handleDrawer}
         classes={{
           paper: classes.drawerPaper,
         }}>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawer}>
+              <MenuIcon />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
         <List className={classNames('menu__list', { 'menu__list--opened': open })}>
           <ListItem>
             <Grid container className="menu__header">
