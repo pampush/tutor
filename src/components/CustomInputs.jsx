@@ -1,5 +1,5 @@
 import React from 'react';
-import { useField, FieldArray, useFormikContext } from 'formik';
+import { useField } from 'formik';
 
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';

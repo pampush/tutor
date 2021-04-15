@@ -1,0 +1,22 @@
+@use '../vars'
+@use '../utils'
+
+.signup
+  &__main
+    margin-top: 100px
+  &__header-container
+    margin-bottom: 20px
+  &__inputs
+    margin-bottom: 20px
+  &__avatar
+    background-color: vars.$bgSecondary
+  &__submit
+    @extend %add-button
+  &__snackbar
+    & > div
+      background-color: vars.$textError
+      & > div
+        display: flex
+        align-items: center
+        & > *:first-child
+          margin-right: 10px
