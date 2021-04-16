@@ -1,4 +1,5 @@
 import { db } from '../../firebase';
+import { auth } from '../../firebase';
 
 /**
  * middleware thunk function used for async data fetching and
@@ -13,18 +14,16 @@ export const fetchLessons = (date) => async (dispatch) => {
   // const localISOTime = new Date(date.getTime() - tzoffset).toISOString().slice(0, 10);
   const ISODate = date.toISOString().slice(0, 10);
   dispatch({ type: 'SET_LESSONS_LOADED', payload: false });
-  const user = await db.doc('/users/Uyv2wLqViEmqMjoWvjz3/').get();
   const timer = stopwatch(fastRetrieveLessons);
   const query = ['date', '==', `${ISODate}`];
-  const lessons = await timer(user, query);
+  const lessons = await timer(query);
 
   dispatch(setLessons(lessons));
 };
 
 export const postLesson = (lesson, { preventIsLoaded } = {}) => async (dispatch) => {
   if (!preventIsLoaded) dispatch({ type: 'SET_LESSONS_LOADED', payload: false });
-  const user = await db.doc('/users/Uyv2wLqViEmqMjoWvjz3/').get();
-  await db.doc(`/users/${user.id}/lessons/${lesson.id}`).set(lesson);
+  await db.doc(`/users/${auth.currentUser.uid}/lessons/${lesson.id}`).set(lesson);
   dispatch(addLesson(lesson));
 };
 
@@ -35,10 +34,10 @@ export const postLesson = (lesson, { preventIsLoaded } = {}) => async (dispatch)
  * @param {array} query firestore query format array
  * @returns {object[]} lesson result array going to be stored in redux store
  */
-async function fastRetrieveLessons(user, query) {
+async function fastRetrieveLessons(query) {
   let retrievedLessons = {};
   const lessonsSnapshot = await db
-    .collection(`/users/${user.id}/lessons`)
+    .collection(`/users/${auth.currentUser.uid}/lessons`)
     .where(...query)
     .orderBy('time')
     .get();
@@ -50,16 +49,14 @@ async function fastRetrieveLessons(user, query) {
 
 export const deleteLesson = (id) => async (dispatch) => {
   dispatch({ type: 'SET_LESSONS_LOADED', payload: false });
-  const user = await db.doc('/users/Uyv2wLqViEmqMjoWvjz3/').get();
-  await db.doc(`/users/${user.id}/lessons/${id}`).delete();
+  await db.doc(`/users/${auth.currentUser.uid}/lessons/${id}`).delete();
 
   await dispatch(deleteLessonAction(id));
 };
 
 export const changeLesson = ({ id, field, value }) => async (dispatch) => {
   dispatch({ type: 'SET_LESSONS_LOADED', payload: false });
-  const user = await db.doc('/users/Uyv2wLqViEmqMjoWvjz3/').get();
-  await db.doc(`/users/${user.id}/lessons/${id}`).update({ [field]: value });
+  await db.doc(`/users/${auth.currentUser.uid}/lessons/${id}`).update({ [field]: value });
   dispatch(updateLesson({ id, field, value }));
 };
 /**

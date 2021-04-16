@@ -30,12 +30,15 @@
       @include mixins.svgSize(40, 40)
   &__button
     justify-content: center
-    @include mixins.xs
-      justify-content: flex-start
     &.active
       color: vars.$bgPrimary
       & svg
         color: vars.$bgPrimary
+    &--drawer
+      &.active
+        color: vars.$bgPrimary
+        & svg
+          color: vars.$bgPrimary
     & svg
       color: vars.$bgItem
     &-text

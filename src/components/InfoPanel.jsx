@@ -24,20 +24,24 @@ function endingsForm(n) {
 function InfoPanel() {
   let numLessons = useSelector(({ lessons }) => lessons.items);
   numLessons = Object.keys(numLessons).length;
+  const date = useSelector(({ date }) => date.selected);
+
   return (
     <Container maxWidth="md" className="info__container">
       <Grid container spacing={2}>
         <Hidden xsDown>
           <Grid item>
-            <InfoPanelCard header={days[new Date().getDay()]}>
+            <InfoPanelCard header={days[new Date().getDay()]} date={new Date()}>
               <CalendarTodayIcon />
             </InfoPanelCard>
           </Grid>
           <Grid item>
-            <InfoPanelCard header={endingsForm(numLessons)}>{numLessons}</InfoPanelCard>
+            <InfoPanelCard header={endingsForm(numLessons)} date={date}>
+              {numLessons}
+            </InfoPanelCard>
           </Grid>
           <Grid item>
-            <InfoPanelCard icon={null} />
+            <InfoPanelCard date={date} />
           </Grid>
         </Hidden>
       </Grid>

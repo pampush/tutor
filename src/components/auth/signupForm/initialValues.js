@@ -3,6 +3,7 @@ const initialValues = {
   lastName: '',
   password: '',
   email: '',
-} ;
+  recaptcha: '',
+};
 
 export default initialValues;

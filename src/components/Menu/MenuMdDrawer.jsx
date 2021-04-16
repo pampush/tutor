@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 
 import List from '@material-ui/core/List';
@@ -23,13 +24,22 @@ import MenuItem from './MenuItem';
 function MenuControls({ open }) {
   return (
     <Box className="menu__nav-container">
-      <MenuItem open={open} name="Расписание" to="/schedule">
+      <MenuItem
+        open={open}
+        name="Расписание"
+        to="/schedule">
         <CalendarTodayIcon className="menu--svg" />
       </MenuItem>
-      <MenuItem open={open} name="Ученики" to="/pupils">
+      <MenuItem
+        open={open}
+        name="Ученики"
+        to="/pupils">
         <FaceIcon className="menu--svg" />
       </MenuItem>
-      <MenuItem open={open} name="Финансы" to="/finance">
+      <MenuItem
+        open={open}
+        name="Финансы"
+        to="/finance">
         <ShowChartIcon className="menu--svg" />
       </MenuItem>
     </Box>
@@ -60,7 +70,12 @@ function MenuMdDrawer() {
               <Grid item xs={6} className="menu__avatar">
                 <AccountCircleIcon />
               </Grid>
-              <Grid item xs={6} className="menu__settings">
+              <Grid
+                item
+                xs={6}
+                className="menu__settings menu__button"
+                component={NavLink}
+                to="/settings">
                 <IconButton>
                   <SettingsIcon />
                 </IconButton>

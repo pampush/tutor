@@ -1,13 +1,14 @@
 import { db } from '../../firebase';
+import { auth } from '../../firebase';
 import { getISODay } from 'date-fns';
 
-async function retrieveSchedulesByDay(user, date) {
+async function retrieveSchedulesByDay(date) {
   let schedules = {};
   const today = getISODay(date);
   const localISODate = date.toISOString().slice(0, 10);
 
   const snapshot = await db
-    .collection(`/users/${user.id}/schedules/`)
+    .collection(`/users/${auth.currentUser.uid}/schedules/`)
     .where('day', '==', today)
     .get();
 
@@ -20,9 +21,8 @@ async function retrieveSchedulesByDay(user, date) {
 
 export const fetchScheduledLessons = (date, { preventIsLoaded } = {}) => async (dispatch) => {
   if (!preventIsLoaded) dispatch({ type: 'SET_SCHEDULED_LESSONS_LOADED', payload: false });
-  const user = await db.doc('/users/Uyv2wLqViEmqMjoWvjz3/').get();
-  const schedules = await retrieveSchedulesByDay(user, date);
-  
+  const schedules = await retrieveSchedulesByDay(date);
+
   dispatch(setScheduledLessons(schedules));
 };
 

@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 
 import List from '@material-ui/core/List';
@@ -27,7 +28,12 @@ function MenuDrawer() {
             <Grid item xs={6} className="menu__avatar">
               <AccountCircleIcon />
             </Grid>
-            <Grid item xs={6} className="menu__settings">
+            <Grid
+              item
+              xs={6}
+              className="menu__settings menu__button"
+              component={NavLink}
+              to="/settings">
               <IconButton>
                 <SettingsIcon />
               </IconButton>

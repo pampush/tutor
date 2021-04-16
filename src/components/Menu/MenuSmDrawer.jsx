@@ -16,6 +16,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import SettingsIcon from '@material-ui/icons/Settings';
 
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 import MenuItem from './MenuItem';
 
@@ -66,7 +67,12 @@ function MenuDrawerMobile() {
               <Grid item xs={6} className="menu__avatar">
                 <AccountCircleIcon />
               </Grid>
-              <Grid item xs={6} className="menu__settings">
+              <Grid
+                item
+                xs={6}
+                className="menu__settings menu__button"
+                component={NavLink}
+                to="/settings">
                 <IconButton>
                   <SettingsIcon />
                 </IconButton>

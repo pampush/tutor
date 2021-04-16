@@ -1,11 +1,12 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
 import { useHistory } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { auth } from '../../../firebase';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -16,30 +17,57 @@ import initialValues from './initialValues';
 import validationSchema from './validationSchema';
 import SignupInputs from './SignupInputs';
 import { AuthContext } from '../../../contexts/AuthContext';
-import ErrorSnack from './ErrorSnack';
+import ErrorSnack from '../ErrorSnack';
+import Recaptcha from './Recaptcha';
+
+import { postUser } from '../../../redux/actions/users';
 //import signup from '../../../redux/actions/signup';
 
 function Signup() {
-  //const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const history = useHistory();
-  const { signup } = React.useContext(AuthContext);
+  const { currentUser, signup, verifyEmail, updateUser } = React.useContext(AuthContext);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState('');
   const [viewSnack, setViewSnack] = React.useState(false);
 
+  console.log(`signup auth`, currentUser);
   const handleSubmit = async (values, actions) => {
     actions.setSubmitting(false);
     setLoading(true);
     try {
-      await signup(values.email, values.password);
-      history.push('/tutor');
+      const name = values.firstName + ' ' + values.lastName;
+      const userCredential = await signup(values.email, values.password);
+      await updateUser(name);
+      await verifyEmail();
+
+      // FIXME: don't know how to handle async func with dynamic
+      // currentUser state so decided to use global auth variable
+      dispatch(postUser({ id: userCredential.user.uid, name, timestamp: Date.now() }));
+      history.push('/login');
     } catch (e) {
+      console.log(e);
+      switch (e.code) {
+        case 'auth/email-already-in-use': {
+          setError('Почта уже используется');
+          break;
+        }
+        default:
+          break;
+      }
       setViewSnack(true);
-      setLoading(false);
-      setError('Не удалось создать аккаунт');
     }
     //dispatch(signup(values.email, values.password));
   };
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [loading]);
 
   return (
     <Container component="main" maxWidth="sm" className="signup__main">
@@ -67,26 +95,21 @@ function Signup() {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}>
-        <Form>
-          <SignupInputs />
-
-          <Button
-            type="submit"
-            disabled={loading}
-            fullWidth
-            variant="contained"
-            color="secondary"
-            className="signup__submit">
-            Зарегистрироваться
-          </Button>
-          {/* <Grid container justify="flex-end">
-              <Grid item>
-                <Link href="#" variant="body2">
-                  Уже есть аккаунт? Войти
-                </Link>
-              </Grid>
-            </Grid> */}
-        </Form>
+        {({ setFieldValue, errors, touched }) => (
+          <Form>
+            <SignupInputs />
+            <Recaptcha />
+            <Button
+              type="submit"
+              disabled={loading}
+              fullWidth
+              variant="contained"
+              color="secondary"
+              className="signup__submit">
+              Зарегистрироваться
+            </Button>
+          </Form>
+        )}
       </Formik>
       <Box mt={5}>copyrigth</Box>
     </Container>

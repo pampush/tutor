@@ -12,10 +12,10 @@ function MenuItem({ children, name, open, to }) {
   return (
     <ListItem
       button
-      className={open ? '' : 'menu__button'}
+      className={open ? 'menu__button--drawer' : 'menu__button'}
       component={NavLink}
       to={to}
-      activeStyle={{}}>
+    >
       <ListItemIcon className="menu--center">{children}</ListItemIcon>
       <Hidden mdDown>
         <ListItemText primary={name} />
