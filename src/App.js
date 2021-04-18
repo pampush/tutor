@@ -1,6 +1,8 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { auth } from './firebase';
+import { AuthProvider } from './contexts/AuthContext';
 
 import theme from './stylesOverride';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -13,14 +15,15 @@ import { Menu, InfoPanel, Signup, Login, NotFound } from './components';
 import Schedule from './pages/Schedule';
 import Pupils from './pages/Pupils';
 import Finance from './pages/Finance';
-import Settings from './pages/Settings'
+import Settings from './pages/Settings';
 import PrivateRoute from './PrivateRoute';
-
+import PrivateSignedInRoute from './PrivateSignedInRoute';
 
 import { fetchLessons } from './redux/actions/lessons';
 import { fetchPupils } from './redux/actions/pupils';
 import { fetchSchedules } from './redux/actions/schedules';
 import { fetchScheduledLessons } from './redux/actions/scheduledLessons';
+import { fetchUser } from './redux/actions/user';
 
 function Content() {
   const dispatch = useDispatch();
@@ -30,10 +33,11 @@ function Content() {
     dispatch(fetchScheduledLessons(new Date()));
     dispatch(fetchPupils());
     dispatch(fetchSchedules());
+    dispatch(fetchUser(auth.currentUser.uid));
   }, []);
 
   return (
-    <div>
+    <React.Fragment>
       <Menu />
       <Box className="content">
         <Container maxWidth="xl">
@@ -60,29 +64,27 @@ function Content() {
           </Switch>
         </Container>
       </Box>
-    </div>
+    </React.Fragment>
   );
 }
 
 function App() {
   return (
-    <StylesProvider injectFirst>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Switch>
-          <Route path="/signup">
-            <Signup />
-          </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/404">
-            <NotFound />
-          </Route>
-          <PrivateRoute path="/:page" component={Content}></PrivateRoute>
-        </Switch>
-      </ThemeProvider>
-    </StylesProvider>
+    <AuthProvider>
+      <StylesProvider injectFirst>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Switch>
+            <Route path="/404">
+              <NotFound />
+            </Route>
+            <PrivateSignedInRoute path="/signup" component={Signup}></PrivateSignedInRoute>
+            <PrivateSignedInRoute path="/login" component={Login}></PrivateSignedInRoute>
+            <PrivateRoute path="/:page" component={Content}></PrivateRoute>
+          </Switch>
+        </ThemeProvider>
+      </StylesProvider>
+    </AuthProvider>
   );
 }
 

@@ -1,19 +1,21 @@
 import React from 'react';
-import { Calendar, Lessons } from '../components';
+import { Calendar, Lessons, Instruction } from '../components';
 import { useDispatch } from 'react-redux';
 
 import { fetchLessons } from '../redux/actions/lessons';
 import { fetchScheduledLessons } from '../redux/actions/scheduledLessons';
+import { AuthContext } from '../contexts/AuthContext';
 
 import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 
+
 function Schedule() {
   const dispatch = useDispatch();
   const [anchorCalendar, setAnchorEl] = React.useState(null);
-
+  const { firstLogin, setFirstLogin } = React.useContext(AuthContext);
   function handleCalendarOpen(e) {
     setAnchorEl(e.currentTarget);
   }
@@ -30,6 +32,7 @@ function Schedule() {
 
   return (
     <React.Fragment>
+      {firstLogin && <Instruction open={firstLogin} handleClose={setFirstLogin} />}
       <Container maxWidth="xl" className="lessons__container">
         <Grid container spacing={2}>
           <Hidden only={['xs', 'sm']}>

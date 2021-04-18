@@ -1,5 +1,6 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
+import { useDispatch } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 
 import Avatar from '@material-ui/core/Avatar';
@@ -15,11 +16,13 @@ import initialValues from './initialValues';
 import validationSchema from './validationSchema';
 import LoginInputs from './LoginInputs';
 import { AuthContext } from '../../../contexts/AuthContext';
+import { fetchUser } from '../../../redux/actions/user';
 import ErrorSnack from '../ErrorSnack';
 
 function Login() {
+  const dispatch = useDispatch();
   const history = useHistory();
-  const { login } = React.useContext(AuthContext);
+  const { login, setFirstLogin } = React.useContext(AuthContext);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState('');
   const [viewSnack, setViewSnack] = React.useState(false);
@@ -29,6 +32,8 @@ function Login() {
     setLoading(true);
     try {
       await login(values.email, values.password);
+
+      //dispatch(fetchUser(userCredential.user.uid));
       history.push('/tutor');
     } catch (e) {
       console.log(e);

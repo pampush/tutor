@@ -4,11 +4,11 @@ import lessons from './lessons';
 import pupils from './pupils';
 import schedules from './schedules';
 import scheduledLessons from './scheduledLessons';
-import date from './date'
-import users from './users'
+import date from './date';
+import user from './user';
 
 const rootReducer = combineReducers({
-  users,
+  user,
   lessons,
   pupils,
   schedules,

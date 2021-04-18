@@ -1,47 +1,26 @@
-import { NavLink } from 'react-router-dom';
+
 import classNames from 'classnames';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import FaceIcon from '@material-ui/icons/Face';
 import ShowChartIcon from '@material-ui/icons/ShowChart';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import SettingsIcon from '@material-ui/icons/Settings';
-import IconButton from '@material-ui/core/IconButton';
 
 import React from 'react';
 import MenuItem from './MenuItem';
+import MenuHeader from './MenuHeader'
 
 function MenuDrawer() {
   return (
     <Drawer variant="permanent" anchor="left">
       <List className={classNames('menu__list')}>
         <ListItem>
-          <Grid container className="menu__header">
-            <Grid item xs={6} className="menu__avatar">
-              <AccountCircleIcon />
-            </Grid>
-            <Grid
-              item
-              xs={6}
-              className="menu__settings menu__button"
-              component={NavLink}
-              to="/settings">
-              <IconButton>
-                <SettingsIcon />
-              </IconButton>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="h5">Евгений Робертович Поганин</Typography>
-            </Grid>
-          </Grid>
+          <MenuHeader />
         </ListItem>
 
         <Divider />

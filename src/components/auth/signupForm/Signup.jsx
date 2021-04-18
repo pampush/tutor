@@ -2,7 +2,6 @@ import React from 'react';
 import { Formik, Form } from 'formik';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { auth } from '../../../firebase';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -20,18 +19,17 @@ import { AuthContext } from '../../../contexts/AuthContext';
 import ErrorSnack from '../ErrorSnack';
 import Recaptcha from './Recaptcha';
 
-import { postUser } from '../../../redux/actions/users';
+import { postUser } from '../../../redux/actions/user';
 //import signup from '../../../redux/actions/signup';
 
 function Signup() {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { currentUser, signup, verifyEmail, updateUser } = React.useContext(AuthContext);
+  const { signup, verifyEmail, updateUser } = React.useContext(AuthContext);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState('');
   const [viewSnack, setViewSnack] = React.useState(false);
 
-  console.log(`signup auth`, currentUser);
   const handleSubmit = async (values, actions) => {
     actions.setSubmitting(false);
     setLoading(true);
@@ -39,11 +37,11 @@ function Signup() {
       const name = values.firstName + ' ' + values.lastName;
       const userCredential = await signup(values.email, values.password);
       await updateUser(name);
-      await verifyEmail();
+      await verifyEmail(userCredential.user);
 
       // FIXME: don't know how to handle async func with dynamic
       // currentUser state so decided to use global auth variable
-      dispatch(postUser({ id: userCredential.user.uid, name, timestamp: Date.now() }));
+      dispatch(postUser({ id: userCredential.user.uid, name, timestamp: Date.now(), email: userCredential.user.email }));
       history.push('/login');
     } catch (e) {
       console.log(e);

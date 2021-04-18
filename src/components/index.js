@@ -7,5 +7,17 @@ import PupilsList from './PupilsList';
 import Signup from './auth/signupForm/Signup';
 import Login from './auth/loginForm/Login';
 import NotFound from './NotFound';
+import Instruction from './Instruction';
 
-export { InfoPanel, Calendar, Lessons, LessonCard, Menu, PupilsList, Signup, Login, NotFound };
+export {
+  InfoPanel,
+  Calendar,
+  Lessons,
+  LessonCard,
+  Menu,
+  PupilsList,
+  Signup,
+  Login,
+  NotFound,
+  Instruction,
+};
