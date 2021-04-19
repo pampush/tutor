@@ -1,12 +1,16 @@
 @use '../vars'
 @use '../utils'
 
-.signup
+.auth
   &__main
-    height: 100vh
+    min-height: 100vh
     display: flex
     flex-direction: column
     justify-content: center
+  &__container
+    flex-direction: column
+    justify-content: center
+    flex-grow: 1
   &__header-container
     margin-bottom: 20px
   &__inputs

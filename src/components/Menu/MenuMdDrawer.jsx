@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -16,16 +15,16 @@ import MenuIcon from '@material-ui/icons/Menu';
 import MenuItem from './MenuItem';
 import MenuHeader from './MenuHeader';
 
-function MenuControls({ open }) {
+function MenuControls({ handleDrawer }) {
   return (
     <Box className="menu__nav-container">
-      <MenuItem open={open} name="Расписание" to="/schedule">
+      <MenuItem handleDrawer={() => handleDrawer(false)} name="Расписание" to="/schedule">
         <CalendarTodayIcon className="menu--svg" />
       </MenuItem>
-      <MenuItem open={open} name="Ученики" to="/pupils">
+      <MenuItem handleDrawer={() => handleDrawer(false)} name="Ученики" to="/pupils">
         <FaceIcon className="menu--svg" />
       </MenuItem>
-      <MenuItem open={open} name="Финансы" to="/finance">
+      <MenuItem handleDrawer={() => handleDrawer(false)} name="Финансы" to="/finance">
         <ShowChartIcon className="menu--svg" />
       </MenuItem>
     </Box>
@@ -38,28 +37,37 @@ function MenuMdDrawer() {
   const handleDrawer = () => setOpen((prev) => !prev);
 
   return (
-    <Drawer
-      variant={open ? 'temporary' : 'permanent'}
-      anchor="left"
-      open={open}
-      onClose={handleDrawer}>
-      <List className={classNames('menu__list', { 'menu__list--opened': open })}>
-        <ListItem button className={open ? '' : 'menu--center'} onClick={handleDrawer}>
-          <ListItemIcon className="menu--center">
-            <MenuIcon className="menu--svg" />
-          </ListItemIcon>
-        </ListItem>
+    <React.Fragment>
+      <Drawer variant="permanent" anchor="left">
+        <List className="menu__list">
+          <ListItem button className="menu--center" onClick={handleDrawer}>
+            <ListItemIcon className="menu--center">
+              <MenuIcon className="menu--svg" />
+            </ListItemIcon>
+          </ListItem>
 
-        {open && (
+          <Divider />
+          <MenuControls open={false} handleDrawer={() => {}} />
+        </List>
+      </Drawer>
+      <Drawer variant="temporary" anchor="left" open={open} onClose={handleDrawer}>
+        <List className="menu__list--opened">
+          <ListItem button onClick={handleDrawer}>
+            <ListItemIcon className="menu--center">
+              <MenuIcon className="menu--svg" />
+            </ListItemIcon>
+          </ListItem>
+
           <ListItem>
             <MenuHeader />
           </ListItem>
-        )}
 
-        <Divider />
-        <MenuControls open={open} />
-      </List>
-    </Drawer>
+          <Divider />
+          <MenuControls handleDrawer={setOpen} />
+        </List>
+      </Drawer>
+      )
+    </React.Fragment>
   );
 }
 

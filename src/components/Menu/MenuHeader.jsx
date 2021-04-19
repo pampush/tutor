@@ -12,10 +12,10 @@ function MenuHeader() {
   const name = useSelector(({ user }) => user.name);
   return (
     <Grid container className="menu__header">
-      <Grid item xs={6} className="menu__avatar">
+      <Grid item xs={8} className="menu__avatar">
         <AccountCircleIcon />
       </Grid>
-      <Grid item xs={6} className="menu__settings menu__button" component={NavLink} to="/settings">
+      <Grid item xs={4} className="menu__button menu__settings" component={NavLink} to="/settings">
         <IconButton>
           <SettingsIcon />
         </IconButton>

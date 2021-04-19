@@ -65,15 +65,13 @@ function PupilsList() {
         </Button>
       </Box>
 
-      {viewAddPupilForm && (
-        <AddPupilForm
-          open={viewAddPupilForm}
-          handleClose={handleCloseAddLessonForm}
-          handleSnack={handleSnack}
-        />
-      )}
+      <AddPupilForm
+        open={viewAddPupilForm}
+        handleClose={handleCloseAddLessonForm}
+        handleSnack={handleSnack}
+      />
 
-      <SnackPopup open={snackView} message="Ученик добавлен"/>
+      <SnackPopup open={snackView} message="Ученик добавлен" />
 
       <Grid container spacing={2} className="pupils__card-container">
         {isLoaded

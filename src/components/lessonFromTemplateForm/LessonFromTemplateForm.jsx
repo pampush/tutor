@@ -36,6 +36,7 @@ function LessonFromTemplateForm({ width, open, handleClose, pupilId, scheduleId,
       theme: values.theme,
       subject: schedule.subject,
       note: values.note,
+      timestamp: Date.now(),
     };
 
     actions.setSubmitting(false);
@@ -49,7 +50,9 @@ function LessonFromTemplateForm({ width, open, handleClose, pupilId, scheduleId,
       () => dispatch(setScheduledLessonsLoaded(false)),
       () => dispatch(postLesson(lesson, { preventIsLoaded: true })),
       () =>
-        dispatch(addLessonToSchedule({ date: lesson.date, id: scheduleId }, { preventIsLoaded: true })),
+        dispatch(
+          addLessonToSchedule({ date: lesson.date, id: scheduleId }, { preventIsLoaded: true }),
+        ),
       () => dispatch(fetchScheduledLessons(date, { preventIsLoaded: true })),
     );
   }

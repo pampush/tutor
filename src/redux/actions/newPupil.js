@@ -21,7 +21,7 @@ const formHandler = ({ ...data }) => async (dispatch) => {
     id: pupilId,
     name: data.name,
     address: data.address,
-    grade: data.grade,
+    grade: +data.grade,
     parents: data.parents,
     contacts: data.contacts,
     schedulesId: schedules.map((schedule) => schedule.id),

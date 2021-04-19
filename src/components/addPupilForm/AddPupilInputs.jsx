@@ -44,29 +44,32 @@ function AddPupilInputs() {
                     }}
                     fullWidth
                   />
-                  {/*FIXME: iconbutton hover transparency on mobile screen*/}
-                  <Tooltip title="Удалить номер">
-                    <IconButton
-                      size="small"
-                      aria-label="Удалить номер"
-                      className="pupil-form__btn"
-                      color="secondary"
-                      onClick={() => remove(index)}>
-                      <ClearIcon />
-                    </IconButton>
-                  </Tooltip>
+                  {values.contacts.length > 1 && (
+                    <Tooltip title="Удалить номер">
+                      <IconButton
+                        size="small"
+                        aria-label="Удалить номер"
+                        className="pupil-form__btn"
+                        color="secondary"
+                        onClick={() => remove(index)}>
+                        <ClearIcon />
+                      </IconButton>
+                    </Tooltip>
+                  )}
                 </React.Fragment>
               ))}
-            <Tooltip title="Добавить номер">
-              <IconButton
-                size="small"
-                color="secondary"
-                aria-label="Добавить номер"
-                className="pupil-form__btn pupil-form__btn-add-contact"
-                onClick={() => push('')}>
-                <AddIcon />
-              </IconButton>
-            </Tooltip>
+            {values.contacts.length < 5 && (
+              <Tooltip title="Добавить номер">
+                <IconButton
+                  size="small"
+                  color="secondary"
+                  aria-label="Добавить номер"
+                  className="pupil-form__btn pupil-form__btn-add-contact"
+                  onClick={() => push('')}>
+                  <AddIcon />
+                </IconButton>
+              </Tooltip>
+            )}
           </React.Fragment>
         )}
       </FieldArray>

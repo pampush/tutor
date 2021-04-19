@@ -2,6 +2,7 @@ import React from 'react';
 import firebase from 'firebase/app';
 import { useFormikContext } from 'formik';
 import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 
 function Recaptcha() {
   const { errors, setFieldTouched, setFieldValue, touched } = useFormikContext();
@@ -22,7 +23,7 @@ function Recaptcha() {
 
   return (
     <React.Fragment>
-      <div id="recaptcha"></div>
+      <Box id="recaptcha" mt={2} mb={2} />
       {errors.recaptcha && touched.recaptcha && (
         <Typography color="error">{errors.recaptcha}</Typography>
       )}

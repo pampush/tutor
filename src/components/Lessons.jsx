@@ -106,13 +106,11 @@ function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalend
         </Hidden>
       </Box>
 
-      {viewAddLessonForm && (
-        <AddLessonForm
-          open={viewAddLessonForm}
-          handleClose={handleCloseAddLessonForm}
-          handleSnack={setSnackView}
-        />
-      )}
+      <AddLessonForm
+        open={viewAddLessonForm}
+        handleClose={handleCloseAddLessonForm}
+        handleSnack={setSnackView}
+      />
 
       <SnackPopup open={snackView} message="Урок добавлен" />
       <SnackPopup open={snackThemeView} message="Тема изменена" />

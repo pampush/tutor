@@ -29,6 +29,8 @@ function AddLessonForm({ width, open, handleClose, handleSnack }) {
       pupil: values.pupil,
       schedule: null,
       subject: values.subject,
+      note: values.note,
+      timestamp: Date.now(),
     };
     handleSnack(true);
     actions.setSubmitting(false);

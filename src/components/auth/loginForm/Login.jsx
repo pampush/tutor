@@ -1,6 +1,5 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
-import { useDispatch } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 
 import Avatar from '@material-ui/core/Avatar';
@@ -16,13 +15,12 @@ import initialValues from './initialValues';
 import validationSchema from './validationSchema';
 import LoginInputs from './LoginInputs';
 import { AuthContext } from '../../../contexts/AuthContext';
-import { fetchUser } from '../../../redux/actions/user';
 import ErrorSnack from '../ErrorSnack';
+import Footer from '../Footer';
 
 function Login() {
-  const dispatch = useDispatch();
   const history = useHistory();
-  const { login, setFirstLogin } = React.useContext(AuthContext);
+  const { login } = React.useContext(AuthContext);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState('');
   const [viewSnack, setViewSnack] = React.useState(false);
@@ -32,18 +30,15 @@ function Login() {
     setLoading(true);
     try {
       await login(values.email, values.password);
-
-      //dispatch(fetchUser(userCredential.user.uid));
       history.push('/tutor');
     } catch (e) {
-      console.log(e);
       switch (e.code) {
         case 'auth/user-not-found': {
-          setError('Неправильная почта');
+          setError('Пользователя с таким email не существует');
           break;
         }
         case 'auth/wrong-password': {
-          setError('Неправильный пароль');
+          setError('Неверный пароль');
           break;
         }
         case 'auth/too-many-requests': {
@@ -67,48 +62,54 @@ function Login() {
   }, [loading]);
 
   return (
-    <Container component="main" maxWidth="sm" className="signup__main">
+    <Container component="main" maxWidth="sm" className="auth__main">
       {error && <ErrorSnack open={viewSnack} message={error} onClose={setViewSnack} />}
       <CssBaseline />
-      <Grid
-        container
-        direction="column"
-        alignItems="center"
-        spacing={1}
-        className="signup__header-container">
-        <Grid item>
-          <Avatar className="signup__avatar">
-            <LockOutlinedIcon />
-          </Avatar>
+
+      <Grid container className="auth__container">
+        <Grid
+          container
+          direction="column"
+          alignItems="center"
+          spacing={1}
+          className="auth__header-container">
+          <Grid item>
+            <Avatar className="auth__avatar">
+              <LockOutlinedIcon />
+            </Avatar>
+          </Grid>
+          <Grid item>
+            <Typography component="h1" variant="h5" className="auth__header-title">
+              Вход в личный кабинет
+            </Typography>
+          </Grid>
         </Grid>
-        <Grid item>
-          <Typography component="h1" variant="h5" className="signup__header-title">
-            Вход в личный кабинет
-          </Typography>
-        </Grid>
+
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}>
+          {({ values }) => (
+            <Form>
+              <LoginInputs />
+
+              <Button
+                type="submit"
+                disabled={loading}
+                fullWidth
+                variant="contained"
+                color="secondary"
+                className="auth__submit">
+                Вход
+              </Button>
+            </Form>
+          )}
+        </Formik>
+        <Box mt={5}>
+          У вас нет учетной записи? <Link to="/signup">Зарегистрироваться</Link>
+        </Box>
       </Grid>
-
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}>
-        <Form>
-          <LoginInputs />
-
-          <Button
-            type="submit"
-            disabled={loading}
-            fullWidth
-            variant="contained"
-            color="secondary"
-            className="signup__submit">
-            Вход
-          </Button>
-        </Form>
-      </Formik>
-      <Box mt={5}>
-        У вас нет учетной записи? <Link to="/signup">Зарегистрироваться</Link>
-      </Box>
+      <Footer />
     </Container>
   );
 }

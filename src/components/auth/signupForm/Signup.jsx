@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import Avatar from '@material-ui/core/Avatar';
@@ -11,6 +12,7 @@ import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+import Link from '@material-ui/core/Link';
 
 import initialValues from './initialValues';
 import validationSchema from './validationSchema';
@@ -20,6 +22,7 @@ import ErrorSnack from '../ErrorSnack';
 import Recaptcha from './Recaptcha';
 
 import { postUser } from '../../../redux/actions/user';
+import Footer from '../Footer';
 //import signup from '../../../redux/actions/signup';
 
 function Signup() {
@@ -39,12 +42,16 @@ function Signup() {
       await updateUser(name);
       await verifyEmail(userCredential.user);
 
-      // FIXME: don't know how to handle async func with dynamic
-      // currentUser state so decided to use global auth variable
-      dispatch(postUser({ id: userCredential.user.uid, name, timestamp: Date.now(), email: userCredential.user.email }));
+      dispatch(
+        postUser({
+          id: userCredential.user.uid,
+          name,
+          timestamp: Date.now(),
+          email: userCredential.user.email,
+        }),
+      );
       history.push('/login');
     } catch (e) {
-      console.log(e);
       switch (e.code) {
         case 'auth/email-already-in-use': {
           setError('Почта уже используется');
@@ -68,48 +75,53 @@ function Signup() {
   }, [loading]);
 
   return (
-    <Container component="main" maxWidth="sm" className="signup__main">
+    <Container component="main" maxWidth="sm" className="auth__main">
       {error && <ErrorSnack open={viewSnack} message={error} onClose={setViewSnack} />}
       <CssBaseline />
-      <Grid
-        container
-        direction="column"
-        alignItems="center"
-        spacing={1}
-        className="signup__header-container">
-        <Grid item>
-          <Avatar className="signup__avatar">
-            <LockOutlinedIcon />
-          </Avatar>
+      <Grid container className="auth__container">
+        <Grid
+          container
+          direction="column"
+          alignItems="center"
+          spacing={1}
+          className="auth__header-container">
+          <Grid item>
+            <Avatar className="auth__avatar">
+              <LockOutlinedIcon />
+            </Avatar>
+          </Grid>
+          <Grid item>
+            <Typography component="h1" variant="h5" className="auth__header-title">
+              Регистрация
+            </Typography>
+          </Grid>
         </Grid>
-        <Grid item>
-          <Typography component="h1" variant="h5" className="signup__header-title">
-            Регистрация
-          </Typography>
-        </Grid>
-      </Grid>
 
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}>
-        {({ setFieldValue, errors, touched }) => (
-          <Form>
-            <SignupInputs />
-            <Recaptcha />
-            <Button
-              type="submit"
-              disabled={loading}
-              fullWidth
-              variant="contained"
-              color="secondary"
-              className="signup__submit">
-              Зарегистрироваться
-            </Button>
-          </Form>
-        )}
-      </Formik>
-      <Box mt={5}>copyrigth</Box>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}>
+          {({ setFieldValue, errors, touched }) => (
+            <Form>
+              <SignupInputs />
+              <Recaptcha />
+              <Button
+                type="submit"
+                disabled={loading}
+                fullWidth
+                variant="contained"
+                color="secondary"
+                className="auth__submit">
+                Зарегистрироваться
+              </Button>
+            </Form>
+          )}
+        </Formik>
+        <Box mt={5}>
+          <RouterLink to="/login">Войти в аккаунт</RouterLink>
+        </Box>
+      </Grid>
+      <Footer />
     </Container>
   );
 }

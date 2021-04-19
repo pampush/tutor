@@ -12,6 +12,8 @@ import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 
+const days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+
 function PupilCard({ name, schedulesId, grade, parents, address, contacts, schedules }) {
   return (
     <Card className="pupils__card">
@@ -32,7 +34,7 @@ function PupilCard({ name, schedulesId, grade, parents, address, contacts, sched
       />
       <CardContent className="pupils__card-content">
         <Typography component="p">
-          {schedulesId.map((id) => `${schedules[id].day}-${schedules[id].time} `)}
+          {schedulesId.map((id) => `${days[schedules[id].day - 1]}-${schedules[id].time} `)}
         </Typography>
         <Typography component="p">{`Родители: ${parents}`}</Typography>
         <Typography component="p">{`Контакты: ${contacts.join(',')}`}</Typography>

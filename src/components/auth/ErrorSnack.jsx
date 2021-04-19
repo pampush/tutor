@@ -19,7 +19,7 @@ function ErrorSnack({ open, message, onClose }) {
       anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
       autoHideDuration={2000}
       onClose={() => onClose(false)}
-      className="signup__snackbar"
+      className="auth__snackbar"
     />
   );
 }

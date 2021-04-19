@@ -1,3 +1,7 @@
+/**
+ * push from login/signup if signed in
+ */
+
 import React from 'react';
 import { Route, Redirect } from 'react-router';
 

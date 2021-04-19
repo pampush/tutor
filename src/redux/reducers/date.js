@@ -1,5 +1,5 @@
 const initialState = {
-  selected: new Date(),
+  selected: '',
 };
 
 const date = (state = initialState, action) => {

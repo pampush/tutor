@@ -2,7 +2,6 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { auth } from './firebase';
-import { AuthProvider } from './contexts/AuthContext';
 
 import theme from './stylesOverride';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -24,11 +23,13 @@ import { fetchPupils } from './redux/actions/pupils';
 import { fetchSchedules } from './redux/actions/schedules';
 import { fetchScheduledLessons } from './redux/actions/scheduledLessons';
 import { fetchUser } from './redux/actions/user';
+import { setDate } from './redux/actions/date';
 
 function Content() {
   const dispatch = useDispatch();
 
   React.useEffect(() => {
+    dispatch(setDate(new Date()));
     dispatch(fetchLessons(new Date()));
     dispatch(fetchScheduledLessons(new Date()));
     dispatch(fetchPupils());
@@ -70,21 +71,19 @@ function Content() {
 
 function App() {
   return (
-    <AuthProvider>
-      <StylesProvider injectFirst>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Switch>
-            <Route path="/404">
-              <NotFound />
-            </Route>
-            <PrivateSignedInRoute path="/signup" component={Signup}></PrivateSignedInRoute>
-            <PrivateSignedInRoute path="/login" component={Login}></PrivateSignedInRoute>
-            <PrivateRoute path="/:page" component={Content}></PrivateRoute>
-          </Switch>
-        </ThemeProvider>
-      </StylesProvider>
-    </AuthProvider>
+    <StylesProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Switch>
+          <Route path="/404">
+            <NotFound />
+          </Route>
+          <PrivateSignedInRoute path="/signup" component={Signup}></PrivateSignedInRoute>
+          <PrivateSignedInRoute path="/login" component={Login}></PrivateSignedInRoute>
+          <PrivateRoute path="/:page" component={Content}></PrivateRoute>
+        </Switch>
+      </ThemeProvider>
+    </StylesProvider>
   );
 }
 

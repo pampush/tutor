@@ -38,7 +38,8 @@ function Instruction({ open, handleClose }) {
       }}
       maxWidth="md">
       <Box p={5} pt={5}>
-        <Box mb={5}>
+        <Typography variant="h4">Знакомство с приложением</Typography>
+        <Box mb={5} mt={2}>
           <Button
             variant="contained"
             color="secondary"

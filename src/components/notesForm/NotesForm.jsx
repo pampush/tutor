@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import Button from '@material-ui/core/Button';
@@ -8,14 +8,22 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Box from '@material-ui/core/Box';
+import { makeStyles } from '@material-ui/styles';
 
 import NotesFormInputs from './NotesFormInputs';
 import initialValues from './initialValues';
 import validationSchema from './validationSchema';
 import { changeLesson } from '../../redux/actions/lessons';
 
+const useStyles = makeStyles({
+  paper: {
+    width: '400px',
+  },
+});
+
 function NotesForm({ open, width, handleClose, handleSnack, id, note }) {
   const dispatch = useDispatch();
+  const classes = useStyles();
   function handleSubmit(values, actions) {
     handleSnack(true);
     actions.setSubmitting(false);
@@ -28,7 +36,8 @@ function NotesForm({ open, width, handleClose, handleSnack, id, note }) {
       onClose={handleClose}
       aria-labelledby="form-dialog-title"
       className="pupil-form__dialog"
-      maxWidth="sm"
+      classes={{ paper: classes.paper }}
+      maxWidth="md"
       fullScreen={isWidthDown('sm', width) ? true : false}>
       <DialogTitle>Заметки об уроке</DialogTitle>
       <DialogContent className="lesson-form__dialog-content">

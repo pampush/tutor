@@ -12,7 +12,6 @@ import FaceIcon from '@material-ui/icons/Face';
 import ShowChartIcon from '@material-ui/icons/ShowChart';
 
 import React from 'react';
-import classNames from 'classnames';
 import MenuItem from './MenuItem';
 import MenuHeader from './MenuHeader';
 
@@ -57,18 +56,18 @@ function MenuDrawerMobile() {
             </IconButton>
           </Toolbar>
         </AppBar>
-        <List className={classNames('menu__list', { 'menu__list--opened': open })}>
+        <List className={'menu__list--opened'}>
           <ListItem>
             <MenuHeader />
           </ListItem>
 
-          <MenuItem open={open} name="Расписание" to="/schedule">
+          <MenuItem name="Расписание" to="/schedule" handleDrawer={() => setOpen(false)}>
             <CalendarTodayIcon className="menu--svg" />
           </MenuItem>
-          <MenuItem open={open} name="Ученики" to="/pupils">
+          <MenuItem name="Ученики" to="/pupils" handleDrawer={() => setOpen(false)}>
             <FaceIcon className="menu--svg" />
           </MenuItem>
-          <MenuItem open={open} name="Финансы" to="/finance">
+          <MenuItem name="Финансы" to="/finance" handleDrawer={() => setOpen(false)}>
             <ShowChartIcon className="menu--svg" />
           </MenuItem>
         </List>

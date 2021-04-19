@@ -7,7 +7,7 @@ import scheduledLessons from './scheduledLessons';
 import date from './date';
 import user from './user';
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
   user,
   lessons,
   pupils,
@@ -15,5 +15,10 @@ const rootReducer = combineReducers({
   scheduledLessons,
   date,
 });
+
+const rootReducer = (state, action) => {
+  if (action.type === 'USER_SIGNOUT') state = undefined;
+  return appReducer(state, action);
+};
 
 export default rootReducer;

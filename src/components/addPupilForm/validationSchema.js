@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-const MAX_LESSON_PAY = 1000000000;
+const MAX_LESSON_PAY = 999999;
 
 const validationSchema = [
   yup.object().shape({
@@ -21,7 +21,7 @@ const validationSchema = [
       .typeError('Адрес должен быть строкой'),
     parents: yup
       .string('Укажите информацию о родителе')
-      .max(200, 'Cтрока должна быть короче')
+      .max(100, 'Cтрока должна быть короче')
       .typeError('Информация о родителе должна быть строкой'),
     contacts: yup.array().of(
       yup
@@ -49,11 +49,12 @@ const validationSchema = [
           .number('Укажите стоимость занятия')
           .typeError('Лучше ввести число')
           .positive('Cтоимость должна быть положительной')
+          .min(0, 'Минимальная стоимость занятия - 0')
           .max(MAX_LESSON_PAY, 'Возможно вы ошиблись и занятие стоит не так дорого')
           .required('Укажите стоимость занятия'),
         subject: yup
           .string()
-          .max(100, 'Слишком длинная строка, попробуйте сократить')
+          .max(200, 'Слишком длинная строка, попробуйте сократить')
           .typeError('Предмет должен быть строкой')
           .required('Укажите ваш предмет'),
       }),

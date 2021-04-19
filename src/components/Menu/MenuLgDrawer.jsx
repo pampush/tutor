@@ -1,6 +1,3 @@
-
-import classNames from 'classnames';
-
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Drawer from '@material-ui/core/Drawer';
@@ -13,12 +10,12 @@ import ShowChartIcon from '@material-ui/icons/ShowChart';
 
 import React from 'react';
 import MenuItem from './MenuItem';
-import MenuHeader from './MenuHeader'
+import MenuHeader from './MenuHeader';
 
 function MenuDrawer() {
   return (
     <Drawer variant="permanent" anchor="left">
-      <List className={classNames('menu__list')}>
+      <List className={'menu__list'}>
         <ListItem>
           <MenuHeader />
         </ListItem>

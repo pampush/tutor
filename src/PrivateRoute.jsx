@@ -1,3 +1,7 @@
+/**
+ * push from content pages if not signed in
+ */
+
 import React from 'react';
 import { Route, Redirect } from 'react-router';
 

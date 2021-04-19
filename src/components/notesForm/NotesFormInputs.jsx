@@ -5,7 +5,14 @@ import { MyTextField } from '../CustomInputs';
 function NotesFormInputs() {
   return (
     <React.Fragment>
-      <MyTextField margin="normal" name="note" label="Заметки" autoComplete="off" fullWidth />
+      <MyTextField
+        margin="normal"
+        name="note"
+        label="Заметки"
+        autoComplete="off"
+        multiline
+        fullWidth
+      />
     </React.Fragment>
   );
 }

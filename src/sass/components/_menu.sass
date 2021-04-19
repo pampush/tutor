@@ -2,8 +2,6 @@
 @use '../vars'
 
 .menu__list
-  overflow: hidden
-  transition: all .1s linear
   max-width: 300px
   @include mixins.md 
     max-width: 50px
@@ -23,13 +21,14 @@
       color: vars.$bgItem
       @include mixins.svgSize(80, 80)
   &__settings
-    display: flex
-    align-items: flex-start
-    justify-content: flex-end
+    position: absolute
+    top: 0
+    right: 0
+    &:hover
+      background-color: none
     & svg
       @include mixins.svgSize(40, 40)
   &__button
-    justify-content: center
     &.active
       color: vars.$bgPrimary
       & svg
@@ -39,6 +38,8 @@
         color: vars.$bgPrimary
         & svg
           color: vars.$bgPrimary
+    &--center
+      justify-content: center
     & svg
       color: vars.$bgItem
     &-text
@@ -48,6 +49,7 @@
   &__mobile
     margin-top: 100px
   &__header
+    position: relative
     margin-bottom: 20px
   &__nav-container
     margin-top: 20px

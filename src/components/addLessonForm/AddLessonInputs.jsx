@@ -72,6 +72,17 @@ export default function AddLessonInputs() {
             fullWidth
           />
         </Grid>
+        <Grid item xs={12}>
+          <MyTextField
+            margin="none"
+            multiline={true}
+            rowsMax={10}
+            name="note"
+            label="Заметки"
+            autoComplete="off"
+            fullWidth
+          />
+        </Grid>
       </Grid>
     </React.Fragment>
   );
