@@ -23,7 +23,10 @@ function AuthProvider({ children }) {
   // somehow this func runs befare currentUser state updating (race condition)
   const verifyEmail = (user) =>
     user.sendEmailVerification({
-      url: 'https://localhost:3000/schedule/',
+      url:
+        !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
+          ? 'https://localhost:3000/schedule/'
+          : 'https://pampush.github.io/tutor/',
       handleCodeInApp: true,
     });
 
