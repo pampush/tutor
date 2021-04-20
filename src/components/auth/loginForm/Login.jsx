@@ -82,7 +82,6 @@ function Login() {
             <Typography component="h1" variant="h5" className="auth__header-title">
               Вход в личный кабинет
             </Typography>
-            {!process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? 'dev' : 'prod'}
           </Grid>
         </Grid>
 

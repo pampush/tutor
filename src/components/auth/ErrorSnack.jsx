@@ -17,7 +17,7 @@ function ErrorSnack({ open, message, onClose }) {
       }
       TransitionComponent={Grow}
       anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
-      autoHideDuration={2000}
+      autoHideDuration={3000}
       onClose={() => onClose(false)}
       className="auth__snackbar"
     />

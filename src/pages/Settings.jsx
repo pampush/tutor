@@ -31,7 +31,7 @@ function Settings() {
             <ImageIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="Редактировать профиль" />
+        <ListItemText primary="Редактировать профиль(disabled)" />
       </ListItem>
       <ListItem button>
         <ListItemAvatar>
@@ -39,7 +39,7 @@ function Settings() {
             <LockIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="Изменить пароль" />
+        <ListItemText primary="Изменить пароль(disabled)" />
       </ListItem>
       <ListItem button>
         <ListItemAvatar>
@@ -47,7 +47,7 @@ function Settings() {
             <EmailIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="Изменить email" />
+        <ListItemText primary="Изменить email(disabled)" />
       </ListItem>
       <ListItem button onClick={handleSignout}>
         <ListItemAvatar>

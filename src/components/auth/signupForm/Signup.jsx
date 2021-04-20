@@ -19,11 +19,9 @@ import SignupInputs from './SignupInputs';
 import { AuthContext } from '../../../contexts/AuthContext';
 import ErrorSnack from '../ErrorSnack';
 import Recaptcha from './Recaptcha';
-
+import EmailSnack from '../EmailSnack';
 import { postUser } from '../../../redux/actions/user';
 import Footer from '../Footer';
-import SnackPopup from '../../SnackPopup';
-//import signup from '../../../redux/actions/signup';
 
 function Signup() {
   const dispatch = useDispatch();
@@ -43,6 +41,7 @@ function Signup() {
       await updateUser(name);
       await verifyEmail(userCredential.user);
 
+      setViewEmailVerifySnack(true);
       dispatch(
         postUser({
           id: userCredential.user.uid,
@@ -52,7 +51,7 @@ function Signup() {
         }),
       );
 
-      history.push('/login');
+      setTimeout(() => history.push('/login'), 3000);
     } catch (e) {
       switch (e.code) {
         case 'auth/email-already-in-use': {
@@ -77,54 +76,63 @@ function Signup() {
   }, [loading]);
 
   return (
-    <Container component="main" maxWidth="sm" className="auth__main">
-      {error && <ErrorSnack open={viewSnack} message={error} onClose={setViewSnack} />}
-      <CssBaseline />
-      <Grid container className="auth__container">
-        <Grid
-          container
-          direction="column"
-          alignItems="center"
-          spacing={1}
-          className="auth__header-container">
-          <Grid item>
-            <Avatar className="auth__avatar">
-              <LockOutlinedIcon />
-            </Avatar>
+    <React.Fragment>
+      <EmailSnack
+        open={viewEmailVerifySnack}
+        message={
+          'Спасибо! Мы отправили вам письмо на указанный email с ссылкой для подтверждения регистрации.'
+        }
+        onClose={() => setViewEmailVerifySnack(false)}
+      />
+      <Container component="main" maxWidth="sm" className="auth__main">
+        {error && <ErrorSnack open={viewSnack} message={error} onClose={setViewSnack} />}
+        <CssBaseline />
+        <Grid container className="auth__container">
+          <Grid
+            container
+            direction="column"
+            alignItems="center"
+            spacing={1}
+            className="auth__header-container">
+            <Grid item>
+              <Avatar className="auth__avatar">
+                <LockOutlinedIcon />
+              </Avatar>
+            </Grid>
+            <Grid item>
+              <Typography component="h1" variant="h5" className="auth__header-title">
+                Регистрация
+              </Typography>
+            </Grid>
           </Grid>
-          <Grid item>
-            <Typography component="h1" variant="h5" className="auth__header-title">
-              Регистрация
-            </Typography>
-          </Grid>
-        </Grid>
 
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={handleSubmit}>
-          {({ setFieldValue, errors, touched }) => (
-            <Form>
-              <SignupInputs />
-              <Recaptcha />
-              <Button
-                type="submit"
-                disabled={loading}
-                fullWidth
-                variant="contained"
-                color="secondary"
-                className="auth__submit">
-                Зарегистрироваться
-              </Button>
-            </Form>
-          )}
-        </Formik>
-        <Box mt={5}>
-          <RouterLink to="/login">Войти в аккаунт</RouterLink>
-        </Box>
-      </Grid>
-      <Footer />
-    </Container>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}>
+            {({ setFieldValue, errors, touched }) => (
+              <Form>
+                <SignupInputs />
+                <Recaptcha />
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  fullWidth
+                  variant="contained"
+                  color="secondary"
+                  className="auth__submit">
+                  Зарегистрироваться
+                </Button>
+              </Form>
+            )}
+          </Formik>
+          <Box mt={5}>
+            <RouterLink to="/login">Войти в аккаунт</RouterLink>
+          </Box>
+        </Grid>
+        <Footer />
+      </Container>
+    </React.Fragment>
   );
 }
 

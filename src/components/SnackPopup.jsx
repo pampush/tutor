@@ -13,8 +13,7 @@ function SnackPopup({ open, message, onClose }) {
       open={open}
       message={message}
       TransitionComponent={Grow}
-      autoHideDuration={2000}
-      //onClose={() => onClose(false)}
+      autoHideDuration={3000}
       onClose={onClose}
       action={
         <React.Fragment>
