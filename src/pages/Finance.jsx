@@ -86,12 +86,17 @@ function Finance() {
         type="month"
         autoComplete="off"
       />
-      <div className="finance__container">
-        <span className="finance__center">
-          {prices && Object.values(prices).reduce((accum, next) => accum.sum + next.sum)}
-        </span>
-        <canvas ref={canvas}></canvas>
-      </div>
+      {prices && Object.keys(prices).length ? (
+        <div className="finance__container">
+          <span className="finance__center">
+            {Object.values(prices).reduce(({ sum: accum }, { sum: next }) => accum + next) ||
+              'Уроков не найдено'}
+          </span>
+          <canvas ref={canvas}></canvas>
+        </div>
+      ) : (
+        'Уроков не найдено'
+      )}
     </Container>
   );
 }

@@ -24,6 +24,11 @@ export const postPupil = ({ id, ...data }) => async (dispatch) => {
   dispatch(addPupil({ id, ...data }));
 };
 
+export const deletePupilAction = (id ) => async (dispatch) => {
+  await db.doc(`/users/${auth.currentUser.uid}/pupils/${id}/`).delete()
+  dispatch(deletePupil(id))
+};
+
 export const setPupils = (items) => ({
   type: 'SET_PUPILS',
   payload: items,
@@ -32,4 +37,9 @@ export const setPupils = (items) => ({
 export const addPupil = (data) => ({
   type: 'ADD_PUPIL',
   payload: data,
+});
+
+export const deletePupil = (id) => ({
+  type: 'DELETE_PUPIL',
+  payload: id,
 });

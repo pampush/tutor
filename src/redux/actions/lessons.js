@@ -51,7 +51,22 @@ export const deleteLesson = (id) => async (dispatch) => {
   dispatch({ type: 'SET_LESSONS_LOADED', payload: false });
   await db.doc(`/users/${auth.currentUser.uid}/lessons/${id}`).delete();
 
-  await dispatch(deleteLessonAction(id));
+  dispatch(deleteLessonAction(id));
+};
+
+export const deleteLessonsByPupil = (id) => async (dispatch) => {
+  const lessonsPromises = [];
+  const lessonsSnapshot = await db
+    .collection(`/users/${auth.currentUser.uid}/lessons/`)
+    .where('pupil', '==', id);
+
+  lessonsSnapshot.forEach((lessonsSnap) =>
+    lessonsPromises.push(
+      db.doc(`/users/${auth.currentUser.uid}/lessons/${lessonsSnap.data().id}`).delete(),
+    ),
+  );
+
+  await Promise.all(lessonsPromises);
 };
 
 export const changeLesson = ({ id, field, value }) => async (dispatch) => {

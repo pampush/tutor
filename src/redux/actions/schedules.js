@@ -46,6 +46,21 @@ export const deleteLessonFromSchedule = ({ date, id }) => async (dispatch) => {
   dispatch(updateLessonsField({ procedure: 'pop', date, id }));
 };
 
+export const deleteSchedulesByPupil = (id) => async (dispatch) => {
+  const schedulesPromises = [];
+  const schedulesSnapshot = await db
+    .collection(`/users/${auth.currentUser.uid}/schedules/`)
+    .where('pupil', '==', id);
+
+  schedulesSnapshot.forEach((schedulesSnap) =>
+    schedulesPromises.push(
+      db.doc(`/users/${auth.currentUser.uid}/schedules/${schedulesSnap.data().id}`).delete(),
+    ),
+  );
+
+  await Promise.all(schedulesPromises);
+}
+
 export const setSchedules = (items) => ({
   type: 'SET_SCHEDULES',
   payload: items,
@@ -60,3 +75,4 @@ export const updateLessonsField = (data) => ({
   type: 'UPDATE_LESSONS_FIELD',
   payload: data,
 });
+
