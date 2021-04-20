@@ -1,5 +1,6 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/styles';
+import { fetchPrices } from '../redux/actions/finance';
+import { Container, TextField } from '@material-ui/core';
 
 import {
   Chart,
@@ -11,15 +12,8 @@ import {
   ArcElement,
   Tooltip,
   Legend,
+  DoughnutController,
 } from 'chart.js';
-
-const useStyles = makeStyles({
-  container: {
-    margin: '0 auto',
-    maxHeight: '500px',
-    maxWidth: '500px',
-  },
-});
 
 Chart.register(
   LinearScale,
@@ -30,39 +24,75 @@ Chart.register(
   PieController,
   ArcElement,
   Legend,
+  DoughnutController,
 );
+
+function colorGen() {
+  const r = Math.floor(Math.random() * 256);
+  const g = Math.floor(Math.random() * 256);
+  const b = Math.floor(Math.random() * 256);
+  return `rgb(${r}, ${g}, ${b})`;
+}
 
 function Finance() {
   const canvas = React.useRef(null);
-  const classes = useStyles();
+
+  const [date, setDate] = React.useState(
+    `${new Date().getFullYear()}-${('0' + (new Date().getMonth() + 1)).slice(-2)}`,
+  );
+
+  const [prices, setPrices] = React.useState(null);
 
   React.useEffect(() => {
+    fetchPrices(date).then((prices) => setPrices(prices));
+  }, [date]);
+
+  React.useEffect(() => {
+    if (!prices) return;
+    console.log(prices);
     const myChart = new Chart(canvas.current, {
-      type: 'pie',
+      type: 'doughnut',
       data: {
-        labels: ['Red', 'Blue', 'Yellow'],
+        labels: Object.values(prices).map(({ name }) => name),
         datasets: [
           {
             label: 'first',
-            data: [12, 19, 3],
-            backgroundColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-            ],
+            data: Object.values(prices).map(({ sum }) => sum),
+            backgroundColor: Object.keys(prices).map(() => colorGen()),
 
             hoverOffset: 4,
           },
         ],
       },
+      options: {
+        plugins: {
+          legend: {
+            position: 'bottom',
+          },
+        },
+      },
     });
     return () => myChart.destroy();
-  }, []);
+  }, [prices]);
 
   return (
-    <div className={classes.container}>
-      <canvas ref={canvas}></canvas>
-    </div>
+    <Container>
+      <TextField
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+        margin="normal"
+        name="month"
+        label="Месяц"
+        type="month"
+        autoComplete="off"
+      />
+      <div className="finance__container">
+        <span className="finance__center">
+          {prices && Object.values(prices).reduce((accum, next) => accum.sum + next.sum)}
+        </span>
+        <canvas ref={canvas}></canvas>
+      </div>
+    </Container>
   );
 }
 
