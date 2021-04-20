@@ -42,7 +42,6 @@ function Signup() {
       const userCredential = await signup(values.email, values.password);
       await updateUser(name);
       await verifyEmail(userCredential.user);
-      setViewEmailVerifySnack(true);
 
       dispatch(
         postUser({
@@ -78,61 +77,54 @@ function Signup() {
   }, [loading]);
 
   return (
-    <React.Fragment>
-      <SnackPopup
-        open={viewEmailVerifySnack}
-        message="Спасибо! Мы отправили вам письмо на указанный email с ссылкой для подтверждения регистрации."
-        onClose={() => setViewEmailVerifySnack(false)}
-      />
-      <Container component="main" maxWidth="sm" className="auth__main">
-        {error && <ErrorSnack open={viewSnack} message={error} onClose={setViewSnack} />}
-        <CssBaseline />
-        <Grid container className="auth__container">
-          <Grid
-            container
-            direction="column"
-            alignItems="center"
-            spacing={1}
-            className="auth__header-container">
-            <Grid item>
-              <Avatar className="auth__avatar">
-                <LockOutlinedIcon />
-              </Avatar>
-            </Grid>
-            <Grid item>
-              <Typography component="h1" variant="h5" className="auth__header-title">
-                Регистрация
-              </Typography>
-            </Grid>
+    <Container component="main" maxWidth="sm" className="auth__main">
+      {error && <ErrorSnack open={viewSnack} message={error} onClose={setViewSnack} />}
+      <CssBaseline />
+      <Grid container className="auth__container">
+        <Grid
+          container
+          direction="column"
+          alignItems="center"
+          spacing={1}
+          className="auth__header-container">
+          <Grid item>
+            <Avatar className="auth__avatar">
+              <LockOutlinedIcon />
+            </Avatar>
           </Grid>
-
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}>
-            {({ setFieldValue, errors, touched }) => (
-              <Form>
-                <SignupInputs />
-                <Recaptcha />
-                <Button
-                  type="submit"
-                  disabled={loading}
-                  fullWidth
-                  variant="contained"
-                  color="secondary"
-                  className="auth__submit">
-                  Зарегистрироваться
-                </Button>
-              </Form>
-            )}
-          </Formik>
-          <Box mt={5}>
-            <RouterLink to="/login">Войти в аккаунт</RouterLink>
-          </Box>
+          <Grid item>
+            <Typography component="h1" variant="h5" className="auth__header-title">
+              Регистрация
+            </Typography>
+          </Grid>
         </Grid>
-        <Footer />
-      </Container>
-    </React.Fragment>
+
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}>
+          {({ setFieldValue, errors, touched }) => (
+            <Form>
+              <SignupInputs />
+              <Recaptcha />
+              <Button
+                type="submit"
+                disabled={loading}
+                fullWidth
+                variant="contained"
+                color="secondary"
+                className="auth__submit">
+                Зарегистрироваться
+              </Button>
+            </Form>
+          )}
+        </Formik>
+        <Box mt={5}>
+          <RouterLink to="/login">Войти в аккаунт</RouterLink>
+        </Box>
+      </Grid>
+      <Footer />
+    </Container>
   );
 }
 

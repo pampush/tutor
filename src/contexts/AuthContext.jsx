@@ -37,7 +37,11 @@ function AuthProvider({ children }) {
           if (res.authTime === user.metadata.creationTime)
             if (document.referrer === 'https://tutor-49686.firebaseapp.com/') setFirstLogin(true);
         });
-
+        /**
+         * force token refresh
+         * https://github.com/firebase/firebase-js-sdk/issues/2529
+         */
+        user.getIdToken(true);
         setCurrentUser(user);
         setLoading(false);
       } else {
