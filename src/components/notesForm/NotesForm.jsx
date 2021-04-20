@@ -24,10 +24,9 @@ const useStyles = makeStyles({
 function NotesForm({ open, width, handleClose, handleSnack, id, note }) {
   const dispatch = useDispatch();
   const classes = useStyles();
-  function handleSubmit(values, actions) {
-    handleSnack(true);
+  async function handleSubmit(values, actions) {
     actions.setSubmitting(false);
-
+    handleSnack(true);
     dispatch(changeLesson({ id, field: 'note', value: values.note }));
   }
   return (

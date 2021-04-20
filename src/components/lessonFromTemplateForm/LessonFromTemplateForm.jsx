@@ -36,6 +36,7 @@ function LessonFromTemplateForm({ width, open, handleClose, pupilId, scheduleId,
       theme: values.theme,
       subject: schedule.subject,
       note: values.note,
+      price: schedule.price,
       timestamp: Date.now(),
     };
 

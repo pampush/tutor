@@ -8,6 +8,7 @@ const formInitialValues = {
   note: '',
   date: localISOTime,
   time: '15:00',
+  price: '',
 };
 
 export default formInitialValues;

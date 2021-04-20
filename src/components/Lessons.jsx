@@ -30,40 +30,22 @@ function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalend
   const isLoaded = lessonsLoaded && pupilsLoaded && scheduledLessonsLoaded;
 
   const [viewAddLessonForm, setViewAddLessonForm] = React.useState(false);
-  const [snackView, setSnackView] = React.useState(false);
-  const [snackThemeView, setSnackThemeView] = React.useState(false);
+  const [snackAddLessonView, setSnackAddLessonView] = React.useState(false);
+  const [snackFromTemplateView, setSnackFromTemplateView] = React.useState(false);
   const [snackNotesView, setSnackNotesView] = React.useState(false);
+  const [snackDeleteLesson, setSnackDeleteLesson] = React.useState(false);
+
   const calendar = React.useRef(null);
 
-  React.useEffect(() => {
-    let timer;
-    timer = setTimeout(() => {
-      setSnackView(false);
-    }, 5000);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [snackView]);
-
-  React.useEffect(() => {
-    let timer;
-    timer = setTimeout(() => {
-      setSnackThemeView(false);
-    }, 5000);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [snackThemeView]);
-
-  React.useEffect(() => {
-    let timer;
-    timer = setTimeout(() => {
-      setSnackNotesView(false);
-    }, 5000);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [snackNotesView]);
+  // React.useEffect(() => {
+  //   let timer;
+  //   timer = setTimeout(() => {
+  //     setSnackNotesView(false);
+  //   }, 5000);
+  //   return () => {
+  //     clearTimeout(timer);
+  //   };
+  // }, [snackNotesView]);
 
   const handleAddLessonFormClick = () => setViewAddLessonForm(true);
   const handleCloseAddLessonForm = () => setViewAddLessonForm(false);
@@ -109,12 +91,29 @@ function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalend
       <AddLessonForm
         open={viewAddLessonForm}
         handleClose={handleCloseAddLessonForm}
-        handleSnack={setSnackView}
+        handleSnack={setSnackAddLessonView}
       />
 
-      <SnackPopup open={snackView} message="Урок добавлен" />
-      <SnackPopup open={snackThemeView} message="Тема изменена" />
-      <SnackPopup open={snackNotesView} message="Заметка изменена" />
+      <SnackPopup
+        open={snackAddLessonView}
+        message="Урок добавлен"
+        onClose={() => setSnackAddLessonView(false)}
+      />
+      <SnackPopup
+        open={snackFromTemplateView}
+        message="Урок из шаблона добавлен"
+        onClose={() => setSnackFromTemplateView(false)}
+      />
+      <SnackPopup
+        open={snackNotesView}
+        message="Заметка изменена"
+        onClose={() => setSnackNotesView(false)}
+      />
+      <SnackPopup
+        open={snackDeleteLesson}
+        message="Урок удален"
+        onClose={() => setSnackDeleteLesson(false)}
+      />
 
       <Container className="lessons__items-container">
         {isLoaded ? (
@@ -125,6 +124,7 @@ function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalend
                 name={pupils[value.pupil].name}
                 address={pupils[value.pupil].address}
                 handleSnack={setSnackNotesView}
+                handleDeleteSnack={setSnackDeleteLesson}
                 {...value}
               />
             ))}
@@ -138,7 +138,7 @@ function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalend
                   name={pupils[value.pupil].name}
                   subject={value.subject}
                   address={pupils[value.pupil].address}
-                  handleSnack={setSnackThemeView}
+                  handleSnack={setSnackFromTemplateView}
                 />
               );
             })}

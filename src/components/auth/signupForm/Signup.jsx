@@ -32,6 +32,7 @@ function Signup() {
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState('');
   const [viewSnack, setViewSnack] = React.useState(false);
+  const [viewEmailVerifySnack, setViewEmailVerifySnack] = React.useState(false)
 
   const handleSubmit = async (values, actions) => {
     actions.setSubmitting(false);
@@ -50,6 +51,7 @@ function Signup() {
           email: userCredential.user.email,
         }),
       );
+
       history.push('/login');
     } catch (e) {
       switch (e.code) {

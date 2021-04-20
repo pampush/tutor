@@ -49,7 +49,7 @@ export default function AddLessonInputs() {
         <Grid item xs={6}>
           <MyTextField margin="none" name="subject" label="Предмет" autoComplete="off" fullWidth />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           <MyTextField
             margin="normal"
             name="date"
@@ -59,7 +59,7 @@ export default function AddLessonInputs() {
             fullWidth
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           <MyTextField
             margin="normal"
             name="time"
@@ -68,6 +68,16 @@ export default function AddLessonInputs() {
             inputProps={{
               step: 300, // 5 min
             }}
+            autoComplete="off"
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <MyTextField
+            margin="none"
+            type="number"
+            name="price"
+            label="Стоимость занятия"
             autoComplete="off"
             fullWidth
           />

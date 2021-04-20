@@ -1,5 +1,7 @@
 import * as yup from 'yup';
 
+const MAX_LESSON_PAY = 999999;
+
 const validationSchema = yup.object().shape({
   theme: yup
     .string('Введите тему урока')
@@ -16,6 +18,12 @@ const validationSchema = yup.object().shape({
   time: yup
     .string('Укажите время занятия')
     .matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Введите время занятия в формате: "17:00"'),
+  price: yup
+    .number('Укажите стоимость занятия')
+    .typeError('Лучше ввести число')
+    .min(0, 'Cтоимость должна быть положительной')
+    .max(MAX_LESSON_PAY, 'Возможно вы ошиблись и занятие стоит не так дорого')
+    .required('Укажите стоимость занятия'),
 });
 
 export default validationSchema;

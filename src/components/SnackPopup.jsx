@@ -1,8 +1,9 @@
 import React from 'react';
 import { IconButton, Snackbar, Button } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
+import Grow from '@material-ui/core/Grow';
 
-function SnackPopup({ open, message }) {
+function SnackPopup({ open, message, onClose }) {
   return (
     <Snackbar
       anchorOrigin={{
@@ -11,6 +12,10 @@ function SnackPopup({ open, message }) {
       }}
       open={open}
       message={message}
+      TransitionComponent={Grow}
+      autoHideDuration={2000}
+      //onClose={() => onClose(false)}
+      onClose={onClose}
       action={
         <React.Fragment>
           <Button color="secondary" size="small">

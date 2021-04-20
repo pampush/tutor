@@ -44,7 +44,7 @@ function LessonTemplateCard({ time, pupilId, scheduleId, subject, name, address,
           open={Boolean(anchorEl)}
           onClose={handleClose}>
           <MenuList autoFocus={true} className="lesson__menu-container">
-            <MenuItem onClick={handleOpenForm}>Изменить тему</MenuItem>
+            <MenuItem onClick={handleOpenForm}>Добавить урок из шаблона</MenuItem>
           </MenuList>
         </Menu>
         <CardContent>

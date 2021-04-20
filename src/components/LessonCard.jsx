@@ -14,6 +14,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
+
+
 import { deleteLessonFromSchedule } from '../redux/actions/schedules';
 import { fetchScheduledLessons } from '../redux/actions/scheduledLessons';
 
@@ -23,11 +25,13 @@ function LessonCard({
   theme,
   date,
   name,
+  price,
   address,
   subject,
   note,
   schedule,
   handleSnack,
+  handleDeleteSnack,
 }) {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -39,16 +43,18 @@ function LessonCard({
 
   /**
    * How does dispatch actually work?
-   * Am I supposed to chain dispatches to make sure async requests queuing in sequence? 
+   * Am I supposed to chain dispatches to make sure async requests queuing in sequence?
    */
   function handleDelete() {
     dispatch(deleteLesson(id));
+    handleDeleteSnack(true);
     if (schedule) dispatch(deleteLessonFromSchedule({ id: schedule, date }));
     dispatch(fetchScheduledLessons(selectedDate));
   }
 
   const clickNotesForm = () => setViewNotesForm(true);
   const closeNotesForm = () => setViewNotesForm(false);
+
 
   return (
     <React.Fragment>
@@ -71,10 +77,10 @@ function LessonCard({
           open={Boolean(anchorEl)}
           onClose={handleClose}>
           <MenuList autoFocus={true} className="lesson__menu-container">
-            <MenuItem onClick={handleClose}>Домашняя работа</MenuItem>
+            <MenuItem onClick={handleClose}>Домашняя работа(disabled)</MenuItem>
             <MenuItem onClick={clickNotesForm}>Заметки</MenuItem>
-            <MenuItem onClick={handleClose}>push</MenuItem>
-            <MenuItem onClick={handleClose}>Редактировать</MenuItem>
+            <MenuItem onClick={handleClose}>push(disabled)</MenuItem>
+            <MenuItem onClick={handleClose}>Редактировать(disabled)</MenuItem>
             <MenuItem onClick={handleDelete}>Удалить</MenuItem>
           </MenuList>
         </Menu>
@@ -91,7 +97,7 @@ function LessonCard({
             {theme}
           </Typography>
           <Typography variant="subtitle2" color="textPrimary" component="p">
-            {name}, {address}
+            {name}, {address}, {`стоимость: ${price}`}
           </Typography>
         </CardContent>
       </Card>
@@ -104,6 +110,7 @@ LessonCard.propTypes = {
   name: PropTypes.string.isRequired,
   address: PropTypes.string.isRequired,
   theme: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
 };
 
 export default LessonCard;

@@ -30,6 +30,7 @@ function AddLessonForm({ width, open, handleClose, handleSnack }) {
       schedule: null,
       subject: values.subject,
       note: values.note,
+      price: +values.price,
       timestamp: Date.now(),
     };
     handleSnack(true);

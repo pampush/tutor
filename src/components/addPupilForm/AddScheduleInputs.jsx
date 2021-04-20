@@ -72,7 +72,7 @@ function AddScheduleInputs() {
             values.schedules.map((schedule, index) => (
               <React.Fragment key={index}>
                 <Grid container spacing={4}>
-                  <Grid item xs={6}>
+                  <Grid item xs={12} sm={6}>
                     <FormControl fullWidth>
                       <InputLabel id="pupil-form__select-label">День занятия</InputLabel>
                       <MySelect
@@ -88,7 +88,7 @@ function AddScheduleInputs() {
                       </MySelect>
                     </FormControl>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={12} sm={6}>
                     <MyTextField
                       margin="none"
                       name={`schedules[${index}].time`}
@@ -104,7 +104,8 @@ function AddScheduleInputs() {
                 <MyTextField
                   margin="normal"
                   name={`schedules[${index}].price`}
-                  label="Стоимость занятия, 800"
+                  type="number"
+                  label="Стоимость занятия"
                   autoComplete="off"
                   fullWidth
                 />
