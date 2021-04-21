@@ -7,10 +7,8 @@ import Hidden from '@material-ui/core/Hidden';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 
 import InfoPanelCard from './InfoPanelCard';
-import lessons from '../redux/reducers/lessons';
 
 const days = ['воскресенье', 'понедельник', 'вторник', 'cреда', 'четверг', 'пятница', 'суббота'];
-const endings = ['урок', 'урока', 'уроков'];
 
 function endingsForm(n) {
   let a = n % 100;

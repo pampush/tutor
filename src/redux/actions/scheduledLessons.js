@@ -1,11 +1,12 @@
 import { db } from '../../firebase';
 import { auth } from '../../firebase';
-import { getISODay } from 'date-fns';
+import { getISODay, formatISO } from 'date-fns';
 
 async function retrieveSchedulesByDay(date) {
   let schedules = {};
   const today = getISODay(date);
-  const localISODate = date.toISOString().slice(0, 10);
+  //const localISODate = date.toISOString().slice(0, 10);
+  const localISODate = formatISO(date);
 
   const snapshot = await db
     .collection(`/users/${auth.currentUser.uid}/schedules/`)

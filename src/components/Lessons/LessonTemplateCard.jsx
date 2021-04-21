@@ -11,7 +11,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import LessonFromTemplateForm from './lessonFromTemplateForm/LessonFromTemplateForm';
+import LessonFromTemplateForm from '../lessonFromTemplateForm/LessonFromTemplateForm';
 
 function LessonTemplateCard({ time, pupilId, scheduleId, subject, name, address, handleSnack }) {
   const [anchorEl, setAnchorEl] = React.useState(null);

@@ -1,11 +1,9 @@
 import React from 'react';
 import Hidden from '@material-ui/core/Hidden';
 
-import MenuDrawer from './Menu/MenuLgDrawer';
-import MenuDrawerMobile from './Menu/MenuSmDrawer';
-import MenuMdDrawer from './Menu/MenuMdDrawer';
-
-//FIXME: implement clickAwayListener
+import MenuDrawer from './MenuLgDrawer';
+import MenuDrawerMobile from './MenuSmDrawer';
+import MenuMdDrawer from './MenuMdDrawer';
 
 const Menu = () => {
   return (

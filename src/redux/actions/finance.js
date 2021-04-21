@@ -27,5 +27,4 @@ export const fetchPrices = async (date) => {
   );
 
   return prices;
-  //lessonsSnapshot.forEach(lesson => )
 };

@@ -2,9 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { deleteLesson } from '../redux/actions/lessons';
-import NotesForm from './notesForm/NotesForm';
-
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import CardContent from '@material-ui/core/CardContent';
@@ -15,9 +12,10 @@ import Menu from '@material-ui/core/Menu';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 
-
-import { deleteLessonFromSchedule } from '../redux/actions/schedules';
-import { fetchScheduledLessons } from '../redux/actions/scheduledLessons';
+import NotesForm from '../notesForm/NotesForm';
+import { deleteLesson } from '../../redux/actions/lessons';
+import { deleteLessonFromSchedule } from '../../redux/actions/schedules';
+import { fetchScheduledLessons } from '../../redux/actions/scheduledLessons';
 
 function LessonCard({
   id,

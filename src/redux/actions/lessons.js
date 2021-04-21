@@ -1,6 +1,6 @@
 import { db } from '../../firebase';
 import { auth } from '../../firebase';
-
+import { formatISO } from 'date-fns';
 /**
  * middleware thunk function used for async data fetching and
  * dispatching actual event(action) to reducer
@@ -8,11 +8,11 @@ import { auth } from '../../firebase';
  * @param {date} date
  * @returns
  */
-//TODO: integrate with auth
 export const fetchLessons = (date) => async (dispatch) => {
   // const tzoffset = new Date().getTimezoneOffset() * 60000;
   // const localISOTime = new Date(date.getTime() - tzoffset).toISOString().slice(0, 10);
-  const ISODate = date.toISOString().slice(0, 10);
+  //const ISODate = date.toISOString().slice(0, 10);
+  const ISODate = formatISO(date);
   dispatch({ type: 'SET_LESSONS_LOADED', payload: false });
   const timer = stopwatch(fastRetrieveLessons);
   const query = ['date', '==', `${ISODate}`];

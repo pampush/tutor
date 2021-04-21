@@ -11,11 +11,11 @@ import Menu from '@material-ui/core/Menu';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Container from '@material-ui/core/Container';
 
-import Calendar from './Calendar';
+import Calendar from '../Calendar';
 import LessonCard from './LessonCard';
 import LessonTemplateCard from './LessonTemplateCard';
-import AddLessonForm from './addLessonForm/AddLessonForm';
-import SnackPopup from './SnackPopup';
+import AddLessonForm from '../addLessonForm/AddLessonForm';
+import SnackPopup from '../SnackPopup';
 
 function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalendarClick }) {
   const lessons = useSelector(({ lessons }) => lessons.items);

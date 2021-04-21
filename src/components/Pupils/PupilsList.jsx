@@ -9,8 +9,8 @@ import Box from '@material-ui/core/Box';
 import Skeleton from '@material-ui/lab/Skeleton';
 
 import PupilCard from './PupilCard';
-import AddPupilForm from './addPupilForm/AddPupilForm';
-import SnackPopup from './SnackPopup';
+import AddPupilForm from '../addPupilForm/AddPupilForm';
+import SnackPopup from '../SnackPopup';
 
 function PupilsList() {
   const pupils = useSelector(({ pupils }) => pupils.items);
@@ -86,6 +86,7 @@ function PupilsList() {
               </Grid>
             ))}
       </Grid>
+      {Object.keys(pupils).length === 0 && <Typography>Ученики отсутствуют</Typography>}
     </div>
   );
 }

@@ -15,10 +15,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 
-import { deleteLessonsByPupil, fetchLessons } from '../redux/actions/lessons';
-import { deletePupilAction } from '../redux/actions/pupils';
-import { deleteSchedulesByPupil, fetchSchedules } from '../redux/actions/schedules';
-import { fetchScheduledLessons } from '../redux/actions/scheduledLessons';
+import { deleteLessonsByPupil, fetchLessons } from '../../redux/actions/lessons';
+import { deletePupilAction } from '../../redux/actions/pupils';
+import { deleteSchedulesByPupil, fetchSchedules } from '../../redux/actions/schedules';
+import { fetchScheduledLessons } from '../../redux/actions/scheduledLessons';
 
 const days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
 
