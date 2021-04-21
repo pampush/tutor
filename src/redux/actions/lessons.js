@@ -58,7 +58,8 @@ export const deleteLessonsByPupil = (id) => async (dispatch) => {
   const lessonsPromises = [];
   const lessonsSnapshot = await db
     .collection(`/users/${auth.currentUser.uid}/lessons/`)
-    .where('pupil', '==', id);
+    .where('pupil', '==', id)
+    .get();
 
   lessonsSnapshot.forEach((lessonsSnap) =>
     lessonsPromises.push(

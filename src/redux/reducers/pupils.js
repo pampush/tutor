@@ -25,6 +25,15 @@ const pupils = (state = initialState, action) => {
         isLoaded: true,
       };
     }
+    case 'DELETE_PUPIL': {
+      const newState = { ...state.items };
+      delete newState[action.payload];
+      return {
+        ...state,
+        items: newState,
+        isLoaded: true,
+      };
+    }
     default:
       return state;
   }

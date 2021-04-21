@@ -2,16 +2,15 @@ import { db, auth } from '../../firebase';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-
-export const fetchSchedules = () => async (dispatch) => {
-  dispatch({ type: 'SET_SCHEDULES_LOADED', payload: false });
+export const fetchSchedules = ({ preventIsLoaded } = {}) => async (dispatch) => {
+  if (!preventIsLoaded) dispatch({ type: 'SET_SCHEDULES_LOADED', payload: false });
 
   const schedules = await retrieveSchedules();
 
   dispatch(setSchedules(schedules));
 };
 
-async function retrieveSchedules(user) {
+async function retrieveSchedules() {
   let schedules = {};
   const snapshot = await db.collection(`/users/${auth.currentUser.uid}/schedules/`).get();
   snapshot.forEach((doc) => (schedules = { ...schedules, [doc.id]: doc.data() }));
@@ -50,7 +49,8 @@ export const deleteSchedulesByPupil = (id) => async (dispatch) => {
   const schedulesPromises = [];
   const schedulesSnapshot = await db
     .collection(`/users/${auth.currentUser.uid}/schedules/`)
-    .where('pupil', '==', id);
+    .where('pupil', '==', id)
+    .get();
 
   schedulesSnapshot.forEach((schedulesSnap) =>
     schedulesPromises.push(
@@ -59,7 +59,7 @@ export const deleteSchedulesByPupil = (id) => async (dispatch) => {
   );
 
   await Promise.all(schedulesPromises);
-}
+};
 
 export const setSchedules = (items) => ({
   type: 'SET_SCHEDULES',
@@ -75,4 +75,3 @@ export const updateLessonsField = (data) => ({
   type: 'UPDATE_LESSONS_FIELD',
   payload: data,
 });
-
