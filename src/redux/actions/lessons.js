@@ -9,9 +9,6 @@ import { formatISO } from 'date-fns';
  * @returns
  */
 export const fetchLessons = (date) => async (dispatch) => {
-  // const tzoffset = new Date().getTimezoneOffset() * 60000;
-  // const localISOTime = new Date(date.getTime() - tzoffset).toISOString().slice(0, 10);
-  //const ISODate = date.toISOString().slice(0, 10);
   const ISODate = formatISO(date);
   dispatch({ type: 'SET_LESSONS_LOADED', payload: false });
   const timer = stopwatch(fastRetrieveLessons);
@@ -20,6 +17,19 @@ export const fetchLessons = (date) => async (dispatch) => {
 
   dispatch(setLessons(lessons));
 };
+
+async function fastRetrieveLessons(query) {
+  let retrievedLessons = {};
+  const lessonsSnapshot = await db
+    .collection(`/users/${auth.currentUser.uid}/lessons`)
+    .where(...query)
+    .orderBy('time')
+    .get();
+  lessonsSnapshot.forEach((lessonDoc) => {
+    retrievedLessons = { ...retrievedLessons, [lessonDoc.id]: lessonDoc.data() };
+  });
+  return retrievedLessons;
+}
 
 export const postLesson = (lesson, { preventIsLoaded } = {}) => async (dispatch) => {
   if (!preventIsLoaded) dispatch({ type: 'SET_LESSONS_LOADED', payload: false });
@@ -34,18 +44,7 @@ export const postLesson = (lesson, { preventIsLoaded } = {}) => async (dispatch)
  * @param {array} query firestore query format array
  * @returns {object[]} lesson result array going to be stored in redux store
  */
-async function fastRetrieveLessons(query) {
-  let retrievedLessons = {};
-  const lessonsSnapshot = await db
-    .collection(`/users/${auth.currentUser.uid}/lessons`)
-    .where(...query)
-    .orderBy('time')
-    .get();
-  lessonsSnapshot.forEach((lessonDoc) => {
-    retrievedLessons = { ...retrievedLessons, [lessonDoc.id]: lessonDoc.data() };
-  });
-  return retrievedLessons;
-}
+
 
 export const deleteLesson = (id) => async (dispatch) => {
   dispatch({ type: 'SET_LESSONS_LOADED', payload: false });

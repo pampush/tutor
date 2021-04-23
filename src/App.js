@@ -69,6 +69,11 @@ function Content() {
   );
 }
 
+/*
+ *
+ * TODO: restructure db
+ */
+
 function App() {
   return (
     <StylesProvider injectFirst>

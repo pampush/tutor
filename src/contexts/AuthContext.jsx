@@ -40,6 +40,8 @@ function AuthProvider({ children }) {
         /**
          * force token refresh
          * https://github.com/firebase/firebase-js-sdk/issues/2529
+         *
+         * TODO: try to move user.getIdToken(true) in if statement or replace onauthstatechange with onidtokenstatechange
          */
         user.getIdToken(true);
         setCurrentUser(user);
