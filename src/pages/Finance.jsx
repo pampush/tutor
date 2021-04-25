@@ -1,6 +1,9 @@
 import React from 'react';
 import { fetchPrices } from '../redux/actions/finance';
-import { Container, TextField } from '@material-ui/core';
+import { formatISO } from 'date-fns';
+
+import { Container } from '@material-ui/core';
+import { MonthPicker } from '../components';
 
 import {
   Chart,
@@ -37,17 +40,16 @@ function colorGen() {
 function Finance() {
   const canvas = React.useRef(null);
 
-  const [date, setDate] = React.useState(
-    `${new Date().getFullYear()}-${('0' + (new Date().getMonth() + 1)).slice(-2)}`,
-  );
+  const [date, setDate] = React.useState(new Date());
 
   const [prices, setPrices] = React.useState({});
 
   React.useEffect(() => {
     let mounted = true;
-
     try {
-      fetchPrices(date).then((prices) => mounted && setPrices(prices));
+      fetchPrices(formatISO(date, { representation: 'date' }).slice(0, -3)).then(
+        (prices) => mounted && setPrices(prices),
+      );
     } catch (e) {
       console.log(e);
     }
@@ -87,15 +89,7 @@ function Finance() {
 
   return (
     <Container>
-      <TextField
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
-        margin="normal"
-        name="month"
-        label="Месяц"
-        type="month"
-        autoComplete="off"
-      />
+      <MonthPicker initialDate={date} handleDateChange={setDate} />
       {Object.keys(prices).length ? (
         <div className="finance__container">
           <span className="finance__center">

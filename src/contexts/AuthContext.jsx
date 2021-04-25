@@ -1,7 +1,7 @@
 import React from 'react';
 import { auth } from '../firebase';
 
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Backdrop } from '@material-ui/core';
 
 auth.languageCode = 'ru';
 export const AuthContext = React.createContext({ test: 'success' });
@@ -19,8 +19,7 @@ function AuthProvider({ children }) {
   };
   const updateUser = (name) => auth.currentUser.updateProfile({ displayName: name });
   const signout = () => auth.signOut();
-  //  const getCredential = (credential) = () => credential. ;
-  // somehow this func runs befare currentUser state updating (race condition)
+
   const verifyEmail = (user) =>
     user.sendEmailVerification({
       url:
@@ -35,15 +34,16 @@ function AuthProvider({ children }) {
       if (user) {
         user.getIdTokenResult().then((res) => {
           if (res.authTime === user.metadata.creationTime)
-            if (document.referrer === 'https://tutor-49686.firebaseapp.com/') setFirstLogin(true);
+            /*
+             * force token refresh
+             * https://github.com/firebase/firebase-js-sdk/issues/2529
+             */
+            user.getIdToken(true);
+          if (document.referrer === 'https://tutor-49686.firebaseapp.com/') {
+            setFirstLogin(true);
+          }
         });
-        /**
-         * force token refresh
-         * https://github.com/firebase/firebase-js-sdk/issues/2529
-         *
-         * TODO: try to move user.getIdToken(true) in if statement or replace onauthstatechange with onidtokenstatechange
-         */
-        user.getIdToken(true);
+
         setCurrentUser(user);
         setLoading(false);
       } else {
@@ -67,7 +67,13 @@ function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading ? children : <CircularProgress />}
+      {!loading ? (
+        children
+      ) : (
+        <Backdrop open={loading}>
+          <CircularProgress />
+        </Backdrop>
+      )}
     </AuthContext.Provider>
   );
 }

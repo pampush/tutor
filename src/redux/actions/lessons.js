@@ -9,7 +9,7 @@ import { formatISO } from 'date-fns';
  * @returns
  */
 export const fetchLessons = (date) => async (dispatch) => {
-  const ISODate = formatISO(date);
+  const ISODate = formatISO(date, { representation: 'date' });
   dispatch({ type: 'SET_LESSONS_LOADED', payload: false });
   const timer = stopwatch(fastRetrieveLessons);
   const query = ['date', '==', `${ISODate}`];
@@ -45,7 +45,6 @@ export const postLesson = (lesson, { preventIsLoaded } = {}) => async (dispatch)
  * @returns {object[]} lesson result array going to be stored in redux store
  */
 
-
 export const deleteLesson = (id) => async (dispatch) => {
   dispatch({ type: 'SET_LESSONS_LOADED', payload: false });
   await db.doc(`/users/${auth.currentUser.uid}/lessons/${id}`).delete();
@@ -53,11 +52,11 @@ export const deleteLesson = (id) => async (dispatch) => {
   dispatch(deleteLessonAction(id));
 };
 
-export const deleteLessonsByPupil = (id) => async (dispatch) => {
+export const deleteLessonsBySmth = ({ field, id }) => async (dispatch) => {
   const lessonsPromises = [];
   const lessonsSnapshot = await db
     .collection(`/users/${auth.currentUser.uid}/lessons/`)
-    .where('pupil', '==', id)
+    .where(`${field}`, '==', id)
     .get();
 
   lessonsSnapshot.forEach((lessonsSnap) =>

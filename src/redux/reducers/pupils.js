@@ -34,6 +34,13 @@ const pupils = (state = initialState, action) => {
         isLoaded: true,
       };
     }
+    case 'UPDATE_PUPIL': {
+      return {
+        ...state,
+        items: { ...state.items, [action.payload.id]: action.payload },
+        isLoaded: true
+      };
+    }
     default:
       return state;
   }

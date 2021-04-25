@@ -18,19 +18,17 @@ function PupilsList() {
   const schedules = useSelector(({ schedules }) => schedules.items);
   const schedulesLoaded = useSelector(({ schedules }) => schedules.isLoaded);
   const [snackView, setSnackView] = React.useState(false);
+  const [viewAddScheduleSnack, setViewAddScheduleSnack] = React.useState(false);
 
-  /**
-   * prevent React state update on unmounted component!
-   */
-  React.useEffect(() => {
-    let timer;
-    timer = setTimeout(() => {
-      setSnackView(false);
-    }, 5000);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [snackView]);
+  // React.useEffect(() => {
+  //   let timer;
+  //   timer = setTimeout(() => {
+  //     setSnackView(false);
+  //   }, 5000);
+  //   return () => {
+  //     clearTimeout(timer);
+  //   };
+  // }, [snackView]);
 
   const isLoaded = pupilsLoaded && schedulesLoaded;
 
@@ -49,45 +47,52 @@ function PupilsList() {
   }
 
   return (
-    <div>
-      <Box className="pupils__header-container">
-        <Typography variant="h5" className="pupils__header">
-          Ученики
-        </Typography>
-
-        <Button
-          variant="contained"
-          color="secondary"
-          startIcon={<AddIcon />}
-          className="pupils__button-text"
-          onClick={handleAddLessonClick}>
-          Новый ученик
-        </Button>
-      </Box>
-
-      <AddPupilForm
-        open={viewAddPupilForm}
-        handleClose={handleCloseAddLessonForm}
-        handleSnack={handleSnack}
+    <React.Fragment>
+      <SnackPopup
+        open={viewAddScheduleSnack}
+        message="Шаблон для урока добавлен"
+        onClose={() => setViewAddScheduleSnack(false)}
       />
+      <SnackPopup open={snackView} message="Ученик добавлен" onClose={() => setSnackView(false)} />
 
-      <SnackPopup open={snackView} message="Ученик добавлен" />
+      <div>
+        <Box className="pupils__header-container">
+          <Typography variant="h5" className="pupils__header">
+            Ученики
+          </Typography>
 
-      <Grid container spacing={2} className="pupils__card-container">
-        {isLoaded
-          ? Object.keys(pupils).map((key) => (
-              <Grid key={key} item md={4} sm={6} xs={12}>
-                <PupilCard {...pupils[key]} schedules={schedules} />
-              </Grid>
-            ))
-          : new Array(6).fill(0).map((_, i) => (
-              <Grid key={i} item md={4} sm={6} xs={12}>
-                <Skeleton key={i} variant="rect" className="pupils__skeleton" />
-              </Grid>
-            ))}
-      </Grid>
-      {Object.keys(pupils).length === 0 && <Typography>Ученики отсутствуют</Typography>}
-    </div>
+          <Button
+            variant="contained"
+            color="secondary"
+            startIcon={<AddIcon />}
+            className="pupils__button-text"
+            onClick={handleAddLessonClick}>
+            Новый ученик
+          </Button>
+        </Box>
+
+        <AddPupilForm
+          open={viewAddPupilForm}
+          handleClose={handleCloseAddLessonForm}
+          handleSnack={handleSnack}
+        />
+
+        <Grid container spacing={2} className="pupils__card-container">
+          {isLoaded
+            ? Object.keys(pupils).map((key) => (
+                <Grid key={key} item md={4} sm={6} xs={12}>
+                  <PupilCard {...pupils[key]} schedules={schedules} handleSnack={setViewAddScheduleSnack}/>
+                </Grid>
+              ))
+            : new Array(6).fill(0).map((_, i) => (
+                <Grid key={i} item md={4} sm={6} xs={12}>
+                  <Skeleton key={i} variant="rect" className="pupils__skeleton" />
+                </Grid>
+              ))}
+        </Grid>
+        {Object.keys(pupils).length === 0 && <Typography>Ученики отсутствуют</Typography>}
+      </div>
+    </React.Fragment>
   );
 }
 

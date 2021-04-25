@@ -17,17 +17,16 @@ const schedules = (state = initialState, action) => {
         isLoaded: action.payload,
       };
     case 'ADD_SCHEDULE': {
-      let schedules = {};
-      action.payload.forEach(
-        (item) =>
-          (schedules = {
-            ...schedules,
-            [item.id]: item,
-          }),
-      );
       return {
         ...state,
-        items: { ...state.items, ...schedules },
+        items: { ...state.items, [action.payload.id]: action.payload },
+        isLoaded: true,
+      };
+    }
+    case 'UPDATE_SCHEDULE': {
+      return {
+        ...state,
+        items: { ...state.items, [action.payload.id]: action.payload },
         isLoaded: true,
       };
     }
@@ -45,6 +44,14 @@ const schedules = (state = initialState, action) => {
             lessons: newLessons,
           },
         },
+        isLoaded: true,
+      };
+    }
+    case 'DELETE_SCHEDULE': {
+      const newState = { ...state.items };
+      delete newState[action.payload];
+      return {
+        items: newState,
         isLoaded: true,
       };
     }

@@ -6,7 +6,7 @@ async function retrieveSchedulesByDay(date) {
   let schedules = {};
   const today = getISODay(date);
   //const localISODate = date.toISOString().slice(0, 10);
-  const localISODate = formatISO(date);
+  const localISODate = formatISO(date, { representation: 'date' });
 
   const snapshot = await db
     .collection(`/users/${auth.currentUser.uid}/schedules/`)

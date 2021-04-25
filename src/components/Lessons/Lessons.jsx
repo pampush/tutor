@@ -34,6 +34,7 @@ function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalend
   const [snackFromTemplateView, setSnackFromTemplateView] = React.useState(false);
   const [snackNotesView, setSnackNotesView] = React.useState(false);
   const [snackDeleteLesson, setSnackDeleteLesson] = React.useState(false);
+  const [snackDeleteSchedule, setSnackDeleteSchedule] = React.useState(false);
 
   const calendar = React.useRef(null);
 
@@ -114,6 +115,11 @@ function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalend
         message="Урок удален"
         onClose={() => setSnackDeleteLesson(false)}
       />
+      <SnackPopup
+        open={snackDeleteSchedule}
+        message="Шаблон удален"
+        onClose={() => setSnackDeleteSchedule(false)}
+      />
 
       <Container className="lessons__items-container">
         {isLoaded ? (
@@ -132,13 +138,12 @@ function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalend
               return (
                 <LessonTemplateCard
                   key={key}
-                  time={value.time}
-                  scheduleId={value.id}
                   pupilId={pupils[value.pupil].id}
                   name={pupils[value.pupil].name}
-                  subject={value.subject}
                   address={pupils[value.pupil].address}
-                  handleSnack={setSnackFromTemplateView}
+                  handleCreateSnack={setSnackFromTemplateView}
+                  handleDeleteSnack={setSnackDeleteSchedule}
+                  {...value}
                 />
               );
             })}

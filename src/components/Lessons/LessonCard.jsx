@@ -11,6 +11,9 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
+import SpeedIcon from '@material-ui/icons/Speed';
+import Tooltip from '@material-ui/core/Tooltip';
+import Grid from '@material-ui/core/Grid';
 
 import NotesForm from '../notesForm/NotesForm';
 import { deleteLesson } from '../../redux/actions/lessons';
@@ -53,7 +56,6 @@ function LessonCard({
   const clickNotesForm = () => setViewNotesForm(true);
   const closeNotesForm = () => setViewNotesForm(false);
 
-
   return (
     <React.Fragment>
       <NotesForm
@@ -94,9 +96,20 @@ function LessonCard({
           <Typography variant="h5" color="textPrimary" className="lesson__theme" component="p">
             {theme}
           </Typography>
-          <Typography variant="subtitle2" color="textPrimary" component="p">
-            {name}, {address}, {`стоимость: ${price}`}
-          </Typography>
+          <Grid container justify="space-between">
+            <Grid item>
+              <Typography variant="subtitle2" color="textPrimary" component="p">
+                {name}, {address}, {`стоимость: ${price}`}
+              </Typography>
+            </Grid>
+            <Grid item>
+              {!schedule && (
+                <Tooltip title="Доп. урок вне расписания" aria-label="Доп. урок вне расписания">
+                  <SpeedIcon />
+                </Tooltip>
+              )}
+            </Grid>
+          </Grid>
         </CardContent>
       </Card>
     </React.Fragment>

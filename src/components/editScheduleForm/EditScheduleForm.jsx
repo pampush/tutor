@@ -8,46 +8,43 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Box from '@material-ui/core/Box';
-import { makeStyles } from '@material-ui/styles';
 
-import NotesFormInputs from './NotesFormInputs';
 import initialValues from './initialValues';
-import validationSchema from './validationSchema';
-import { changeLesson } from '../../redux/actions/lessons';
+import validationSchema from '../addScheduleForm/validationSchema';
+import EditScheduleFormInputs from './EditScheduleFormInputs';
+import { updateScheduleAction } from '../../redux/actions/schedules';
 
-const useStyles = makeStyles({
-  paper: {
-    width: '400px',
-  },
-});
-
-function NotesForm({ open, width, handleClose, handleSnack, id, note }) {
+function EditScheduleForm({ open, width, id, handleClose, day, time, subject, price }) {
   const dispatch = useDispatch();
-  const classes = useStyles();
 
-  async function handleSubmit(values, actions) {
+  function handleSubmit(values, actions) {
     actions.setSubmitting(false);
-    handleSnack(true);
-    dispatch(changeLesson({ id, field: 'note', value: values.note }));
+    dispatch(
+      updateScheduleAction(id, {
+        day: values.day,
+        time: values.time,
+        subject: values.subject,
+        price: values.price,
+      }),
+    );
+    handleClose();
   }
-
   return (
     <Dialog
       open={open}
       onClose={handleClose}
       aria-labelledby="form-dialog-title"
       className="pupil-form__dialog"
-      classes={{ paper: classes.paper }}
-      maxWidth="md"
+      maxWidth="sm"
       fullScreen={isWidthDown('sm', width) ? true : false}>
-      <DialogTitle>Заметки об уроке</DialogTitle>
+      <DialogTitle>Введите информацию об уроке</DialogTitle>
       <DialogContent className="lesson-form__dialog-content">
         <Formik
-          initialValues={initialValues(note)}
+          initialValues={initialValues({ day: `${day}`, time, subject, price })}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}>
           <Form>
-            <NotesFormInputs />
+            <EditScheduleFormInputs />
             <Box className="lesson-form__controls">
               <Button variant="contained" color="secondary" onClick={handleClose}>
                 Закрыть
@@ -63,4 +60,4 @@ function NotesForm({ open, width, handleClose, handleSnack, id, note }) {
   );
 }
 
-export default withWidth()(NotesForm);
+export default withWidth()(EditScheduleForm);

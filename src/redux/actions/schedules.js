@@ -20,11 +20,16 @@ async function retrieveSchedules() {
 export const postSchedule = (schedules) => async (dispatch) => {
   dispatch({ type: 'SET_SCHEDULES_LOADED', payload: false });
 
-  const schPromises = schedules.map((schedule) =>
-    db.doc(`/users/${auth.currentUser.uid}/schedules/${schedule.id}`).set({ ...schedule }),
-  );
-  await Promise.all(schPromises);
-  dispatch(addSchedule(schedules));
+  try {
+    const schPromises = schedules.map((schedule) =>
+      db.doc(`/users/${auth.currentUser.uid}/schedules/${schedule.id}`).set({ ...schedule }),
+    );
+    await Promise.all(schPromises);
+    schedules.forEach((schedule) => dispatch(addSchedule(schedule)));
+  } catch (e) {
+    console.log(e);
+    dispatch({ type: 'SET_SCHEDULES_LOADED', payload: true });
+  }
 };
 
 export const addLessonToSchedule = ({ id, date }, { preventIsLoaded } = {}) => async (dispatch) => {
@@ -33,7 +38,8 @@ export const addLessonToSchedule = ({ id, date }, { preventIsLoaded } = {}) => a
     .doc(`/users/${auth.currentUser.uid}/schedules/${id}/`)
     .update({ lessons: firebase.firestore.FieldValue.arrayUnion(date) });
 
-  dispatch(updateLessonsField({ procedure: 'push', id, date }));
+  const schedule = await db.doc(`/users/${auth.currentUser.uid}/schedules/${id}/`).get();
+  dispatch(updateSchedule(schedule.data()));
 };
 
 export const deleteLessonFromSchedule = ({ date, id }) => async (dispatch) => {
@@ -42,7 +48,8 @@ export const deleteLessonFromSchedule = ({ date, id }) => async (dispatch) => {
     .doc(`/users/${auth.currentUser.uid}/schedules/${id}/`)
     .update({ lessons: firebase.firestore.FieldValue.arrayRemove(date) });
 
-  dispatch(updateLessonsField({ procedure: 'pop', date, id }));
+  const schedule = await db.doc(`/users/${auth.currentUser.uid}/schedules/${id}/`).get();
+  dispatch(updateSchedule(schedule.data()));
 };
 
 export const deleteSchedulesByPupil = (id) => async (dispatch) => {
@@ -61,6 +68,29 @@ export const deleteSchedulesByPupil = (id) => async (dispatch) => {
   await Promise.all(schedulesPromises);
 };
 
+export const deleteScheduleAction = (id) => async (dispatch) => {
+  try {
+    await db.doc(`/users/${auth.currentUser.uid}/schedules/${id}`).delete();
+  } catch (e) {
+    console.error(e);
+    dispatch({ type: 'SET_SCHEDULES_LOADED', payload: true });
+  }
+};
+
+export const updateScheduleAction = (id, data) => async (dispatch) => {
+  try {
+    console.log(id, data);
+    await db.doc(`/users/${auth.currentUser.uid}/schedules/${id}/`).update(data);
+
+    const schedule = await db.doc(`/users/${auth.currentUser.uid}/schedules/${id}/`).get();
+
+    dispatch(updateSchedule(schedule));
+  } catch (e) {
+    console.error(e);
+    dispatch({ type: 'SET_SCHEDULES_LOADED', payload: true });
+  }
+};
+
 export const setSchedules = (items) => ({
   type: 'SET_SCHEDULES',
   payload: items,
@@ -71,7 +101,12 @@ export const addSchedule = (data) => ({
   payload: data,
 });
 
-export const updateLessonsField = (data) => ({
-  type: 'UPDATE_LESSONS_FIELD',
-  payload: data,
+export const updateSchedule = (schedule) => ({
+  type: 'UPDATE_SCHEDULE',
+  payload: schedule,
+});
+
+export const deleteSchedule = (id) => ({
+  type: 'DELETE_SCHEDULE',
+  payload: id,
 });

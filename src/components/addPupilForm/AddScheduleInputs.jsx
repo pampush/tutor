@@ -1,8 +1,6 @@
 import React from 'react';
-import { FieldArray, useField, useFormikContext } from 'formik';
+import { FieldArray, useFormikContext } from 'formik';
 
-import TextField from '@material-ui/core/TextField';
-import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@material-ui/core/Grid';
@@ -12,6 +10,8 @@ import ClearIcon from '@material-ui/icons/Clear';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
+
+import { MyTextField, MySelect } from '../CustomInputs';
 
 const menuProps = {
   anchorOrigin: {
@@ -35,30 +35,6 @@ const days = {
   5: 'Пятница',
   6: 'Суббота',
   7: 'Воскресенье',
-};
-
-function MyTextField({ ...props }) {
-  const [field, meta, helpers] = useField(props.name);
-  return (
-    <TextField
-      {...field}
-      {...props}
-      error={meta.touched && Boolean(meta.error)}
-      helperText={meta.touched && meta.error}
-    />
-  );
-}
-
-const MySelect = ({ ...props }) => {
-  const [field, meta] = useField(props);
-  return (
-    <React.Fragment>
-      <Select {...field} {...props} error={meta.touched && Boolean(meta.error)} />
-      {meta.touched && meta.error ? (
-        <span className="pupil-form__select-error">{meta.error}</span>
-      ) : null}
-    </React.Fragment>
-  );
 };
 
 function AddScheduleInputs() {
@@ -117,10 +93,10 @@ function AddScheduleInputs() {
                   fullWidth
                 />
                 {values.schedules.length > 1 && (
-                  <Tooltip title="Удалить номер">
+                  <Tooltip title="Удалить расписание">
                     <IconButton
                       size="small"
-                      aria-label="Удалить номер"
+                      aria-label="Удалить расписание"
                       className="pupil-form__btn"
                       color="secondary"
                       onClick={() => remove(index)}>
@@ -130,11 +106,11 @@ function AddScheduleInputs() {
                 )}
               </React.Fragment>
             ))}
-          <Tooltip title="Добавить номер">
+          <Tooltip title="Добавить расписание">
             <IconButton
               size="small"
               color="secondary"
-              aria-label="Добавить номер"
+              aria-label="Добавить расписание"
               className="pupil-form__btn pupil-form__btn-add-contact"
               onClick={() => push({ day: '', price: '', subject: '', time: '15:00' })}>
               <AddIcon />

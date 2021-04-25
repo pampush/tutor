@@ -7,5 +7,17 @@ import Signup from './auth/signupForm/Signup';
 import Login from './auth/loginForm/Login';
 import NotFound from './NotFound';
 import Instruction from './Instruction';
+import MonthPicker from './MonthPicker';
 
-export { InfoPanel, Calendar, Lessons, Menu, PupilsList, Signup, Login, NotFound, Instruction };
+export {
+  InfoPanel,
+  Calendar,
+  Lessons,
+  Menu,
+  PupilsList,
+  Signup,
+  Login,
+  NotFound,
+  Instruction,
+  MonthPicker,
+};

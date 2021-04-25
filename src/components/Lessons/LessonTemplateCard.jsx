@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
@@ -12,9 +13,26 @@ import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import LessonFromTemplateForm from '../lessonFromTemplateForm/LessonFromTemplateForm';
+import { deleteScheduleAction } from '../../redux/actions/schedules';
+import { fetchLessons, deleteLessonsBySmth } from '../../redux/actions/lessons';
+import { fetchScheduledLessons } from '../../redux/actions/scheduledLessons';
+import { pullScheduleFromPupil } from '../../redux/actions/pupils';
 
-function LessonTemplateCard({ time, pupilId, scheduleId, subject, name, address, handleSnack }) {
+function LessonTemplateCard({
+  time,
+  pupil,
+  id,
+  subject,
+  name,
+  address,
+  handleCreateSnack,
+  handleDeleteSnack,
+}) {
+  const dispatch = useDispatch();
+  const date = useSelector(({ date }) => date.selected);
+  const isLoaded = useSelector(({ schedules }) => schedules.isLoaded);
   const [anchorEl, setAnchorEl] = React.useState(null);
+
   const [viewForm, setViewForm] = React.useState(false);
 
   const handleClick = (e) => setAnchorEl(e.currentTarget);
@@ -23,14 +41,26 @@ function LessonTemplateCard({ time, pupilId, scheduleId, subject, name, address,
   const handleCloseForm = () => setViewForm(false);
   const handleOpenForm = () => setViewForm(true);
 
+  async function handleDeleteSchedule() {
+    console.log(isLoaded);
+    await Promise.all([
+      dispatch(deleteLessonsBySmth({ field: 'schedule', id })),
+      dispatch(deleteScheduleAction(id)),
+      dispatch(pullScheduleFromPupil(pupil, id)),
+    ]);
+    handleDeleteSnack(true);
+    dispatch(fetchLessons(date));
+    dispatch(fetchScheduledLessons(date));
+  }
+
   return (
     <React.Fragment>
       <LessonFromTemplateForm
         open={viewForm}
-        pupilId={pupilId}
-        scheduleId={scheduleId}
+        pupilId={pupil}
+        scheduleId={id}
         handleClose={handleCloseForm}
-        handleSnack={handleSnack}
+        handleSnack={handleCreateSnack}
       />
 
       <Card className="lesson__container lesson__container--template">
@@ -45,6 +75,7 @@ function LessonTemplateCard({ time, pupilId, scheduleId, subject, name, address,
           onClose={handleClose}>
           <MenuList autoFocus={true} className="lesson__menu-container">
             <MenuItem onClick={handleOpenForm}>Добавить урок из шаблона</MenuItem>
+            <MenuItem onClick={handleDeleteSchedule}>Удалить этот шаблон с уроками</MenuItem>
           </MenuList>
         </Menu>
         <CardContent>

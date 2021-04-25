@@ -1,5 +1,7 @@
 import { db } from '../../firebase';
 import { auth } from '../../firebase';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 
 export const fetchPupils = () => async (dispatch) => {
   dispatch({ type: 'SET_PUPILS_LOADED', payload: false });
@@ -24,6 +26,22 @@ export const postPupil = ({ id, ...data }) => async (dispatch) => {
   dispatch(addPupil({ id, ...data }));
 };
 
+export const pullScheduleFromPupil = (pupilId, scheduleId) => async (dispatch) => {
+  await db
+    .doc(`/users/${auth.currentUser.uid}/pupils/${pupilId}/`)
+    .update({ schedulesId: firebase.firestore.FieldValue.arrayRemove(scheduleId) });
+  const pupil = await db.doc(`/users/${auth.currentUser.uid}/pupils/${pupilId}/`).get();
+  dispatch(updatePupil(pupil.data()));
+};
+
+export const pushScheduleToPupil = (pupilId, scheduleId) => async (dispatch) => {
+  await db
+    .doc(`/users/${auth.currentUser.uid}/pupils/${pupilId}/`)
+    .update({ schedulesId: firebase.firestore.FieldValue.arrayUnion(scheduleId) });
+  const pupil = await db.doc(`/users/${auth.currentUser.uid}/pupils/${pupilId}/`).get();
+  dispatch(updatePupil(pupil.data()));
+};
+
 export const deletePupilAction = (id) => async (dispatch) => {
   dispatch({ type: 'SET_PUPILS_LOADED', payload: false });
   await db.doc(`/users/${auth.currentUser.uid}/pupils/${id}/`).delete();
@@ -43,4 +61,9 @@ export const addPupil = (data) => ({
 export const deletePupil = (id) => ({
   type: 'DELETE_PUPIL',
   payload: id,
+});
+
+export const updatePupil = (pupil) => ({
+  type: 'UPDATE_PUPIL',
+  payload: pupil,
 });
