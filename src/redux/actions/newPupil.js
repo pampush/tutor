@@ -16,14 +16,15 @@ const formHandler = ({ ...data }) => async (dispatch) => {
     lessons: [],
     timestamp: Date.now(),
   }));
-
   const pupil = {
     id: pupilId,
     name: data.name,
     address: data.address,
     grade: +data.grade,
-    parents: data.parents,
-    contacts: data.contacts,
+    parents: data.parents.map((parent) => ({
+      person: parent.person,
+      contact: parent.contact,
+    })),
     schedulesId: schedules.map((schedule) => schedule.id),
     timestamp: Date.now(),
   };

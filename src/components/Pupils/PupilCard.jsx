@@ -26,17 +26,7 @@ import { pushScheduleToPupil } from '../../redux/actions/pupils';
 
 const days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
 
-function PupilCard({
-  id,
-  name,
-  schedulesId,
-  grade,
-  parents,
-  address,
-  contacts,
-  schedules,
-  handleSnack,
-}) {
+function PupilCard({ id, name, schedulesId, grade, parents, address, schedules, handleSnack }) {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [viewAddScheduleForm, setViewAddScheduleForm] = React.useState(false);
@@ -105,8 +95,11 @@ function PupilCard({
           <Typography component="p">
             {schedulesId.map((id) => `${days[schedules[id].day - 1]}-${schedules[id].time} `)}
           </Typography>
-          <Typography component="p">{`Родители: ${parents}`}</Typography>
-          <Typography component="p">{`Контакты: ${contacts.join(',')}`}</Typography>
+          {parents.map((parent, i) => (
+            <Typography component="p" key={i}>
+              {parent.person}: {parent.contact}
+            </Typography>
+          ))}
           <Typography component="p">{`Адрес: ${address}`}</Typography>
         </CardContent>
         <CardActions className="pupils__homework">
@@ -124,9 +117,8 @@ PupilCard.propTypes = {
   schedulesId: PropTypes.arrayOf(PropTypes.string).isRequired,
   schedules: PropTypes.object.isRequired,
   grade: PropTypes.number.isRequired,
-  parents: PropTypes.string.isRequired,
+  parents: PropTypes.PropTypes.arrayOf(PropTypes.object).isRequired,
   address: PropTypes.string.isRequired,
-  contacts: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default PupilCard;

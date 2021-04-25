@@ -26,17 +26,24 @@ function AddPupilInputs() {
         fullWidth
       />
       <MyTextField margin="normal" name="address" label="Адрес" autoComplete="off" fullWidth />
-      <MyTextField margin="normal" name="parents" label="Родитель" autoComplete="off" fullWidth />
 
-      <FieldArray name="contacts">
+      <FieldArray name="parents">
         {({ insert, remove, push }) => (
           <React.Fragment>
-            {values.contacts.length > 0 &&
-              values.contacts.map((contact, index) => (
+            {values.parents.length > 0 &&
+              values.parents.map((contact, index) => (
                 <React.Fragment key={index}>
                   <MyTextField
                     margin="normal"
-                    name={`contacts[${index}]`}
+                    name={`parents[${index}].person`}
+                    label="Родитель"
+                    autoComplete="off"
+                    fullWidth
+                  />
+
+                  <MyTextField
+                    margin="normal"
+                    name={`parents[${index}].contact`}
                     label="Контакты"
                     autoComplete="off"
                     InputProps={{
@@ -44,7 +51,8 @@ function AddPupilInputs() {
                     }}
                     fullWidth
                   />
-                  {values.contacts.length > 1 && (
+
+                  {values.parents.length > 1 && (
                     <Tooltip title="Удалить номер">
                       <IconButton
                         size="small"
@@ -58,14 +66,14 @@ function AddPupilInputs() {
                   )}
                 </React.Fragment>
               ))}
-            {values.contacts.length < 5 && (
+            {values.parents.length < 5 && (
               <Tooltip title="Добавить номер">
                 <IconButton
                   size="small"
                   color="secondary"
                   aria-label="Добавить номер"
                   className="pupil-form__btn pupil-form__btn-add-contact"
-                  onClick={() => push('')}>
+                  onClick={() => push({ person: '', contact: '' })}>
                   <AddIcon />
                 </IconButton>
               </Tooltip>
