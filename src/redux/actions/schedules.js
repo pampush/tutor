@@ -3,11 +3,16 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 
 export const fetchSchedules = ({ preventIsLoaded } = {}) => async (dispatch) => {
-  if (!preventIsLoaded) dispatch({ type: 'SET_SCHEDULES_LOADED', payload: false });
+  try {
+    if (!preventIsLoaded) dispatch({ type: 'SET_SCHEDULES_LOADED', payload: false });
 
-  const schedules = await retrieveSchedules();
+    const schedules = await retrieveSchedules();
 
-  dispatch(setSchedules(schedules));
+    dispatch(setSchedules(schedules));
+  } catch (e) {
+    console.error(e);
+    dispatch({ type: 'SET_SCHEDULES_LOADED', payload: true });
+  }
 };
 
 async function retrieveSchedules() {
@@ -18,9 +23,9 @@ async function retrieveSchedules() {
 }
 
 export const postSchedule = (schedules) => async (dispatch) => {
-  dispatch({ type: 'SET_SCHEDULES_LOADED', payload: false });
-
   try {
+    dispatch({ type: 'SET_SCHEDULES_LOADED', payload: false });
+
     const schPromises = schedules.map((schedule) =>
       db.doc(`/users/${auth.currentUser.uid}/schedules/${schedule.id}`).set({ ...schedule }),
     );
@@ -33,39 +38,53 @@ export const postSchedule = (schedules) => async (dispatch) => {
 };
 
 export const addLessonToSchedule = ({ id, date }, { preventIsLoaded } = {}) => async (dispatch) => {
-  if (!preventIsLoaded) dispatch({ type: 'SET_SCHEDULES_LOADED', payload: false });
-  await db
-    .doc(`/users/${auth.currentUser.uid}/schedules/${id}/`)
-    .update({ lessons: firebase.firestore.FieldValue.arrayUnion(date) });
+  try {
+    if (!preventIsLoaded) dispatch({ type: 'SET_SCHEDULES_LOADED', payload: false });
+    await db
+      .doc(`/users/${auth.currentUser.uid}/schedules/${id}/`)
+      .update({ lessons: firebase.firestore.FieldValue.arrayUnion(date) });
 
-  const schedule = await db.doc(`/users/${auth.currentUser.uid}/schedules/${id}/`).get();
-  dispatch(updateSchedule(schedule.data()));
+    const schedule = await db.doc(`/users/${auth.currentUser.uid}/schedules/${id}/`).get();
+    dispatch(updateSchedule(schedule.data()));
+  } catch (e) {
+    console.error(e);
+    dispatch({ type: 'SET_SCHEDULES_LOADED', payload: true });
+  }
 };
 
 export const deleteLessonFromSchedule = ({ date, id }) => async (dispatch) => {
-  dispatch({ type: 'SET_SCHEDULES_LOADED', payload: false });
-  await db
-    .doc(`/users/${auth.currentUser.uid}/schedules/${id}/`)
-    .update({ lessons: firebase.firestore.FieldValue.arrayRemove(date) });
+  try {
+    dispatch({ type: 'SET_SCHEDULES_LOADED', payload: false });
+    await db
+      .doc(`/users/${auth.currentUser.uid}/schedules/${id}/`)
+      .update({ lessons: firebase.firestore.FieldValue.arrayRemove(date) });
 
-  const schedule = await db.doc(`/users/${auth.currentUser.uid}/schedules/${id}/`).get();
-  dispatch(updateSchedule(schedule.data()));
+    const schedule = await db.doc(`/users/${auth.currentUser.uid}/schedules/${id}/`).get();
+    dispatch(updateSchedule(schedule.data()));
+  } catch (e) {
+    console.error(e);
+    dispatch({ type: 'SET_SCHEDULES_LOADED', payload: true });
+  }
 };
 
 export const deleteSchedulesByPupil = (id) => async (dispatch) => {
   const schedulesPromises = [];
-  const schedulesSnapshot = await db
-    .collection(`/users/${auth.currentUser.uid}/schedules/`)
-    .where('pupil', '==', id)
-    .get();
+  try {
+    const schedulesSnapshot = await db
+      .collection(`/users/${auth.currentUser.uid}/schedules/`)
+      .where('pupil', '==', id)
+      .get();
 
-  schedulesSnapshot.forEach((schedulesSnap) =>
-    schedulesPromises.push(
-      db.doc(`/users/${auth.currentUser.uid}/schedules/${schedulesSnap.data().id}`).delete(),
-    ),
-  );
+    schedulesSnapshot.forEach((schedulesSnap) =>
+      schedulesPromises.push(
+        db.doc(`/users/${auth.currentUser.uid}/schedules/${schedulesSnap.data().id}`).delete(),
+      ),
+    );
 
-  await Promise.all(schedulesPromises);
+    await Promise.all(schedulesPromises);
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 export const deleteScheduleAction = (id) => async (dispatch) => {

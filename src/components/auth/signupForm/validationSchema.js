@@ -22,6 +22,8 @@ const validationSchema = yup.object().shape({
     .mixed()
     .notOneOf([''], 'Выполните проверку Recaptcha')
     .required('Выполните проверку Recaptcha'),
+  business: yup
+    .boolean()
 });
 
 export default validationSchema;

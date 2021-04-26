@@ -20,9 +20,8 @@ import { deleteLessonsBySmth, fetchLessons } from '../../redux/actions/lessons';
 import { deletePupilAction } from '../../redux/actions/pupils';
 import { deleteSchedulesByPupil, fetchSchedules } from '../../redux/actions/schedules';
 import { fetchScheduledLessons } from '../../redux/actions/scheduledLessons';
-import { postSchedule } from '../../redux/actions/schedules';
 import AddScheduleForm from '../addScheduleForm/AddScheduleForm';
-import { pushScheduleToPupil } from '../../redux/actions/pupils';
+import { Dialog, DialogContent, DialogTitle, Box, Button } from '@material-ui/core';
 
 const days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
 
@@ -30,6 +29,7 @@ function PupilCard({ id, name, schedulesId, grade, parents, address, schedules, 
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [viewAddScheduleForm, setViewAddScheduleForm] = React.useState(false);
+  const [viewDeleteConsentDialog, setViewDeleteConsentDialog] = React.useState(false);
   const date = useSelector(({ date }) => date.selected);
 
   const handleClick = (e) => setAnchorEl(e.currentTarget);
@@ -56,6 +56,36 @@ function PupilCard({ id, name, schedulesId, grade, parents, address, schedules, 
           setViewAddScheduleForm(false);
         }}
       />
+
+      <Dialog
+        open={viewDeleteConsentDialog}
+        onClose={() => setViewDeleteConsentDialog(false)}
+        aria-labelledby="form-dialog-title"
+        className="pupil-form__dialog"
+        //classes={{ paper: classes.paper }}
+        maxWidth="md">
+        <DialogTitle>
+          Удаление ученика приведет к удалению всех его уроков и шаблонов. Вы уверены?
+        </DialogTitle>
+        <DialogContent className="lesson-form__dialog-content">
+          <Box className="lesson-form__controls">
+            <Button
+              variant="contained"
+              color="secondary"
+              style={{ fontWeight: '600' }}
+              onClick={() => setViewDeleteConsentDialog(false)}>
+              Закрыть
+            </Button>
+            <Button
+              variant="contained"
+              style={{ fontWeight: '600', backgroundColor: 'red' }}
+              onClick={handleDelete}>
+              Подтвердить
+            </Button>
+          </Box>
+        </DialogContent>
+      </Dialog>
+
       <Card className="pupils__card">
         <CardHeader
           className="pupils__card-header"
@@ -87,7 +117,7 @@ function PupilCard({ id, name, schedulesId, grade, parents, address, schedules, 
             <MenuItem onClick={() => setViewAddScheduleForm(true)}>
               Добавить пункт расписания
             </MenuItem>
-            <MenuItem onClick={handleDelete}>Удалить</MenuItem>
+            <MenuItem onClick={() => setViewDeleteConsentDialog(true)}>Удалить</MenuItem>
           </MenuList>
         </Menu>
 

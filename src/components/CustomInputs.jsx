@@ -3,6 +3,7 @@ import { useField } from 'formik';
 
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
+import { Checkbox } from '@material-ui/core';
 
 export const MyTextField = ({ ...props }) => {
   const [field, meta, helpers] = useField(props.name);
@@ -13,6 +14,20 @@ export const MyTextField = ({ ...props }) => {
       error={meta.touched && Boolean(meta.error)}
       helperText={meta.touched && meta.error}
     />
+  );
+};
+
+export const MyCheckBox = ({ ...props }) => {
+  const [field, meta] = useField(props);
+  return (
+    <React.Fragment>
+      <Checkbox
+        {...field}
+        {...props}
+        error={meta.touched && Boolean(meta.error)}
+        helperText={meta.touched && meta.error}
+      />
+    </React.Fragment>
   );
 };
 

@@ -11,8 +11,11 @@ import ShowChartIcon from '@material-ui/icons/ShowChart';
 import React from 'react';
 import MenuItem from './MenuItem';
 import MenuHeader from './MenuHeader';
+import { useSelector } from 'react-redux';
 
 function MenuDrawer() {
+  const business = useSelector(({ user }) => user.business);
+
   return (
     <Drawer variant="permanent" anchor="left">
       <List className={'menu__list'}>
@@ -29,9 +32,11 @@ function MenuDrawer() {
           <MenuItem open={false} name="Ученики" to="/pupils">
             <FaceIcon className="menu--svg" />
           </MenuItem>
-          <MenuItem open={false} name="Финансы" to="finance">
-            <ShowChartIcon className="menu--svg" />
-          </MenuItem>
+          {business && (
+            <MenuItem open={false} name="Финансы" to="finance">
+              <ShowChartIcon className="menu--svg" />
+            </MenuItem>
+          )}
         </Box>
       </List>
     </Drawer>

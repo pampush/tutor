@@ -21,10 +21,15 @@ async function retrieveSchedulesByDay(date) {
 }
 
 export const fetchScheduledLessons = (date, { preventIsLoaded } = {}) => async (dispatch) => {
-  if (!preventIsLoaded) dispatch({ type: 'SET_SCHEDULED_LESSONS_LOADED', payload: false });
-  const schedules = await retrieveSchedulesByDay(date);
+  try {
+    if (!preventIsLoaded) dispatch({ type: 'SET_SCHEDULED_LESSONS_LOADED', payload: false });
+    const schedules = await retrieveSchedulesByDay(date);
 
-  dispatch(setScheduledLessons(schedules));
+    dispatch(setScheduledLessons(schedules));
+  } catch (e) {
+    console.error(e);
+    dispatch({ type: 'SET_SCHEDULED_LESSONS_LOADED', payload: false });
+  }
 };
 
 export const setScheduledLessons = (items) => ({

@@ -4,18 +4,19 @@ import { postSchedule } from './schedules';
 
 const formHandler = ({ ...data }) => async (dispatch) => {
   const pupilId = uniqid();
-
-  const schedules = data.schedules.map((schedule) => ({
-    id: uniqid(),
-    subject: schedule.subject,
-    time: schedule.time,
-    price: +schedule.price,
-    day: +schedule.day,
-    year: new Date().getFullYear(),
-    pupil: pupilId,
-    lessons: [],
-    timestamp: Date.now(),
-  }));
+  const schedules = data.schedules.map(({ price = 0, ...schedule }) => {
+    return {
+      id: uniqid(),
+      subject: schedule.subject,
+      time: schedule.time,
+      price: +price,
+      day: +schedule.day,
+      year: new Date().getFullYear(),
+      pupil: pupilId,
+      lessons: [],
+      timestamp: Date.now(),
+    };
+  });
   const pupil = {
     id: pupilId,
     name: data.name,

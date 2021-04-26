@@ -4,6 +4,7 @@ const initialValues = {
   password: '',
   email: '',
   recaptcha: '',
+  business: false,
 };
 
 export default initialValues;

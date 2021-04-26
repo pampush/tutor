@@ -99,7 +99,7 @@ function LessonCard({
           <Grid container justify="space-between">
             <Grid item>
               <Typography variant="subtitle2" color="textPrimary" component="p">
-                {name}, {address}, {`стоимость: ${price}`}
+                {name}, {address} 
               </Typography>
             </Grid>
             <Grid item>

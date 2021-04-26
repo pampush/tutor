@@ -12,6 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import { MyTextField, MySelect } from '../CustomInputs';
+import { useSelector } from 'react-redux';
 
 const menuProps = {
   anchorOrigin: {
@@ -38,6 +39,7 @@ const days = {
 };
 
 function AddScheduleInputs() {
+  const business = useSelector(({ user }) => user.business);
   const { values } = useFormikContext();
 
   return (
@@ -50,7 +52,7 @@ function AddScheduleInputs() {
                 <Grid container spacing={4}>
                   <Grid item xs={12} sm={6}>
                     <FormControl fullWidth>
-                      <InputLabel id="pupil-form__select-label">День занятия</InputLabel>
+                      <InputLabel id="pupil-form__select-label">День занятия*</InputLabel>
                       <MySelect
                         labelId="pupil-form__select-label"
                         name={`schedules[${index}].day`}
@@ -69,7 +71,7 @@ function AddScheduleInputs() {
                       margin="none"
                       name={`schedules[${index}].time`}
                       type="time"
-                      label="Время занятия"
+                      label="Время занятия*"
                       inputProps={{
                         step: 300, // 5 min
                       }}
@@ -77,18 +79,20 @@ function AddScheduleInputs() {
                     />
                   </Grid>
                 </Grid>
-                <MyTextField
-                  margin="normal"
-                  name={`schedules[${index}].price`}
-                  type="number"
-                  label="Стоимость занятия"
-                  autoComplete="off"
-                  fullWidth
-                />
+                {business && (
+                  <MyTextField
+                    margin="normal"
+                    name={`schedules[${index}].price`}
+                    type="number"
+                    label="Стоимость занятия*"
+                    autoComplete="off"
+                    fullWidth
+                  />
+                )}
                 <MyTextField
                   margin="normal"
                   name={`schedules[${index}].subject`}
-                  label="Предмет"
+                  label="Предмет*"
                   autoComplete="off"
                   fullWidth
                 />

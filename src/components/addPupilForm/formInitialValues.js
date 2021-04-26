@@ -8,7 +8,7 @@ const formInitialValues = {
     {
       day: '',
       time: '15:00',
-      price: '',
+      price: '0',
       subject: '',
     },
   ],

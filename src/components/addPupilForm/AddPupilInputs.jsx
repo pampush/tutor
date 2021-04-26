@@ -13,11 +13,18 @@ function AddPupilInputs() {
 
   return (
     <React.Fragment>
-      <MyTextField autoFocus margin="normal" name="name" label="Имя" autoComplete="off" fullWidth />
+      <MyTextField
+        autoFocus
+        margin="normal"
+        name="name"
+        label="Имя*"
+        autoComplete="off"
+        fullWidth
+      />
       <MyTextField
         margin="normal"
         name="grade"
-        label="Класс"
+        label="Класс*"
         type="number"
         InputProps={{
           inputProps: { min: 1, max: 20 },

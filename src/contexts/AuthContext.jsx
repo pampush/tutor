@@ -4,7 +4,7 @@ import { auth } from '../firebase';
 import { CircularProgress, Backdrop } from '@material-ui/core';
 
 auth.languageCode = 'ru';
-export const AuthContext = React.createContext({ test: 'success' });
+export const AuthContext = React.createContext();
 
 function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = React.useState(null);

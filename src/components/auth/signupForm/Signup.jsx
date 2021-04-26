@@ -22,6 +22,7 @@ import Recaptcha from './Recaptcha';
 import EmailSnack from '../EmailSnack';
 import { postUser } from '../../../redux/actions/user';
 import Footer from '../Footer';
+import { Link } from '@material-ui/core';
 
 function Signup() {
   const dispatch = useDispatch();
@@ -35,6 +36,7 @@ function Signup() {
   const handleSubmit = async (values, actions) => {
     actions.setSubmitting(false);
     setLoading(true);
+
     try {
       const name = values.firstName + ' ' + values.lastName;
       const userCredential = await signup(values.email, values.password);
@@ -42,12 +44,14 @@ function Signup() {
       await verifyEmail(userCredential.user);
 
       setViewEmailVerifySnack(true);
+
       dispatch(
         postUser({
           id: userCredential.user.uid,
           name,
           timestamp: Date.now(),
           email: userCredential.user.email,
+          business: values.business,
         }),
       );
 
@@ -63,7 +67,6 @@ function Signup() {
       }
       setViewSnack(true);
     }
-    //dispatch(signup(values.email, values.password));
   };
 
   React.useEffect(() => {
@@ -85,7 +88,7 @@ function Signup() {
         onClose={() => setViewEmailVerifySnack(false)}
       />
       <Container component="main" maxWidth="sm" className="auth__main">
-        {error && <ErrorSnack open={viewSnack} message={error} onClose={setViewSnack} />}
+        <ErrorSnack open={viewSnack} message={error} onClose={setViewSnack} />
         <CssBaseline />
         <Grid container className="auth__container">
           <Grid
@@ -114,6 +117,10 @@ function Signup() {
               <Form>
                 <SignupInputs />
                 <Recaptcha />
+                <Typography>
+                  Нажимая на кнопку "Зарегистрироваться" вы соглашаетесь с
+                  <Link> Условиями использования </Link> и<Link>Политикой конфиденциальности </Link>
+                </Typography>
                 <Button
                   type="submit"
                   disabled={loading}

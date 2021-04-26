@@ -12,6 +12,7 @@ import FaceIcon from '@material-ui/icons/Face';
 import ShowChartIcon from '@material-ui/icons/ShowChart';
 
 import React from 'react';
+import { useSelector } from 'react-redux';
 import MenuItem from './MenuItem';
 import MenuHeader from './MenuHeader';
 
@@ -24,6 +25,7 @@ const useStyles = makeStyles({
 
 function MenuDrawerMobile() {
   const [open, setOpen] = React.useState(false);
+  const business = useSelector(({ user }) => user.business);
 
   const handleDrawer = () => setOpen((prev) => !prev);
 
@@ -67,9 +69,11 @@ function MenuDrawerMobile() {
           <MenuItem name="Ученики" to="/pupils" handleDrawer={() => setOpen(false)}>
             <FaceIcon className="menu--svg" />
           </MenuItem>
-          <MenuItem name="Финансы" to="/finance" handleDrawer={() => setOpen(false)}>
-            <ShowChartIcon className="menu--svg" />
-          </MenuItem>
+          {business && (
+            <MenuItem name="Финансы" to="/finance" handleDrawer={() => setOpen(false)}>
+              <ShowChartIcon className="menu--svg" />
+            </MenuItem>
+          )}
         </List>
       </Drawer>
     </React.Fragment>

@@ -40,7 +40,7 @@ const theme = createMuiTheme({
         '&:hover': {
           backgroundColor: 'rgba(255, 192, 70, 0.5)',
           '@media (hover:none)': {
-            backgroundColor: orange[500],
+            backgroundColor: 'transparent',
           },
         },
       },

@@ -20,12 +20,12 @@ import { pushScheduleToPupil } from '../../redux/actions/pupils';
 function AddScheduleForm({ open, id, handleClose, width, handleSnack }) {
   const dispatch = useDispatch();
   const date = useSelector(({ date }) => date.selected);
-  async function handleSubmit(values, actions) {
+  async function handleSubmit({ price = 0, ...values }, actions) {
     const schedule = {
       id: uniqid(),
       day: +values.day,
       lessons: [],
-      price: +values.price,
+      price: +price,
       pupil: id,
       subject: values.subject,
       time: values.time,

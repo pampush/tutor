@@ -13,9 +13,13 @@ export const fetchLessons = (date) => async (dispatch) => {
   dispatch({ type: 'SET_LESSONS_LOADED', payload: false });
   const timer = stopwatch(fastRetrieveLessons);
   const query = ['date', '==', `${ISODate}`];
-  const lessons = await timer(query);
-
-  dispatch(setLessons(lessons));
+  try {
+    const lessons = await timer(query);
+    dispatch(setLessons(lessons));
+  } catch (e) {
+    console.error(e);
+    dispatch({ type: 'SET_LESSONS_LOADED', payload: true });
+  }
 };
 
 async function fastRetrieveLessons(query) {
@@ -32,9 +36,13 @@ async function fastRetrieveLessons(query) {
 }
 
 export const postLesson = (lesson, { preventIsLoaded } = {}) => async (dispatch) => {
-  if (!preventIsLoaded) dispatch({ type: 'SET_LESSONS_LOADED', payload: false });
-  await db.doc(`/users/${auth.currentUser.uid}/lessons/${lesson.id}`).set(lesson);
-  dispatch(addLesson(lesson));
+  try {
+    if (!preventIsLoaded) dispatch({ type: 'SET_LESSONS_LOADED', payload: false });
+    await db.doc(`/users/${auth.currentUser.uid}/lessons/${lesson.id}`).set(lesson);
+    dispatch(addLesson(lesson));
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 /**
@@ -46,32 +54,46 @@ export const postLesson = (lesson, { preventIsLoaded } = {}) => async (dispatch)
  */
 
 export const deleteLesson = (id) => async (dispatch) => {
-  dispatch({ type: 'SET_LESSONS_LOADED', payload: false });
-  await db.doc(`/users/${auth.currentUser.uid}/lessons/${id}`).delete();
+  try {
+    dispatch({ type: 'SET_LESSONS_LOADED', payload: false });
+    await db.doc(`/users/${auth.currentUser.uid}/lessons/${id}`).delete();
 
-  dispatch(deleteLessonAction(id));
+    dispatch(deleteLessonAction(id));
+  } catch (e) {
+    console.error(e);
+    dispatch({ type: 'SET_LESSONS_LOADED', payload: true });
+  }
 };
 
 export const deleteLessonsBySmth = ({ field, id }) => async (dispatch) => {
   const lessonsPromises = [];
-  const lessonsSnapshot = await db
-    .collection(`/users/${auth.currentUser.uid}/lessons/`)
-    .where(`${field}`, '==', id)
-    .get();
+  try {
+    const lessonsSnapshot = await db
+      .collection(`/users/${auth.currentUser.uid}/lessons/`)
+      .where(`${field}`, '==', id)
+      .get();
 
-  lessonsSnapshot.forEach((lessonsSnap) =>
-    lessonsPromises.push(
-      db.doc(`/users/${auth.currentUser.uid}/lessons/${lessonsSnap.data().id}`).delete(),
-    ),
-  );
+    lessonsSnapshot.forEach((lessonsSnap) =>
+      lessonsPromises.push(
+        db.doc(`/users/${auth.currentUser.uid}/lessons/${lessonsSnap.data().id}`).delete(),
+      ),
+    );
 
-  await Promise.all(lessonsPromises);
+    await Promise.all(lessonsPromises);
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 export const changeLesson = ({ id, field, value }) => async (dispatch) => {
-  dispatch({ type: 'SET_LESSONS_LOADED', payload: false });
-  await db.doc(`/users/${auth.currentUser.uid}/lessons/${id}`).update({ [field]: value });
-  dispatch(updateLesson({ id, field, value }));
+  try {
+    dispatch({ type: 'SET_LESSONS_LOADED', payload: false });
+    await db.doc(`/users/${auth.currentUser.uid}/lessons/${id}`).update({ [field]: value });
+    dispatch(updateLesson({ id, field, value }));
+  } catch (e) {
+    console.error(e);
+    dispatch({ type: 'SET_LESSONS_LOADED', payload: true });
+  }
 };
 /**
  * @param {object[]} items lessons array

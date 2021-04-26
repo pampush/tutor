@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { auth } from './firebase';
 
 import theme from './stylesOverride';
@@ -9,6 +9,8 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import StylesProvider from '@material-ui/styles/StylesProvider';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { Menu, InfoPanel, Signup, Login, NotFound } from './components';
 import Schedule from './pages/Schedule';
@@ -27,6 +29,8 @@ import { setDate } from './redux/actions/date';
 
 function Content() {
   const dispatch = useDispatch();
+  const business = useSelector(({ user }) => user.business);
+  const userIsLoaded = useSelector(({ user }) => user.isLoaded);
 
   React.useEffect(() => {
     dispatch(setDate(new Date()));
@@ -40,31 +44,41 @@ function Content() {
   return (
     <React.Fragment>
       <Menu />
-      <Box className="content">
-        <Container maxWidth="xl">
-          <InfoPanel />
-          <Switch>
-            <Route path="/tutor">
-              <Schedule />
-            </Route>
-            <Route path="/schedule">
-              <Schedule />
-            </Route>
-            <Route path="/pupils">
-              <Pupils />
-            </Route>
-            <Route path="/finance">
-              <Finance />
-            </Route>
-            <Route path="/settings">
-              <Settings />
-            </Route>
-            <Route path="*">
-              <Redirect to="/404" />
-            </Route>
-          </Switch>
-        </Container>
-      </Box>
+
+      {userIsLoaded ? (
+        <Box className="content">
+          <Container maxWidth="xl">
+            <InfoPanel />
+            <Switch>
+              <Route path="/tutor">
+                <Schedule />
+              </Route>
+              <Route path="/schedule">
+                <Schedule />
+              </Route>
+              <Route path="/pupils">
+                <Pupils />
+              </Route>
+              {business && (
+                <Route path="/finance">
+                  <Finance />
+                </Route>
+              )}
+
+              <Route path="/settings">
+                <Settings />
+              </Route>
+              <Route path="*">
+                <Redirect to="/404" />
+              </Route>
+            </Switch>
+          </Container>
+        </Box>
+      ) : (
+        <Backdrop open={!userIsLoaded}>
+          <CircularProgress />
+        </Backdrop>
+      )}
     </React.Fragment>
   );
 }

@@ -4,6 +4,7 @@ import { Grid, FormControl, InputLabel, MenuItem } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import { MyTextField, MySelect } from '../CustomInputs';
+import { useSelector } from 'react-redux';
 
 const menuProps = {
   anchorOrigin: {
@@ -30,6 +31,8 @@ const days = {
 const iconComponent = (props) => <ExpandMoreIcon {...props} />;
 
 function AddScheduleInputs() {
+  const business = useSelector(({ user }) => user.business);
+  
   return (
     <React.Fragment>
       <Grid container spacing={4}>
@@ -62,14 +65,16 @@ function AddScheduleInputs() {
           />
         </Grid>
       </Grid>
-      <MyTextField
-        margin="normal"
-        name="price"
-        type="number"
-        label="Стоимость занятия"
-        autoComplete="off"
-        fullWidth
-      />
+      {business && (
+        <MyTextField
+          margin="normal"
+          name="price"
+          type="number"
+          label="Стоимость занятия"
+          autoComplete="off"
+          fullWidth
+        />
+      )}
       <MyTextField margin="normal" name="subject" label="Предмет" autoComplete="off" fullWidth />
     </React.Fragment>
   );

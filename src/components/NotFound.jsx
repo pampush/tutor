@@ -8,8 +8,8 @@ import { ReactComponent as NonFoundIcon } from '../assets/img/notfound.svg';
 
 function NotFound() {
   return (
-    <Box class="notfound__container">
-      <NonFoundIcon class="notfound__svg" />
+    <Box className="notfound__container">
+      <NonFoundIcon className="notfound__svg" />
       <Typography variant="h2" align="center">
         404
       </Typography>

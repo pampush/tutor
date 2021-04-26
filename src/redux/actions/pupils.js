@@ -4,11 +4,16 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 
 export const fetchPupils = () => async (dispatch) => {
-  dispatch({ type: 'SET_PUPILS_LOADED', payload: false });
+  try {
+    dispatch({ type: 'SET_PUPILS_LOADED', payload: false });
 
-  const pupils = await retrievePupils();
+    const pupils = await retrievePupils();
 
-  dispatch(setPupils(pupils));
+    dispatch(setPupils(pupils));
+  } catch (e) {
+    console.error(e);
+    dispatch({ type: 'SET_PUPILS_LOADED', payload: true });
+  }
 };
 
 async function retrievePupils() {
@@ -17,35 +22,53 @@ async function retrievePupils() {
   pupilsSnapshot.forEach(
     (pupilDoc) => (retrievedPupils = { ...retrievedPupils, [pupilDoc.id]: pupilDoc.data() }),
   );
+
   return retrievedPupils;
 }
 
 export const postPupil = ({ id, ...data }) => async (dispatch) => {
-  dispatch({ type: 'SET_PUPILS_LOADED', payload: false });
-  await db.doc(`/users/${auth.currentUser.uid}/pupils/${id}/`).set({ id, ...data });
-  dispatch(addPupil({ id, ...data }));
+  try {
+    dispatch({ type: 'SET_PUPILS_LOADED', payload: false });
+    await db.doc(`/users/${auth.currentUser.uid}/pupils/${id}/`).set({ id, ...data });
+    dispatch(addPupil({ id, ...data }));
+  } catch (e) {
+    console.error(e);
+    dispatch({ type: 'SET_PUPILS_LOADED', payload: false });
+  }
 };
 
 export const pullScheduleFromPupil = (pupilId, scheduleId) => async (dispatch) => {
-  await db
-    .doc(`/users/${auth.currentUser.uid}/pupils/${pupilId}/`)
-    .update({ schedulesId: firebase.firestore.FieldValue.arrayRemove(scheduleId) });
-  const pupil = await db.doc(`/users/${auth.currentUser.uid}/pupils/${pupilId}/`).get();
-  dispatch(updatePupil(pupil.data()));
+  try {
+    await db
+      .doc(`/users/${auth.currentUser.uid}/pupils/${pupilId}/`)
+      .update({ schedulesId: firebase.firestore.FieldValue.arrayRemove(scheduleId) });
+    const pupil = await db.doc(`/users/${auth.currentUser.uid}/pupils/${pupilId}/`).get();
+    dispatch(updatePupil(pupil.data()));
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 export const pushScheduleToPupil = (pupilId, scheduleId) => async (dispatch) => {
-  await db
-    .doc(`/users/${auth.currentUser.uid}/pupils/${pupilId}/`)
-    .update({ schedulesId: firebase.firestore.FieldValue.arrayUnion(scheduleId) });
-  const pupil = await db.doc(`/users/${auth.currentUser.uid}/pupils/${pupilId}/`).get();
-  dispatch(updatePupil(pupil.data()));
+  try {
+    await db
+      .doc(`/users/${auth.currentUser.uid}/pupils/${pupilId}/`)
+      .update({ schedulesId: firebase.firestore.FieldValue.arrayUnion(scheduleId) });
+    const pupil = await db.doc(`/users/${auth.currentUser.uid}/pupils/${pupilId}/`).get();
+    dispatch(updatePupil(pupil.data()));
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 export const deletePupilAction = (id) => async (dispatch) => {
-  dispatch({ type: 'SET_PUPILS_LOADED', payload: false });
-  await db.doc(`/users/${auth.currentUser.uid}/pupils/${id}/`).delete();
-  dispatch(deletePupil(id));
+  try {
+    dispatch({ type: 'SET_PUPILS_LOADED', payload: false });
+    await db.doc(`/users/${auth.currentUser.uid}/pupils/${id}/`).delete();
+    dispatch(deletePupil(id));
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 export const setPupils = (items) => ({

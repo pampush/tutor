@@ -5,12 +5,21 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 
-import { MyTextField } from '../../CustomInputs';
+import { MyTextField, MyCheckBox } from '../../CustomInputs';
+import { Popper, Typography, Paper } from '@material-ui/core';
 
 function SignupInputs() {
   const [viewPassword, setViewPassword] = React.useState(false);
   const handleClickShowPassword = () => setViewPassword((prev) => !prev);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  function handleBusiness(e) {
+    setAnchorEl(anchorEl ? null : e.currentTarget);
+  }
 
   return (
     <React.Fragment>
@@ -63,6 +72,20 @@ function SignupInputs() {
               ),
             }}
           />
+        </Grid>
+        <Grid item xs={12}>
+          <FormControlLabel control={<MyCheckBox name="business" />} label="Статус ИП" />
+
+          <IconButton onClick={handleBusiness}>
+            <HelpOutlineIcon />
+          </IconButton>
+          <Popper open={anchorEl ? true : false} anchorEl={anchorEl}>
+            <Paper elevation={3}>
+              <Typography>
+                Оставляя поле пустым, вы лишаетесь доступа к ведению финансовой статистики
+              </Typography>
+            </Paper>
+          </Popper>
         </Grid>
       </Grid>
     </React.Fragment>

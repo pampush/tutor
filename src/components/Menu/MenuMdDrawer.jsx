@@ -14,8 +14,10 @@ import MenuIcon from '@material-ui/icons/Menu';
 
 import MenuItem from './MenuItem';
 import MenuHeader from './MenuHeader';
+import { useSelector } from 'react-redux';
 
 function MenuControls({ handleDrawer }) {
+  const business = useSelector(({ user }) => user.business);
   return (
     <Box className="menu__nav-container">
       <MenuItem handleDrawer={() => handleDrawer(false)} name="Расписание" to="/schedule">
@@ -24,9 +26,11 @@ function MenuControls({ handleDrawer }) {
       <MenuItem handleDrawer={() => handleDrawer(false)} name="Ученики" to="/pupils">
         <FaceIcon className="menu--svg" />
       </MenuItem>
-      <MenuItem handleDrawer={() => handleDrawer(false)} name="Финансы" to="/finance">
-        <ShowChartIcon className="menu--svg" />
-      </MenuItem>
+      {business && (
+        <MenuItem handleDrawer={() => handleDrawer(false)} name="Финансы" to="/finance">
+          <ShowChartIcon className="menu--svg" />
+        </MenuItem>
+      )}
     </Box>
   );
 }
