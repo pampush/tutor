@@ -16,9 +16,11 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Grid from '@material-ui/core/Grid';
 
 import NotesForm from '../notesForm/NotesForm';
+import ThemeForm from '../themeForm/ThemeForm';
 import { deleteLesson } from '../../redux/actions/lessons';
 import { deleteLessonFromSchedule } from '../../redux/actions/schedules';
 import { fetchScheduledLessons } from '../../redux/actions/scheduledLessons';
+import EditLessonForm from '../editLessonForm/EditLessonForm';
 
 function LessonCard({
   id,
@@ -27,7 +29,8 @@ function LessonCard({
   date,
   name,
   price,
-  address,
+  pupil,
+  address = '',
   subject,
   note,
   schedule,
@@ -37,6 +40,8 @@ function LessonCard({
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [viewNotesForm, setViewNotesForm] = React.useState(false);
+  const [viewThemeForm, setViewThemeForm] = React.useState(false);
+  const [viewEditForm, setViewEditForm] = React.useState(false);
   const selectedDate = useSelector(({ date }) => date.selected);
 
   const handleClick = (e) => setAnchorEl(e.currentTarget);
@@ -55,7 +60,6 @@ function LessonCard({
 
   const clickNotesForm = () => setViewNotesForm(true);
   const closeNotesForm = () => setViewNotesForm(false);
-
   return (
     <React.Fragment>
       <NotesForm
@@ -66,6 +70,25 @@ function LessonCard({
         handleClose={closeNotesForm}
       />
 
+      <ThemeForm
+        open={viewThemeForm}
+        lessonTheme={theme}
+        id={id}
+        handleClose={() => setViewThemeForm(false)}
+      />
+
+      <EditLessonForm
+        open={viewEditForm}
+        lessonTheme={theme}
+        id={id}
+        time={time}
+        date={date}
+        pupil={pupil}
+        subject={subject}
+        price={price}
+        note={note}
+        handleClose={() => setViewEditForm(false)}
+      />
       <Card className="lesson__container">
         <Menu
           id="simple-menu"
@@ -80,7 +103,11 @@ function LessonCard({
             <MenuItem onClick={handleClose}>Домашняя работа(disabled)</MenuItem>
             <MenuItem onClick={clickNotesForm}>Заметки</MenuItem>
             <MenuItem onClick={handleClose}>push(disabled)</MenuItem>
-            <MenuItem onClick={handleClose}>Редактировать(disabled)</MenuItem>
+            {schedule ? (
+              <MenuItem onClick={() => setViewThemeForm(true)}>Редактировать тему</MenuItem>
+            ) : (
+              <MenuItem onClick={() => setViewEditForm(true)}>Редактировать урок</MenuItem>
+            )}
             <MenuItem onClick={handleDelete}>Удалить</MenuItem>
           </MenuList>
         </Menu>
@@ -99,7 +126,7 @@ function LessonCard({
           <Grid container justify="space-between">
             <Grid item>
               <Typography variant="subtitle2" color="textPrimary" component="p">
-                {name}, {address} 
+                {name}, {address}
               </Typography>
             </Grid>
             <Grid item>
@@ -119,7 +146,7 @@ function LessonCard({
 LessonCard.propTypes = {
   time: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  address: PropTypes.string.isRequired,
+  address: PropTypes.string,
   theme: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
 };

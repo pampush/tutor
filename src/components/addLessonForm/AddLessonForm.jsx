@@ -20,23 +20,24 @@ function AddLessonForm({ width, open, handleClose, handleSnack }) {
   const date = useSelector(({ date }) => date.selected);
   formInitialValues.date = date.toISOString().slice(0, 10);
 
-  function handleSubmit(values, actions) {
+  function handleSubmit({ price = 0, ...values }, actions) {
+    let test = Object.entries(values).filter(([key, value]) => {
+      if (typeof value === 'string') return value.trim();
+      return true;
+    });
+    test = Object.fromEntries(test);
+
     const lesson = {
       id: uniqid(),
-      theme: values.theme,
-      date: values.date,
-      time: values.time,
-      pupil: values.pupil,
       schedule: null,
-      subject: values.subject,
-      note: values.note,
-      price: +values.price,
+      price,
       timestamp: Date.now(),
+      ...test,
     };
     handleSnack(true);
+    handleClose();
     actions.setSubmitting(false);
     dispatch(postLesson(lesson));
-    handleClose();
   }
 
   return (

@@ -21,12 +21,7 @@ export const MyCheckBox = ({ ...props }) => {
   const [field, meta] = useField(props);
   return (
     <React.Fragment>
-      <Checkbox
-        {...field}
-        {...props}
-        error={meta.touched && Boolean(meta.error)}
-        helperText={meta.touched && meta.error}
-      />
+      <Checkbox {...field} {...props} />
     </React.Fragment>
   );
 };

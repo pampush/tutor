@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import Button from '@material-ui/core/Button';
@@ -8,27 +8,19 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Box from '@material-ui/core/Box';
-import { makeStyles } from '@material-ui/styles';
 
-import NotesFormInputs from './NotesFormInputs';
+import EditLessonInputs from './EditLessonInputs';
 import initialValues from './initialValues';
-import validationSchema from './validationSchema';
+import validationSchema from '../addLessonForm/validationSchema';
 import { changeLesson } from '../../redux/actions/lessons';
 
-const useStyles = makeStyles({
-  paper: {
-    width: '600px',
-  },
-});
-
-function NotesForm({ open, width, handleClose, handleSnack, id, note }) {
+function EditLessonForm({ width, open, id, handleClose, handleSnack, ...data }) {
   const dispatch = useDispatch();
-  const classes = useStyles();
 
-  async function handleSubmit(values, actions) {
+  function handleSubmit(values, actions) {
     actions.setSubmitting(false);
-    handleSnack(true);
-    dispatch(changeLesson(id, { note: values.note }));
+    handleClose();
+    dispatch(changeLesson(id, values));
   }
 
   return (
@@ -37,17 +29,16 @@ function NotesForm({ open, width, handleClose, handleSnack, id, note }) {
       onClose={handleClose}
       aria-labelledby="form-dialog-title"
       className="pupil-form__dialog"
-      classes={{ paper: classes.paper }}
-      maxWidth="md"
+      maxWidth="sm"
       fullScreen={isWidthDown('sm', width) ? true : false}>
-      <DialogTitle>Заметки об уроке</DialogTitle>
+      <DialogTitle>Измените данные об внеплановом уроке </DialogTitle>
       <DialogContent className="lesson-form__dialog-content">
         <Formik
-          initialValues={initialValues(note)}
+          initialValues={initialValues(data)}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}>
           <Form>
-            <NotesFormInputs />
+            <EditLessonInputs />
             <Box className="lesson-form__controls">
               <Button variant="contained" color="secondary" onClick={handleClose}>
                 Закрыть
@@ -63,4 +54,4 @@ function NotesForm({ open, width, handleClose, handleSnack, id, note }) {
   );
 }
 
-export default withWidth()(NotesForm);
+export default withWidth()(EditLessonForm);

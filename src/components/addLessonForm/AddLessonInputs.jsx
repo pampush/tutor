@@ -25,6 +25,7 @@ const iconComponent = (props) => <ExpandMoreIcon {...props} />;
 
 export default function AddLessonInputs() {
   const pupils = useSelector(({ pupils }) => pupils.items);
+  const business = useSelector(({ user }) => user.business);
 
   return (
     <React.Fragment>
@@ -72,16 +73,18 @@ export default function AddLessonInputs() {
             fullWidth
           />
         </Grid>
-        <Grid item xs={12}>
-          <MyTextField
-            margin="none"
-            type="number"
-            name="price"
-            label="Стоимость занятия"
-            autoComplete="off"
-            fullWidth
-          />
-        </Grid>
+        {business && (
+          <Grid item xs={12}>
+            <MyTextField
+              margin="none"
+              type="number"
+              name="price"
+              label="Стоимость занятия"
+              autoComplete="off"
+              fullWidth
+            />
+          </Grid>
+        )}
         <Grid item xs={12}>
           <MyTextField
             margin="none"

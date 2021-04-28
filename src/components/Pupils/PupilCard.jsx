@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import uniqid from 'uniqid';
 
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -25,7 +24,16 @@ import { Dialog, DialogContent, DialogTitle, Box, Button } from '@material-ui/co
 
 const days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
 
-function PupilCard({ id, name, schedulesId, grade, parents, address, schedules, handleSnack }) {
+function PupilCard({
+  id,
+  name,
+  schedulesId,
+  grade,
+  parents = [],
+  address = '',
+  schedules,
+  handleSnack,
+}) {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [viewAddScheduleForm, setViewAddScheduleForm] = React.useState(false);
@@ -61,9 +69,7 @@ function PupilCard({ id, name, schedulesId, grade, parents, address, schedules, 
         open={viewDeleteConsentDialog}
         onClose={() => setViewDeleteConsentDialog(false)}
         aria-labelledby="form-dialog-title"
-        className="pupil-form__dialog"
-        //classes={{ paper: classes.paper }}
-        maxWidth="md">
+        maxWidth="sm">
         <DialogTitle>
           Удаление ученика приведет к удалению всех его уроков и шаблонов. Вы уверены?
         </DialogTitle>
@@ -130,7 +136,7 @@ function PupilCard({ id, name, schedulesId, grade, parents, address, schedules, 
               {parent.person}: {parent.contact}
             </Typography>
           ))}
-          <Typography component="p">{`Адрес: ${address}`}</Typography>
+          <Typography component="p">{address && `Адрес: ${address}`}</Typography>
         </CardContent>
         <CardActions className="pupils__homework">
           <IconButton color="secondary" aria-label="Домашняя работа">
@@ -147,8 +153,8 @@ PupilCard.propTypes = {
   schedulesId: PropTypes.arrayOf(PropTypes.string).isRequired,
   schedules: PropTypes.object.isRequired,
   grade: PropTypes.number.isRequired,
-  parents: PropTypes.PropTypes.arrayOf(PropTypes.object).isRequired,
-  address: PropTypes.string.isRequired,
+  parents: PropTypes.PropTypes.arrayOf(PropTypes.object),
+  address: PropTypes.string,
 };
 
 export default PupilCard;

@@ -41,7 +41,7 @@ const days = {
 function AddScheduleInputs() {
   const business = useSelector(({ user }) => user.business);
   const { values } = useFormikContext();
-
+  console.log(values);
   return (
     <FieldArray name="schedules">
       {({ insert, remove, push }) => (
@@ -116,7 +116,7 @@ function AddScheduleInputs() {
               color="secondary"
               aria-label="Добавить расписание"
               className="pupil-form__btn pupil-form__btn-add-contact"
-              onClick={() => push({ day: '', price: '', subject: '', time: '15:00' })}>
+              onClick={() => push({ day: '', price: 0, subject: '', time: '15:00' })}>
               <AddIcon />
             </IconButton>
           </Tooltip>

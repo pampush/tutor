@@ -1,7 +1,7 @@
 import React from 'react';
 import { auth } from '../firebase';
 
-import { CircularProgress, Backdrop } from '@material-ui/core';
+import { LoadingScreen } from '../components';
 
 auth.languageCode = 'ru';
 export const AuthContext = React.createContext();
@@ -67,13 +67,7 @@ function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading ? (
-        children
-      ) : (
-        <Backdrop open={loading}>
-          <CircularProgress />
-        </Backdrop>
-      )}
+      {!loading ? children : <LoadingScreen open={loading} />}
     </AuthContext.Provider>
   );
 }

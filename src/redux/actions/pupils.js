@@ -33,7 +33,7 @@ export const postPupil = ({ id, ...data }) => async (dispatch) => {
     dispatch(addPupil({ id, ...data }));
   } catch (e) {
     console.error(e);
-    dispatch({ type: 'SET_PUPILS_LOADED', payload: false });
+    dispatch({ type: 'SET_PUPILS_LOADED', payload: true });
   }
 };
 

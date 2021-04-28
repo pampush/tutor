@@ -23,7 +23,7 @@ const useStyles = makeStyles({
   },
 });
 
-function MenuDrawerMobile() {
+function MenuSmDrawer() {
   const [open, setOpen] = React.useState(false);
   const business = useSelector(({ user }) => user.business);
 
@@ -80,4 +80,4 @@ function MenuDrawerMobile() {
   );
 }
 
-export default MenuDrawerMobile;
+export default MenuSmDrawer;

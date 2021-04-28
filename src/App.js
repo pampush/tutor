@@ -9,10 +9,8 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import StylesProvider from '@material-ui/styles/StylesProvider';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { Menu, InfoPanel, Signup, Login, NotFound } from './components';
+import { Menu, InfoPanel, Signup, Login, NotFound, LoadingScreen } from './components';
 import Schedule from './pages/Schedule';
 import Pupils from './pages/Pupils';
 import Finance from './pages/Finance';
@@ -45,10 +43,10 @@ function Content() {
     <React.Fragment>
       <Menu />
 
-      {userIsLoaded ? (
-        <Box className="content">
-          <Container maxWidth="xl">
-            <InfoPanel />
+      <Box className="content">
+        <Container maxWidth="xl">
+          <InfoPanel />
+          {userIsLoaded ? (
             <Switch>
               <Route path="/tutor">
                 <Schedule />
@@ -72,13 +70,11 @@ function Content() {
                 <Redirect to="/404" />
               </Route>
             </Switch>
-          </Container>
-        </Box>
-      ) : (
-        <Backdrop open={!userIsLoaded}>
-          <CircularProgress />
-        </Backdrop>
-      )}
+          ) : (
+            <LoadingScreen open={!userIsLoaded} />
+          )}
+        </Container>
+      </Box>
     </React.Fragment>
   );
 }

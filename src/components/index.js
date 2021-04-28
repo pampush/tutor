@@ -8,6 +8,7 @@ import Login from './auth/loginForm/Login';
 import NotFound from './NotFound';
 import Instruction from './Instruction';
 import MonthPicker from './MonthPicker';
+import LoadingScreen from './LoadingScreen';
 
 export {
   InfoPanel,
@@ -20,4 +21,5 @@ export {
   NotFound,
   Instruction,
   MonthPicker,
+  LoadingScreen,
 };

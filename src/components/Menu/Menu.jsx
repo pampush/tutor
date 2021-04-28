@@ -1,21 +1,21 @@
 import React from 'react';
 import Hidden from '@material-ui/core/Hidden';
 
-import MenuDrawer from './MenuLgDrawer';
-import MenuDrawerMobile from './MenuSmDrawer';
+import MenuLgDrawer from './MenuLgDrawer';
 import MenuMdDrawer from './MenuMdDrawer';
+import MenuSmDrawer from './MenuSmDrawer';
 
 const Menu = () => {
   return (
     <React.Fragment>
       <Hidden smUp>
-        <MenuDrawerMobile />
+        <MenuSmDrawer />
       </Hidden>
       <Hidden only={['xs', 'lg', 'xl']}>
         <MenuMdDrawer />
       </Hidden>
       <Hidden mdDown>
-        <MenuDrawer />
+        <MenuLgDrawer />
       </Hidden>
     </React.Fragment>
   );

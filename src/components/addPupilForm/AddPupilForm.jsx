@@ -47,9 +47,9 @@ function AddPupilForm({ open, handleClose, width, handleSnack }) {
 
   const handleSubmit = (values, actions) => {
     if (isLastStep) {
-      submitForm(values, actions);
       handleSnack(true);
       handleClose();
+      submitForm(values, actions);
     } else {
       setActiveStep(activeStep + 1);
       actions.setTouched({});
@@ -59,7 +59,7 @@ function AddPupilForm({ open, handleClose, width, handleSnack }) {
 
   function submitForm(values, actions) {
     actions.setSubmitting(false);
-    setActiveStep(activeStep + 1);
+    setActiveStep(0);
     combineDispatches(
       () => dispatch(formHandler(values)),
       () => dispatch(fetchScheduledLessons(today)),
@@ -69,7 +69,10 @@ function AddPupilForm({ open, handleClose, width, handleSnack }) {
   return (
     <Dialog
       open={open}
-      onClose={handleClose}
+      onClose={() => {
+        handleClose();
+        setActiveStep(0);
+      }}
       aria-labelledby="form-dialog-title"
       className="pupil-form__dialog"
       maxWidth="sm"

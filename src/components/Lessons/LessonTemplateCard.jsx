@@ -11,6 +11,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
+import { Dialog, DialogTitle, DialogContent, Button } from '@material-ui/core';
 
 import LessonFromTemplateForm from '../lessonFromTemplateForm/LessonFromTemplateForm';
 import { deleteScheduleAction } from '../../redux/actions/schedules';
@@ -32,7 +33,7 @@ function LessonTemplateCard({
   const date = useSelector(({ date }) => date.selected);
   const isLoaded = useSelector(({ schedules }) => schedules.isLoaded);
   const [anchorEl, setAnchorEl] = React.useState(null);
-
+  const [viewDeleteConsentDialog, setViewDeleteConsentDialog] = React.useState(false);
   const [viewForm, setViewForm] = React.useState(false);
 
   const handleClick = (e) => setAnchorEl(e.currentTarget);
@@ -63,6 +64,31 @@ function LessonTemplateCard({
         handleSnack={handleCreateSnack}
       />
 
+      <Dialog
+        open={viewDeleteConsentDialog}
+        onClose={() => setViewDeleteConsentDialog(false)}
+        aria-labelledby="form-dialog-title"
+        maxWidth="sm">
+        <DialogTitle>Удаление шаблона приведет к удалению всех его уроков. Вы уверены?</DialogTitle>
+        <DialogContent className="lesson-form__dialog-content">
+          <Box className="lesson-form__controls">
+            <Button
+              variant="contained"
+              color="secondary"
+              style={{ fontWeight: '600' }}
+              onClick={() => setViewDeleteConsentDialog(false)}>
+              Закрыть
+            </Button>
+            <Button
+              variant="contained"
+              style={{ fontWeight: '600', backgroundColor: 'red' }}
+              onClick={handleDeleteSchedule}>
+              Подтвердить
+            </Button>
+          </Box>
+        </DialogContent>
+      </Dialog>
+
       <Card className="lesson__container lesson__container--template">
         <Menu
           id="simple-menu"
@@ -75,7 +101,9 @@ function LessonTemplateCard({
           onClose={handleClose}>
           <MenuList autoFocus={true} className="lesson__menu-container">
             <MenuItem onClick={handleOpenForm}>Добавить урок из шаблона</MenuItem>
-            <MenuItem onClick={handleDeleteSchedule}>Удалить этот шаблон с уроками</MenuItem>
+            <MenuItem onClick={() => setViewDeleteConsentDialog(true)}>
+              Удалить этот шаблон с уроками
+            </MenuItem>
           </MenuList>
         </Menu>
         <CardContent>

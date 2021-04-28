@@ -25,12 +25,11 @@ function AddScheduleForm({ open, id, handleClose, width, handleSnack }) {
       id: uniqid(),
       day: +values.day,
       lessons: [],
-      price: +price,
+      price,
       pupil: id,
       subject: values.subject,
       time: values.time,
       timestamp: Date.now(),
-      year: new Date().getFullYear(),
     };
     actions.setSubmitting(false);
     handleSnack(true);

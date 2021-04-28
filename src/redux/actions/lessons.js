@@ -42,6 +42,7 @@ export const postLesson = (lesson, { preventIsLoaded } = {}) => async (dispatch)
     dispatch(addLesson(lesson));
   } catch (e) {
     console.error(e);
+    dispatch({ type: 'SET_LESSONS_LOADED', payload: true });
   }
 };
 
@@ -85,11 +86,12 @@ export const deleteLessonsBySmth = ({ field, id }) => async (dispatch) => {
   }
 };
 
-export const changeLesson = ({ id, field, value }) => async (dispatch) => {
+export const changeLesson = (id, update) => async (dispatch) => {
   try {
     dispatch({ type: 'SET_LESSONS_LOADED', payload: false });
-    await db.doc(`/users/${auth.currentUser.uid}/lessons/${id}`).update({ [field]: value });
-    dispatch(updateLesson({ id, field, value }));
+    await db.doc(`/users/${auth.currentUser.uid}/lessons/${id}`).update(update);
+    const lesson = await db.doc(`/users/${auth.currentUser.uid}/lessons/${id}`).get();
+    dispatch(updateLesson(lesson.data()));
   } catch (e) {
     console.error(e);
     dispatch({ type: 'SET_LESSONS_LOADED', payload: true });
@@ -114,9 +116,9 @@ export const deleteLessonAction = (id) => ({
   payload: id,
 });
 
-export const updateLesson = ({ id, field, value }) => ({
+export const updateLesson = (lesson) => ({
   type: 'UPDATE_LESSON',
-  payload: { id, field, value },
+  payload: lesson,
 });
 /**
  * util func for performance measuring needs

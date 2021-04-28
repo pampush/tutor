@@ -117,10 +117,13 @@ function Signup() {
               <Form>
                 <SignupInputs />
                 <Recaptcha />
-                <Typography>
-                  Нажимая на кнопку "Зарегистрироваться" вы соглашаетесь с
-                  <Link> Условиями использования </Link> и<Link>Политикой конфиденциальности </Link>
-                </Typography>
+                <Box mb={2}>
+                  <Typography align="justify">
+                    Нажимая на кнопку "Зарегистрироваться" вы соглашаетесь с
+                    <Link> Условиями использования </Link> и{' '}
+                    <Link>Политикой конфиденциальности </Link>
+                  </Typography>
+                </Box>
                 <Button
                   type="submit"
                   disabled={loading}

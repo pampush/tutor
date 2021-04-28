@@ -13,7 +13,7 @@ import MenuItem from './MenuItem';
 import MenuHeader from './MenuHeader';
 import { useSelector } from 'react-redux';
 
-function MenuDrawer() {
+function MenuLgDrawer() {
   const business = useSelector(({ user }) => user.business);
 
   return (
@@ -43,4 +43,4 @@ function MenuDrawer() {
   );
 }
 
-export default MenuDrawer;
+export default MenuLgDrawer;
