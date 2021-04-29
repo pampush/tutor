@@ -30,7 +30,7 @@ function Signup() {
   const { signup, verifyEmail, updateUser } = React.useContext(AuthContext);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState('');
-  const [viewSnack, setViewSnack] = React.useState(false);
+  const [viewErrorSnack, setViewErrorSnack] = React.useState(false);
   const [viewEmailVerifySnack, setViewEmailVerifySnack] = React.useState(false);
 
   const handleSubmit = async (values, actions) => {
@@ -65,14 +65,15 @@ function Signup() {
         default:
           break;
       }
-      setViewSnack(true);
+
+      setViewErrorSnack(true);
     }
   };
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 3000);
+    }, 5000);
     return () => {
       clearTimeout(timer);
     };
@@ -88,7 +89,7 @@ function Signup() {
         onClose={() => setViewEmailVerifySnack(false)}
       />
       <Container component="main" maxWidth="sm" className="auth__main">
-        <ErrorSnack open={viewSnack} message={error} onClose={setViewSnack} />
+        <ErrorSnack open={viewErrorSnack} message={error} onClose={setViewErrorSnack} />
         <CssBaseline />
         <Grid container className="auth__container">
           <Grid

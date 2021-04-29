@@ -1,4 +1,4 @@
-const initialValues = ({ day, time, subject, price }) => ({
+const initialValues = ({ day, time, subject, price = 0 }) => ({
   day,
   time,
   subject,

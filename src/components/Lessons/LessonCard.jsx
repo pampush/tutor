@@ -36,6 +36,8 @@ function LessonCard({
   schedule,
   handleSnack,
   handleDeleteSnack,
+  handleLessonThemeEditSnack,
+  handleSnackLessonEdit,
 }) {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -73,6 +75,7 @@ function LessonCard({
       <ThemeForm
         open={viewThemeForm}
         lessonTheme={theme}
+        handleSnack={handleLessonThemeEditSnack}
         id={id}
         handleClose={() => setViewThemeForm(false)}
       />
@@ -88,6 +91,7 @@ function LessonCard({
         price={price}
         note={note}
         handleClose={() => setViewEditForm(false)}
+        handleSnack={handleSnackLessonEdit}
       />
       <Card className="lesson__container">
         <Menu

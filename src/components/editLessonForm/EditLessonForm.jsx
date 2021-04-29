@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import Button from '@material-ui/core/Button';
@@ -18,6 +18,7 @@ function EditLessonForm({ width, open, id, handleClose, handleSnack, ...data }) 
   const dispatch = useDispatch();
 
   function handleSubmit(values, actions) {
+    handleSnack(true);
     actions.setSubmitting(false);
     handleClose();
     dispatch(changeLesson(id, values));

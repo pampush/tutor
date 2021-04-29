@@ -17,18 +17,18 @@ function PupilsList() {
   const pupilsLoaded = useSelector(({ pupils }) => pupils.isLoaded);
   const schedules = useSelector(({ schedules }) => schedules.items);
   const schedulesLoaded = useSelector(({ schedules }) => schedules.isLoaded);
-  const [snackView, setSnackView] = React.useState(false);
+  const [viewAddPupilSnack, setViewAddPupilSnack] = React.useState(false);
   const [viewAddScheduleSnack, setViewAddScheduleSnack] = React.useState(false);
 
   // React.useEffect(() => {
   //   let timer;
   //   timer = setTimeout(() => {
-  //     setSnackView(false);
+  //     setViewAddPupilSnack(false);
   //   }, 5000);
   //   return () => {
   //     clearTimeout(timer);
   //   };
-  // }, [snackView]);
+  // }, [viewAddPupilSnack]);
 
   const isLoaded = pupilsLoaded && schedulesLoaded;
 
@@ -43,17 +43,24 @@ function PupilsList() {
   }
 
   function handleSnack(state) {
-    setSnackView(state);
+    setViewAddPupilSnack(state);
   }
 
+  const handleViewAddScheduleSnack = React.useCallback(() => setViewAddScheduleSnack(false), []);
+  const handleViewAddPupilSnack = React.useCallback(() => setViewAddPupilSnack(false), []);
+  
   return (
     <React.Fragment>
       <SnackPopup
         open={viewAddScheduleSnack}
         message="Шаблон для урока добавлен"
-        onClose={() => setViewAddScheduleSnack(false)}
+        onClose={handleViewAddScheduleSnack}
       />
-      <SnackPopup open={snackView} message="Ученик добавлен" onClose={() => setSnackView(false)} />
+      <SnackPopup
+        open={viewAddPupilSnack}
+        message="Ученик добавлен"
+        onClose={handleViewAddPupilSnack}
+      />
 
       <div>
         <Box className="pupils__header-container">
@@ -81,7 +88,11 @@ function PupilsList() {
           {isLoaded
             ? Object.keys(pupils).map((key) => (
                 <Grid key={key} item md={4} sm={6} xs={12}>
-                  <PupilCard {...pupils[key]} schedules={schedules} handleSnack={setViewAddScheduleSnack}/>
+                  <PupilCard
+                    {...pupils[key]}
+                    schedules={schedules}
+                    handleSnack={setViewAddScheduleSnack}
+                  />
                 </Grid>
               ))
             : new Array(6).fill(0).map((_, i) => (

@@ -14,6 +14,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { Dialog, DialogTitle, DialogContent, Button } from '@material-ui/core';
 
 import LessonFromTemplateForm from '../lessonFromTemplateForm/LessonFromTemplateForm';
+import EditScheduleForm from '../editScheduleForm/EditScheduleForm';
 import { deleteScheduleAction } from '../../redux/actions/schedules';
 import { fetchLessons, deleteLessonsBySmth } from '../../redux/actions/lessons';
 import { fetchScheduledLessons } from '../../redux/actions/scheduledLessons';
@@ -25,7 +26,9 @@ function LessonTemplateCard({
   id,
   subject,
   name,
+  day,
   address,
+  price = 0,
   handleCreateSnack,
   handleDeleteSnack,
 }) {
@@ -34,12 +37,15 @@ function LessonTemplateCard({
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [viewDeleteConsentDialog, setViewDeleteConsentDialog] = React.useState(false);
   const [viewForm, setViewForm] = React.useState(false);
+  const [viewEditScheduleForm, setViewEditScheduleForm] = React.useState(false);
 
   const handleClick = (e) => setAnchorEl(e.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
   const handleCloseForm = () => setViewForm(false);
   const handleOpenForm = () => setViewForm(true);
+
+  const handleCloseEditScheduleForm = () => setViewEditScheduleForm(false);
 
   async function handleDeleteSchedule() {
     await Promise.all([
@@ -60,6 +66,15 @@ function LessonTemplateCard({
         scheduleId={id}
         handleClose={handleCloseForm}
         handleSnack={handleCreateSnack}
+      />
+      <EditScheduleForm
+        open={viewEditScheduleForm}
+        handleClose={handleCloseEditScheduleForm}
+        id={id}
+        time={time}
+        subject={subject}
+        day={day}
+        price={price}
       />
 
       <Dialog
@@ -99,6 +114,7 @@ function LessonTemplateCard({
           onClose={handleClose}>
           <MenuList autoFocus={true} className="lesson__menu-container">
             <MenuItem onClick={handleOpenForm}>Добавить урок из шаблона</MenuItem>
+            <MenuItem onClick={() => setViewEditScheduleForm(true)}>Редактировать шаблон</MenuItem>
             <MenuItem onClick={() => setViewDeleteConsentDialog(true)}>
               Удалить этот шаблон с уроками
             </MenuItem>

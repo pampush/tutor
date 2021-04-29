@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import Button from '@material-ui/core/Button';
@@ -13,21 +13,24 @@ import initialValues from './initialValues';
 import validationSchema from '../addScheduleForm/validationSchema';
 import EditScheduleFormInputs from './EditScheduleFormInputs';
 import { updateScheduleAction } from '../../redux/actions/schedules';
+import { fetchScheduledLessons } from '../../redux/actions/scheduledLessons';
 
 function EditScheduleForm({ open, width, id, handleClose, day, time, subject, price }) {
   const dispatch = useDispatch();
+  const date = useSelector(({ date }) => date.selected);
 
-  function handleSubmit(values, actions) {
+  async function handleSubmit(values, actions) {
     actions.setSubmitting(false);
-    dispatch(
+    handleClose();
+    await dispatch(
       updateScheduleAction(id, {
-        day: values.day,
         time: values.time,
+        day: +values.day,
         subject: values.subject,
-        price: values.price,
+        price: +values.price,
       }),
     );
-    handleClose();
+    dispatch(fetchScheduledLessons(date));
   }
   return (
     <Dialog

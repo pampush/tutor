@@ -23,7 +23,7 @@ function Login() {
   const { login } = React.useContext(AuthContext);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState('');
-  const [viewSnack, setViewSnack] = React.useState(false);
+  const [viewErrorSnack, setViewErrorSnack] = React.useState(false);
 
   const handleSubmit = async (values, actions) => {
     actions.setSubmitting(false);
@@ -48,14 +48,15 @@ function Login() {
         default:
           break;
       }
-      setViewSnack(true);
+
+      setViewErrorSnack(true);
     }
   };
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 3000);
+    }, 5000);
     return () => {
       clearTimeout(timer);
     };
@@ -63,7 +64,7 @@ function Login() {
 
   return (
     <Container component="main" maxWidth="sm" className="auth__main">
-      {error && <ErrorSnack open={viewSnack} message={error} onClose={setViewSnack} />}
+      {error && <ErrorSnack open={viewErrorSnack} message={error} onClose={setViewErrorSnack} />}
       <CssBaseline />
 
       <Grid container className="auth__container">

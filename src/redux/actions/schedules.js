@@ -52,7 +52,6 @@ export const addLessonToSchedule = ({ id, date }, { preventIsLoaded } = {}) => a
   }
 };
 
-
 export const deleteLessonFromSchedule = ({ date, id }) => async (dispatch) => {
   try {
     dispatch({ type: 'SET_SCHEDULES_LOADED', payload: false });
@@ -99,15 +98,16 @@ export const deleteScheduleAction = (id) => async (dispatch) => {
 
 export const updateScheduleAction = (id, data) => async (dispatch) => {
   try {
-    console.log(id, data);
     await db.doc(`/users/${auth.currentUser.uid}/schedules/${id}/`).update(data);
 
     const schedule = await db.doc(`/users/${auth.currentUser.uid}/schedules/${id}/`).get();
 
     dispatch(updateSchedule(schedule));
+    return Promise.resolve('success');
   } catch (e) {
     console.error(e);
     dispatch({ type: 'SET_SCHEDULES_LOADED', payload: true });
+    return Promise.rehject('reject');
   }
 };
 

@@ -21,15 +21,15 @@ const useStyles = makeStyles({
   },
 });
 
-function ThemeForm({ open, width, handleClose, id, lessonTheme }) {
+function ThemeForm({ open, width, handleClose, id, lessonTheme, handleSnack }) {
   const dispatch = useDispatch();
   const classes = useStyles();
 
   async function handleSubmit(values, actions) {
     actions.setSubmitting(false);
-    //handleSnack(true);
-    dispatch(changeLesson(id, { theme: values.theme }));
+    handleSnack(true);
     handleClose();
+    dispatch(changeLesson(id, { theme: values.theme }));
   }
 
   return (

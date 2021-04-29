@@ -10,7 +10,7 @@ import StylesProvider from '@material-ui/styles/StylesProvider';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 
-import { Menu, InfoPanel, Signup, Login, NotFound, LoadingScreen } from './components';
+import { Menu, InfoPanel, Signup, Login, NotFound } from './components';
 import Schedule from './pages/Schedule';
 import Pupils from './pages/Pupils';
 import Finance from './pages/Finance';
@@ -28,7 +28,6 @@ import { setDate } from './redux/actions/date';
 function Content() {
   const dispatch = useDispatch();
   const business = useSelector(({ user }) => user.business);
-  const userIsLoaded = useSelector(({ user }) => user.isLoaded);
 
   React.useEffect(() => {
     dispatch(setDate(new Date()));
@@ -46,43 +45,29 @@ function Content() {
       <Box className="content">
         <Container maxWidth="xl">
           <InfoPanel />
-          {userIsLoaded ? (
-            <Switch>
-              <Route path="/tutor">
-                <Schedule />
-              </Route>
-              <Route path="/schedule">
-                <Schedule />
-              </Route>
-              <Route path="/pupils">
-                <Pupils />
-              </Route>
-              {business && (
-                <Route path="/finance">
-                  <Finance />
-                </Route>
-              )}
-
-              <Route path="/settings">
-                <Settings />
-              </Route>
-              <Route path="*">
-                <Redirect to="/404" />
-              </Route>
-            </Switch>
-          ) : (
-            <LoadingScreen open={!userIsLoaded} />
-          )}
+          <Switch>
+            <Route path="/tutor">
+              <Schedule />
+            </Route>
+            <Route path="/schedule">
+              <Schedule />
+            </Route>
+            <Route path="/pupils">
+              <Pupils />
+            </Route>
+            <Route path="/finance">{business && <Finance />}</Route>
+            <Route path="/settings">
+              <Settings />
+            </Route>
+            <Route path="*">
+              <Redirect to="/404" />
+            </Route>
+          </Switch>
         </Container>
       </Box>
     </React.Fragment>
   );
 }
-
-/*
- *
- * TODO: restructure db
- */
 
 function App() {
   return (

@@ -33,14 +33,11 @@ function AuthProvider({ children }) {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         user.getIdTokenResult().then((res) => {
-          if (res.authTime === user.metadata.creationTime)
-            /*
-             * force token refresh
-             * https://github.com/firebase/firebase-js-sdk/issues/2529
-             */
+          // force token refresh on first login
+          // https://github.com/firebase/firebase-js-sdk/issues/2529
+          if (res.authTime === user.metadata.creationTime) {
             user.getIdToken(true);
-          if (document.referrer === 'https://tutor-49686.firebaseapp.com/') {
-            setFirstLogin(true);
+            if (document.referrer === 'https://tutor-49686.firebaseapp.com/') setFirstLogin(true);
           }
         });
 

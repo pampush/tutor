@@ -19,7 +19,6 @@ import validationSchema from './validationSchema';
 import formInitialValues from './formInitialValues';
 import formHandler from '../../redux/actions/newPupil';
 import { fetchScheduledLessons } from '../../redux/actions/scheduledLessons';
-import { combineDispatches } from '../../redux/actions/combineDispatches';
 
 const steps = ['Информация об ученике', 'Расписание'];
 function getForm(step) {
@@ -58,11 +57,7 @@ function AddPupilForm({ open, handleClose, width, handleSnack }) {
 
   async function submitForm(values, actions) {
     actions.setSubmitting(false);
-    setActiveStep(0);
-    // combineDispatches(
-    //   () => dispatch(formHandler(values)),
-    //   () => dispatch(fetchScheduledLessons(today)),
-    // );
+
     await dispatch(formHandler(values));
     dispatch(fetchScheduledLessons(today));
   }
@@ -70,8 +65,8 @@ function AddPupilForm({ open, handleClose, width, handleSnack }) {
   return (
     <Dialog
       open={open}
-      onClose={() => {
-        handleClose();
+      onClose={handleClose}
+      onExited={() => {
         setActiveStep(0);
       }}
       aria-labelledby="form-dialog-title"
@@ -82,12 +77,9 @@ function AddPupilForm({ open, handleClose, width, handleSnack }) {
       <DialogContent className="pupil-form__dialog-content">
         <Stepper activeStep={activeStep}>
           {steps.map((label, index) => {
-            const stepProps = {};
-            const labelProps = {};
-
             return (
-              <Step key={label} {...stepProps}>
-                <StepLabel {...labelProps}>{label}</StepLabel>
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
               </Step>
             );
           })}
