@@ -1,6 +1,5 @@
 import { db, auth } from '../../firebase';
 import firebase from 'firebase/app';
-import 'firebase/firestore';
 
 export const fetchSchedules = ({ preventIsLoaded } = {}) => async (dispatch) => {
   try {
@@ -25,15 +24,16 @@ async function retrieveSchedules() {
 export const postSchedule = (schedules) => async (dispatch) => {
   try {
     dispatch({ type: 'SET_SCHEDULES_LOADED', payload: false });
-
     const schPromises = schedules.map((schedule) =>
       db.doc(`/users/${auth.currentUser.uid}/schedules/${schedule.id}`).set({ ...schedule }),
     );
     await Promise.all(schPromises);
     schedules.forEach((schedule) => dispatch(addSchedule(schedule)));
+    return Promise.resolve('success');
   } catch (e) {
     console.log(e);
     dispatch({ type: 'SET_SCHEDULES_LOADED', payload: true });
+    return Promise.reject('reject');
   }
 };
 
@@ -51,6 +51,7 @@ export const addLessonToSchedule = ({ id, date }, { preventIsLoaded } = {}) => a
     dispatch({ type: 'SET_SCHEDULES_LOADED', payload: true });
   }
 };
+
 
 export const deleteLessonFromSchedule = ({ date, id }) => async (dispatch) => {
   try {

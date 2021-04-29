@@ -1,7 +1,6 @@
 import { db } from '../../firebase';
 import { auth } from '../../firebase';
 import firebase from 'firebase/app';
-import 'firebase/firestore';
 
 export const fetchPupils = () => async (dispatch) => {
   try {
@@ -56,8 +55,10 @@ export const pushScheduleToPupil = (pupilId, scheduleId) => async (dispatch) => 
       .update({ schedulesId: firebase.firestore.FieldValue.arrayUnion(scheduleId) });
     const pupil = await db.doc(`/users/${auth.currentUser.uid}/pupils/${pupilId}/`).get();
     dispatch(updatePupil(pupil.data()));
+    return Promise.resolve('success');
   } catch (e) {
     console.error(e);
+    return Promise.resolve('reject');
   }
 };
 

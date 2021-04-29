@@ -31,7 +31,7 @@ function EditLessonForm({ width, open, id, handleClose, handleSnack, ...data }) 
       className="pupil-form__dialog"
       maxWidth="sm"
       fullScreen={isWidthDown('sm', width) ? true : false}>
-      <DialogTitle>Измените данные об внеплановом уроке </DialogTitle>
+      <DialogTitle>Измените данные о внеплановом уроке </DialogTitle>
       <DialogContent className="lesson-form__dialog-content">
         <Formik
           initialValues={initialValues(data)}

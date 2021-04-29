@@ -38,7 +38,6 @@ function AddPupilForm({ open, handleClose, width, handleSnack }) {
   const [activeStep, setActiveStep] = React.useState(0);
   const currentValidationSchema = validationSchema[activeStep];
   const isLastStep = activeStep === steps.length - 1;
-
   const today = useSelector(({ date }) => date.selected);
 
   const handleBack = () => {
@@ -57,13 +56,15 @@ function AddPupilForm({ open, handleClose, width, handleSnack }) {
     }
   };
 
-  function submitForm(values, actions) {
+  async function submitForm(values, actions) {
     actions.setSubmitting(false);
     setActiveStep(0);
-    combineDispatches(
-      () => dispatch(formHandler(values)),
-      () => dispatch(fetchScheduledLessons(today)),
-    );
+    // combineDispatches(
+    //   () => dispatch(formHandler(values)),
+    //   () => dispatch(fetchScheduledLessons(today)),
+    // );
+    await dispatch(formHandler(values));
+    dispatch(fetchScheduledLessons(today));
   }
 
   return (

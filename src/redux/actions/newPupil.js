@@ -1,6 +1,7 @@
 import uniqid from 'uniqid';
-import { postPupil } from './pupils';
-import { postSchedule } from './schedules';
+import { addPupil } from './pupils';
+import { addSchedule } from './schedules';
+import { db, auth } from '../../firebase';
 
 const formHandler = ({ ...data }) => async (dispatch) => {
   const pupilId = uniqid();
@@ -12,7 +13,11 @@ const formHandler = ({ ...data }) => async (dispatch) => {
   });
 
   test = Object.fromEntries(test);
-  if (!test.parents.filter((parent) => parent.person || parent.contact).length) delete test.parents;
+  test.parents = test.parents
+    .filter((parent) => parent.person || parent.contact)
+    .map((parent) => ({ person: parent.person, contact: parent.contact }));
+
+  if (!test.parents.length) delete test.parents;
   const { schedules, ...pupil } = test;
 
   let resSchedules = schedules.map(({ price = 0, ...schedule }) => ({
@@ -25,26 +30,33 @@ const formHandler = ({ ...data }) => async (dispatch) => {
     lessons: [],
     timestamp: Date.now(),
   }));
-  // const pupil = {
-  //   id: pupilId,
-  //   name: data.name,
-  //   address: data.address,
-  //   grade: +data.grade,
-  //   parents: data.parents
-  //     .filter((parent) => parent.person || parent.contact)
-  //     .map((parent) => ({ person: parent.person, contact: parent.contact })),
-  //   schedulesId: schedules.map((schedule) => schedule.id),
-  //   timestamp: Date.now(),
-  // };
+
   const resPupil = {
     id: pupilId,
     timestamp: Date.now(),
     schedulesId: resSchedules.map((schedule) => schedule.id),
     ...pupil,
   };
-  console.log(resPupil, resSchedules);
-  await dispatch(postSchedule(resSchedules));
-  await dispatch(postPupil(resPupil));
+
+  const batch = db.batch();
+
+  resSchedules.forEach((schedule) => {
+    const schRef = db.doc(`/users/${auth.currentUser.uid}/schedules/${schedule.id}`);
+    batch.set(schRef, { ...schedule });
+  });
+
+  const pupilRef = db.doc(`/users/${auth.currentUser.uid}/pupils/${resPupil.id}/`);
+  batch.set(pupilRef, { ...resPupil });
+
+  try {
+    await batch.commit();
+    resSchedules.forEach((schedule) => dispatch(addSchedule(schedule)));
+    dispatch(addPupil(resPupil));
+    return Promise.resolve('success');
+  } catch (e) {
+    console.error(e);
+    return Promise.reject('error');
+  }
 };
 
 export default formHandler;

@@ -31,7 +31,6 @@ function LessonTemplateCard({
 }) {
   const dispatch = useDispatch();
   const date = useSelector(({ date }) => date.selected);
-  const isLoaded = useSelector(({ schedules }) => schedules.isLoaded);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [viewDeleteConsentDialog, setViewDeleteConsentDialog] = React.useState(false);
   const [viewForm, setViewForm] = React.useState(false);
@@ -43,7 +42,6 @@ function LessonTemplateCard({
   const handleOpenForm = () => setViewForm(true);
 
   async function handleDeleteSchedule() {
-    console.log(isLoaded);
     await Promise.all([
       dispatch(deleteLessonsBySmth({ field: 'schedule', id })),
       dispatch(deleteScheduleAction(id)),
@@ -130,7 +128,9 @@ function LessonTemplateCard({
 LessonTemplateCard.propTypes = {
   time: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  address: PropTypes.string.isRequired,
+  subject: PropTypes.string.isRequired,
+  address: PropTypes.string,
+  pupil: PropTypes.string.isRequired,
 };
 
 export default LessonTemplateCard;

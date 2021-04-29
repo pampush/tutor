@@ -32,7 +32,7 @@ function LessonCard({
   pupil,
   address = '',
   subject,
-  note,
+  note = '',
   schedule,
   handleSnack,
   handleDeleteSnack,
@@ -147,6 +147,7 @@ LessonCard.propTypes = {
   time: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   address: PropTypes.string,
+  note: PropTypes.string,
   theme: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
 };

@@ -41,7 +41,6 @@ const days = {
 function AddScheduleInputs() {
   const business = useSelector(({ user }) => user.business);
   const { values } = useFormikContext();
-  console.log(values);
   return (
     <FieldArray name="schedules">
       {({ insert, remove, push }) => (

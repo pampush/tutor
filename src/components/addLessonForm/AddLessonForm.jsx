@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
 import uniqid from 'uniqid';
+import { formatISO } from 'date-fns';
 
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import Button from '@material-ui/core/Button';
@@ -18,7 +19,7 @@ import { postLesson } from '../../redux/actions/lessons';
 function AddLessonForm({ width, open, handleClose, handleSnack }) {
   const dispatch = useDispatch();
   const date = useSelector(({ date }) => date.selected);
-  formInitialValues.date = date.toISOString().slice(0, 10);
+  formInitialValues.date = formatISO(date, { representation: 'date' });
 
   function handleSubmit({ price = 0, ...values }, actions) {
     let test = Object.entries(values).filter(([key, value]) => {

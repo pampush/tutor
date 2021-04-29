@@ -1,4 +1,5 @@
 import React from 'react';
+import {formatISO} from 'date-fns'
 
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
@@ -14,7 +15,7 @@ function InfoPanelCard({ children, header, date }) {
           {header}
         </Typography>
         <Typography variant="body2" component="p" className="info__subtitle">
-          {date.toISOString().slice(0, 10)}
+          {formatISO(date, {representation: 'date'})}
         </Typography>
       </CardContent>
     </Card>

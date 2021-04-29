@@ -24,8 +24,6 @@ const lessons = (state = initialState, action) => {
       };
     }
     case 'UPDATE_LESSON': {
-      // const newItem = { ...state.items[action.payload.id] };
-      // newItem[action.payload.field] = action.payload.value;
       return {
         ...state,
         items: { ...state.items, [action.payload.id]: action.payload },

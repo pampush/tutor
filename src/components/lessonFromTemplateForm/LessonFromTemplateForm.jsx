@@ -2,6 +2,7 @@ import React from 'react';
 import { Formik, Form } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import uniqid from 'uniqid';
+import { formatISO } from 'date-fns'
 
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import Button from '@material-ui/core/Button';
@@ -14,11 +15,8 @@ import LessonFromTemplateInputs from './LessonFromTemplateInputs';
 import formInitialValues from './formInitialValues';
 import validationSchema from './validationSchema';
 
-import { postLesson } from '../../redux/actions/lessons';
-import { addLessonToSchedule } from '../../redux/actions/schedules';
 import { fetchScheduledLessons } from '../../redux/actions/scheduledLessons';
-import { combineDispatches } from '../../redux/actions/combineDispatches';
-import { setScheduledLessonsLoaded } from '../../redux/actions/scheduledLessons';
+import lessonFromTemplate from '../../redux/actions/lessonFromTemplate';
 
 function LessonFromTemplateForm({ width, open, handleClose, pupilId, scheduleId, handleSnack }) {
   const dispatch = useDispatch();
@@ -26,36 +24,30 @@ function LessonFromTemplateForm({ width, open, handleClose, pupilId, scheduleId,
   const schedule = useSelector(({ schedules }) => schedules.items[scheduleId]);
   const date = useSelector(({ date }) => date.selected);
 
-  function handleSubmit(values, actions) {
+  async function handleSubmit(values, actions) {
+    let test = Object.entries(values).filter(([key, value]) => {
+      if (typeof value === 'string') return value.trim();
+      return true;
+    });
+    test = Object.fromEntries(test);
+
     const lesson = {
       id: uniqid(),
-      date: date.toISOString().slice(0, 10),
+      date: formatISO(date, {representation: 'date'}),
       time: schedule.time,
       schedule: scheduleId,
       pupil: pupilId,
-      theme: values.theme,
       subject: schedule.subject,
-      note: values.note,
       price: schedule.price,
       timestamp: Date.now(),
+      ...test,
     };
 
     actions.setSubmitting(false);
     handleSnack(true);
 
-    /**
-     * bicycle for async chained invocations
-     * preventIsLoaded prevents isLoaded redux property action call
-     */
-    combineDispatches(
-      () => dispatch(setScheduledLessonsLoaded(false)),
-      () => dispatch(postLesson(lesson, { preventIsLoaded: true })),
-      () =>
-        dispatch(
-          addLessonToSchedule({ date: lesson.date, id: scheduleId }, { preventIsLoaded: true }),
-        ),
-      () => dispatch(fetchScheduledLessons(date, { preventIsLoaded: true })),
-    );
+    await dispatch(lessonFromTemplate(lesson));
+    dispatch(fetchScheduledLessons(date));
   }
 
   return (

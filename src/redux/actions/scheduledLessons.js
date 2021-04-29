@@ -5,7 +5,6 @@ import { getISODay, formatISO } from 'date-fns';
 async function retrieveSchedulesByDay(date) {
   let schedules = {};
   const today = getISODay(date);
-  //const localISODate = date.toISOString().slice(0, 10);
   const localISODate = formatISO(date, { representation: 'date' });
 
   const snapshot = await db
