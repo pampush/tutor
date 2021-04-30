@@ -19,6 +19,7 @@ function PupilsList() {
   const schedulesLoaded = useSelector(({ schedules }) => schedules.isLoaded);
   const [viewAddPupilSnack, setViewAddPupilSnack] = React.useState(false);
   const [viewAddScheduleSnack, setViewAddScheduleSnack] = React.useState(false);
+  const [viewEditPupilSnack, setViewEditPupilSnack] = React.useState(false);
 
   // React.useEffect(() => {
   //   let timer;
@@ -48,7 +49,8 @@ function PupilsList() {
 
   const handleViewAddScheduleSnack = React.useCallback(() => setViewAddScheduleSnack(false), []);
   const handleViewAddPupilSnack = React.useCallback(() => setViewAddPupilSnack(false), []);
-  
+  const handleViewEditPupilSnack = React.useCallback(() => setViewEditPupilSnack(false), []);
+
   return (
     <React.Fragment>
       <SnackPopup
@@ -60,6 +62,17 @@ function PupilsList() {
         open={viewAddPupilSnack}
         message="Ученик добавлен"
         onClose={handleViewAddPupilSnack}
+      />
+      <SnackPopup
+        open={viewEditPupilSnack}
+        message="Информация об ученике изменена"
+        onClose={handleViewEditPupilSnack}
+      />
+
+      <AddPupilForm
+        open={viewAddPupilForm}
+        handleClose={handleCloseAddLessonForm}
+        handleSnack={handleSnack}
       />
 
       <div>
@@ -78,12 +91,6 @@ function PupilsList() {
           </Button>
         </Box>
 
-        <AddPupilForm
-          open={viewAddPupilForm}
-          handleClose={handleCloseAddLessonForm}
-          handleSnack={handleSnack}
-        />
-
         <Grid container spacing={2} className="pupils__card-container">
           {isLoaded
             ? Object.keys(pupils).map((key) => (
@@ -92,6 +99,7 @@ function PupilsList() {
                     {...pupils[key]}
                     schedules={schedules}
                     handleSnack={setViewAddScheduleSnack}
+                    handleViewEditPupilSnack={setViewEditPupilSnack}
                   />
                 </Grid>
               ))

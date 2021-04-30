@@ -12,6 +12,7 @@ const validationSchema = yup.object().shape({
   email: yup
     .string('Введите адрес электронной почты')
     .email('Введите адрес электронной почты')
+    .max(254, 'Максимальная длина адреса 254 символа')
     .required('Необходимо указать адрес эл. почты'),
   password: yup
     .string('Введите пароль')
@@ -22,8 +23,7 @@ const validationSchema = yup.object().shape({
     .mixed()
     .notOneOf([''], 'Выполните проверку Recaptcha')
     .required('Выполните проверку Recaptcha'),
-  business: yup
-    .boolean()
+  business: yup.boolean(),
 });
 
 export default validationSchema;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { auth } from '../firebase';
+import firebase from 'firebase/app';
 
 import { LoadingScreen } from '../components';
 
@@ -11,12 +12,8 @@ function AuthProvider({ children }) {
   const [loading, setLoading] = React.useState(true);
   const [firstLogin, setFirstLogin] = React.useState(false);
 
-  const signup = (email, password) => {
-    return auth.createUserWithEmailAndPassword(email, password);
-  };
-  const login = (email, password) => {
-    return auth.signInWithEmailAndPassword(email, password);
-  };
+  const signup = (email, password) => auth.createUserWithEmailAndPassword(email, password);
+  const login = (email, password) => auth.signInWithEmailAndPassword(email, password);
   const updateUser = (name) => auth.currentUser.updateProfile({ displayName: name });
   const signout = () => auth.signOut();
 
@@ -28,6 +25,20 @@ function AuthProvider({ children }) {
           : 'https://pampush.github.io/tutor/',
       handleCodeInApp: true,
     });
+
+  const verifyBeforeUpdateEmail = (email) =>
+    auth.currentUser.verifyBeforeUpdateEmail(email, {
+      url:
+        !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
+          ? 'https://localhost:3000/schedule/'
+          : 'https://pampush.github.io/tutor/',
+      handleCodeInApp: true,
+    });
+
+  const reAuth = (password) => {
+    const authCredential = firebase.auth.EmailAuthProvider.credential(currentUser.email, password);
+    return auth.currentUser.reauthenticateWithCredential(authCredential);
+  };
 
   React.useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -57,9 +68,11 @@ function AuthProvider({ children }) {
     login,
     verifyEmail,
     updateUser,
+    verifyBeforeUpdateEmail,
     signout,
     firstLogin,
     setFirstLogin,
+    reAuth,
   };
 
   return (

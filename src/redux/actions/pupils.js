@@ -62,6 +62,37 @@ export const pushScheduleToPupil = (pupilId, scheduleId) => async (dispatch) => 
   }
 };
 
+// delete all empty fields
+export const updatePupilAction = (id, data) => async (dispatch) => {
+  let test = Object.entries(data).map(([key, value]) => {
+    if (typeof value === 'string')
+      if (value.trim()) return [key, value];
+      else return [key, firebase.firestore.FieldValue.delete()];
+    if (typeof value === 'number')
+      if (value) return [key, value];
+      else return [key, firebase.firestore.FieldValue.delete()];
+
+    return [key, value];
+  });
+
+  test = Object.fromEntries(test);
+  test.parents = test.parents
+    .filter((parent) => parent.person || parent.contact)
+    .map((parent) => ({ person: parent.person, contact: parent.contact }));
+
+  if (!test.parents.length) test.parents = firebase.firestore.FieldValue.delete();
+
+  try {
+    dispatch({ type: 'SET_PUPILS_LOADED', payload: false });
+    await db.doc(`/users/${auth.currentUser.uid}/pupils/${id}/`).update(test);
+    const pupil = await db.doc(`/users/${auth.currentUser.uid}/pupils/${id}/`).get();
+    dispatch(updatePupil(pupil.data()));
+  } catch (e) {
+    console.error(e);
+    dispatch({ type: 'SET_PUPILS_LOADED', payload: true });
+  }
+};
+
 export const deletePupilAction = (id) => async (dispatch) => {
   try {
     dispatch({ type: 'SET_PUPILS_LOADED', payload: false });

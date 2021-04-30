@@ -17,6 +17,7 @@ import Finance from './pages/Finance';
 import Settings from './pages/Settings';
 import PrivateRoute from './PrivateRoute';
 import PrivateSignedInRoute from './PrivateSignedInRoute';
+import { AuthContext } from './contexts/AuthContext';
 
 import { fetchLessons } from './redux/actions/lessons';
 import { fetchPupils } from './redux/actions/pupils';
@@ -27,6 +28,7 @@ import { setDate } from './redux/actions/date';
 
 function Content() {
   const dispatch = useDispatch();
+  const { currentUser } = React.useContext(AuthContext);
   const business = useSelector(({ user }) => user.business);
 
   React.useEffect(() => {
@@ -36,7 +38,7 @@ function Content() {
     dispatch(fetchPupils());
     dispatch(fetchSchedules());
     dispatch(fetchUser(auth.currentUser.uid));
-  }, []);
+  }, [currentUser]);
 
   return (
     <React.Fragment>

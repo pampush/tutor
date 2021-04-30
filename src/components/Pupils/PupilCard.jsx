@@ -14,13 +14,14 @@ import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
+import { Dialog, DialogContent, DialogTitle, Box, Button } from '@material-ui/core';
 
 import { deleteLessonsBySmth, fetchLessons } from '../../redux/actions/lessons';
 import { deletePupilAction } from '../../redux/actions/pupils';
 import { deleteSchedulesByPupil, fetchSchedules } from '../../redux/actions/schedules';
 import { fetchScheduledLessons } from '../../redux/actions/scheduledLessons';
 import AddScheduleForm from '../addScheduleForm/AddScheduleForm';
-import { Dialog, DialogContent, DialogTitle, Box, Button } from '@material-ui/core';
+import EditPupilForm from '../editPupilForm/EditPupilForm';
 
 const days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
 
@@ -33,15 +34,21 @@ function PupilCard({
   address = '',
   schedules,
   handleSnack,
+  handleViewEditPupilSnack,
 }) {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [viewAddScheduleForm, setViewAddScheduleForm] = React.useState(false);
   const [viewDeleteConsentDialog, setViewDeleteConsentDialog] = React.useState(false);
+  const [viewEditPupilForm, setViewEditPupilForm] = React.useState(false);
   const date = useSelector(({ date }) => date.selected);
+
+  const [forParentsMemo, setForParentsMemo] = React.useState([]);
+  const parentsMemo = parents.length ? parents : forParentsMemo;
 
   const handleClick = (e) => setAnchorEl(e.currentTarget);
   const handleClose = () => setAnchorEl(null);
+  const handleCloseEditPupilForm = React.useCallback(() => setViewEditPupilForm(false), []);
 
   async function handleDelete() {
     await Promise.all([
@@ -59,10 +66,21 @@ function PupilCard({
       <AddScheduleForm
         open={viewAddScheduleForm}
         handleSnack={handleSnack}
-        id={id}
         handleClose={() => {
           setViewAddScheduleForm(false);
         }}
+        id={id}
+      />
+
+      <EditPupilForm
+        open={viewEditPupilForm}
+        handleClose={handleCloseEditPupilForm}
+        handleSnack={handleViewEditPupilSnack}
+        id={id}
+        name={name}
+        grade={grade}
+        parents={parentsMemo}
+        address={address}
       />
 
       <Dialog
@@ -119,10 +137,10 @@ function PupilCard({
           open={Boolean(anchorEl)}
           onClose={handleClose}>
           <MenuList autoFocus={true} className="lesson__menu-container">
-            <MenuItem onClick={handleClose}>Редактировать(disabled)</MenuItem>
             <MenuItem onClick={() => setViewAddScheduleForm(true)}>
               Добавить пункт расписания
             </MenuItem>
+            <MenuItem onClick={() => setViewEditPupilForm(true)}>Редактировать</MenuItem>
             <MenuItem onClick={() => setViewDeleteConsentDialog(true)}>Удалить</MenuItem>
           </MenuList>
         </Menu>

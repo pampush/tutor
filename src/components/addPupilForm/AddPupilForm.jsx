@@ -34,10 +34,10 @@ function getForm(step) {
 
 function AddPupilForm({ open, handleClose, width, handleSnack }) {
   const dispatch = useDispatch();
+  const today = useSelector(({ date }) => date.selected);
   const [activeStep, setActiveStep] = React.useState(0);
   const currentValidationSchema = validationSchema[activeStep];
   const isLastStep = activeStep === steps.length - 1;
-  const today = useSelector(({ date }) => date.selected);
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
