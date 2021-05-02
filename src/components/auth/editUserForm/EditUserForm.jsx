@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Formik, Form } from 'formik';
 
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
@@ -8,24 +9,22 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Box from '@material-ui/core/Box';
 
+import EditUserFormInputs from './EditUserFormInputs';
 import initialValues from './initialValues';
 import validationSchema from './validationSchema';
-import EditEmailFormInputs from './EditEmailFormInputs';
 import { AuthContext } from '../../../contexts/AuthContext';
 
-function EditEmailForm({ width, open, handleClose, handleSnack }) {
-  const { reAuth, verifyBeforeUpdateEmail } = React.useContext(AuthContext);
-  const [loading, setLoading] = React.useState(false);
+function EditUserForm({ width, open, handleClose, handleSnack }) {
+  const { currentUser, updateUser } = React.useContext(AuthContext);
 
-  async function handleSubmit(values, actions) {
-    setLoading(true);
+  function handleSubmit(values, actions) {
+    actions.setSubmitting(false);
     handleSnack(true);
     handleClose();
-    actions.setSubmitting(false);
-    await reAuth(values.password);
-    await verifyBeforeUpdateEmail(values.email);
-  }
 
+    const name = values.firstName + ' ' + values.lastName;
+    updateUser(name);
+  }
 
   return (
     <Dialog
@@ -35,19 +34,19 @@ function EditEmailForm({ width, open, handleClose, handleSnack }) {
       className="pupil-form__dialog"
       maxWidth="sm"
       fullScreen={isWidthDown('sm', width) ? true : false}>
-      <DialogTitle>Введите новый адрес электронной почты</DialogTitle>
+      <DialogTitle>Измените имя и фамилию</DialogTitle>
       <DialogContent className="lesson-form__dialog-content">
         <Formik
-          initialValues={initialValues}
+          initialValues={initialValues(currentUser.displayName)}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}>
           <Form>
-            <EditEmailFormInputs />
+            <EditUserFormInputs />
             <Box className="lesson-form__controls">
               <Button variant="contained" color="secondary" onClick={handleClose}>
                 Закрыть
               </Button>
-              <Button variant="contained" color="secondary" type="submit" disabled={loading}>
+              <Button variant="contained" color="secondary" type="submit">
                 Подтвердить
               </Button>
             </Box>
@@ -58,4 +57,4 @@ function EditEmailForm({ width, open, handleClose, handleSnack }) {
   );
 }
 
-export default withWidth()(EditEmailForm);
+export default withWidth()(EditUserForm);

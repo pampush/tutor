@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
@@ -25,14 +26,14 @@ import EditLessonForm from '../editLessonForm/EditLessonForm';
 function LessonCard({
   id,
   time,
-  theme,
   date,
   name,
+  theme,
   price,
   pupil,
+  note = '',
   address = '',
   subject,
-  note = '',
   schedule,
   handleSnack,
   handleDeleteSnack,
@@ -40,6 +41,7 @@ function LessonCard({
   handleSnackLessonEdit,
 }) {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [viewNotesForm, setViewNotesForm] = React.useState(false);
   const [viewThemeForm, setViewThemeForm] = React.useState(false);
@@ -53,11 +55,17 @@ function LessonCard({
    * How does dispatch actually work?
    * Am I supposed to chain dispatches to make sure async requests queuing in sequence?
    */
-  function handleDelete() {
-    dispatch(deleteLesson(id));
+  async function handleDelete() {
+    await dispatch(deleteLesson(id));
     handleDeleteSnack(true);
-    if (schedule) dispatch(deleteLessonFromSchedule({ id: schedule, date }));
-    dispatch(fetchScheduledLessons(selectedDate));
+    if (schedule) {
+      await dispatch(deleteLessonFromSchedule({ id: schedule, date }));
+      dispatch(fetchScheduledLessons(selectedDate));
+    } else dispatch(fetchScheduledLessons(selectedDate));
+  }
+
+  function handleHomework() {
+    history.push(`/homework/${id}`);
   }
 
   const clickNotesForm = () => setViewNotesForm(true);
@@ -104,7 +112,7 @@ function LessonCard({
           open={Boolean(anchorEl)}
           onClose={handleClose}>
           <MenuList autoFocus={true} className="lesson__menu-container">
-            <MenuItem onClick={handleClose}>Домашняя работа(disabled)</MenuItem>
+            <MenuItem onClick={handleHomework}>Домашняя работа</MenuItem>
             <MenuItem onClick={clickNotesForm}>Заметки</MenuItem>
             <MenuItem onClick={handleClose}>push(disabled)</MenuItem>
             {schedule ? (

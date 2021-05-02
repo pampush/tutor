@@ -61,9 +61,11 @@ export const deleteLessonFromSchedule = ({ date, id }) => async (dispatch) => {
 
     const schedule = await db.doc(`/users/${auth.currentUser.uid}/schedules/${id}/`).get();
     dispatch(updateSchedule(schedule.data()));
+    return Promise.resolve('success');
   } catch (e) {
     console.error(e);
     dispatch({ type: 'SET_SCHEDULES_LOADED', payload: true });
+    return Promise.reject('reject');
   }
 };
 
@@ -107,7 +109,7 @@ export const updateScheduleAction = (id, data) => async (dispatch) => {
   } catch (e) {
     console.error(e);
     dispatch({ type: 'SET_SCHEDULES_LOADED', payload: true });
-    return Promise.rehject('reject');
+    return Promise.reject('reject');
   }
 };
 

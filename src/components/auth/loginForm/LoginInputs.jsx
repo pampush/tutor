@@ -12,7 +12,6 @@ function LoginInputs() {
   const [viewPassword, setViewPassword] = React.useState(false);
   const handleClickShowPassword = () => setViewPassword((prev) => !prev);
   return (
-    <React.Fragment>
       <Grid container spacing={3} className="auth__inputs">
         <Grid item xs={12}>
           <MyTextField
@@ -45,7 +44,6 @@ function LoginInputs() {
           />
         </Grid>
       </Grid>
-    </React.Fragment>
   );
 }
 

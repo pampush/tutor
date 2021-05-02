@@ -15,6 +15,7 @@ import Schedule from './pages/Schedule';
 import Pupils from './pages/Pupils';
 import Finance from './pages/Finance';
 import Settings from './pages/Settings';
+import Homework from './pages/Homework';
 import PrivateRoute from './PrivateRoute';
 import PrivateSignedInRoute from './PrivateSignedInRoute';
 import { AuthContext } from './contexts/AuthContext';
@@ -56,6 +57,12 @@ function Content() {
             </Route>
             <Route path="/pupils">
               <Pupils />
+            </Route>
+            <Route exact path="/homework">
+              <Homework />
+            </Route>
+            <Route path="/homework/:id">
+              <Homework />
             </Route>
             <Route path="/finance">{business && <Finance />}</Route>
             <Route path="/settings">

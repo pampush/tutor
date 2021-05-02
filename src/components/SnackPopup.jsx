@@ -4,7 +4,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import Grow from '@material-ui/core/Grow';
 
 function SnackPopup({ open, message, onClose }) {
-  console.log('snack');
   return (
     <Snackbar
       anchorOrigin={{

@@ -60,9 +60,11 @@ export const deleteLesson = (id) => async (dispatch) => {
     await db.doc(`/users/${auth.currentUser.uid}/lessons/${id}`).delete();
 
     dispatch(deleteLessonAction(id));
+    return Promise.resolve('success');
   } catch (e) {
     console.error(e);
     dispatch({ type: 'SET_LESSONS_LOADED', payload: true });
+    return Promise.reject('reject');
   }
 };
 

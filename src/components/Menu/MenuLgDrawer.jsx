@@ -37,6 +37,9 @@ function MenuLgDrawer() {
               <ShowChartIcon className="menu--svg" />
             </MenuItem>
           )}
+          <MenuItem open={false} name="Домашняя работа" to="/homework">
+            <FaceIcon className="menu--svg" />
+          </MenuItem>
         </Box>
       </List>
     </Drawer>

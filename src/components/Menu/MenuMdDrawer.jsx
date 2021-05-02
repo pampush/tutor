@@ -31,6 +31,9 @@ function MenuControls({ handleDrawer }) {
           <ShowChartIcon className="menu--svg" />
         </MenuItem>
       )}
+      <MenuItem handleDrawer={() => handleDrawer(false)} name="Домашняя работа" to="/homework">
+        <FaceIcon className="menu--svg" />
+      </MenuItem>
     </Box>
   );
 }

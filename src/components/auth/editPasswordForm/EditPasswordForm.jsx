@@ -8,24 +8,22 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Box from '@material-ui/core/Box';
 
+import EditPasswordFormInputs from './EditPasswordFormInputs';
 import initialValues from './initialValues';
 import validationSchema from './validationSchema';
-import EditEmailFormInputs from './EditEmailFormInputs';
 import { AuthContext } from '../../../contexts/AuthContext';
 
-function EditEmailForm({ width, open, handleClose, handleSnack }) {
-  const { reAuth, verifyBeforeUpdateEmail } = React.useContext(AuthContext);
-  const [loading, setLoading] = React.useState(false);
+function EditPasswordForm({ width, open, handleClose, handleSnack }) {
+  const { reAuth, updatePassword } = React.useContext(AuthContext);
 
   async function handleSubmit(values, actions) {
-    setLoading(true);
+    actions.setSubmitting(false);
     handleSnack(true);
     handleClose();
-    actions.setSubmitting(false);
-    await reAuth(values.password);
-    await verifyBeforeUpdateEmail(values.email);
-  }
 
+    await reAuth(values.oldpassword);
+    updatePassword(values.passwordConfirmation);
+  }
 
   return (
     <Dialog
@@ -42,12 +40,12 @@ function EditEmailForm({ width, open, handleClose, handleSnack }) {
           validationSchema={validationSchema}
           onSubmit={handleSubmit}>
           <Form>
-            <EditEmailFormInputs />
+            <EditPasswordFormInputs />
             <Box className="lesson-form__controls">
               <Button variant="contained" color="secondary" onClick={handleClose}>
                 Закрыть
               </Button>
-              <Button variant="contained" color="secondary" type="submit" disabled={loading}>
+              <Button variant="contained" color="secondary" type="submit">
                 Подтвердить
               </Button>
             </Box>
@@ -58,4 +56,4 @@ function EditEmailForm({ width, open, handleClose, handleSnack }) {
   );
 }
 
-export default withWidth()(EditEmailForm);
+export default withWidth()(EditPasswordForm);

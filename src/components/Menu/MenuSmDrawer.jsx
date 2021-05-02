@@ -74,6 +74,9 @@ function MenuSmDrawer() {
               <ShowChartIcon className="menu--svg" />
             </MenuItem>
           )}
+          <MenuItem name="Домашняя работа" to="/homework" handleDrawer={() => setOpen(false)}>
+            <FaceIcon className="menu--svg" />
+          </MenuItem>
         </List>
       </Drawer>
     </React.Fragment>

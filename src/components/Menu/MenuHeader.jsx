@@ -7,9 +7,11 @@ import Grid from '@material-ui/core/Grid';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import SettingsIcon from '@material-ui/icons/Settings';
 import IconButton from '@material-ui/core/IconButton';
+import { AuthContext } from '../../contexts/AuthContext';
 
 function MenuHeader() {
-  const name = useSelector(({ user }) => user.name);
+  //const name = useSelector(({ user }) => user.name);
+  const { userName } = React.useContext(AuthContext);
   return (
     <Grid container className="menu__header">
       <Grid item xs={8} className="menu__avatar">
@@ -21,7 +23,7 @@ function MenuHeader() {
         </IconButton>
       </Grid>
       <Grid item xs={12}>
-        <Typography variant="h5">{name}</Typography>
+        <Typography variant="h5">{userName}</Typography>
       </Grid>
     </Grid>
   );

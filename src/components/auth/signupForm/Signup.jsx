@@ -50,7 +50,6 @@ function Signup() {
           id: userCredential.user.uid,
           name,
           timestamp: Date.now(),
-          email: userCredential.user.email,
           business: values.business,
         }),
       );

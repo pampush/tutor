@@ -11,10 +11,20 @@ function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [firstLogin, setFirstLogin] = React.useState(false);
+  const [userName, setUserName] = React.useState('');
+
+  React.useEffect(() => {
+    currentUser && setUserName(currentUser.displayName);
+  }, [currentUser]);
 
   const signup = (email, password) => auth.createUserWithEmailAndPassword(email, password);
   const login = (email, password) => auth.signInWithEmailAndPassword(email, password);
-  const updateUser = (name) => auth.currentUser.updateProfile({ displayName: name });
+  const updateUser = (name) => {
+    auth.currentUser.updateProfile({ displayName: name });
+    setUserName(name);
+  };
+  const updateEmail = (email) => auth.currentUser.updateEmail(email);
+  const updatePassword = (password) => auth.currentUser.updatePassword(password);
   const signout = () => auth.signOut();
 
   const verifyEmail = (user) =>
@@ -64,12 +74,15 @@ function AuthProvider({ children }) {
 
   const value = {
     currentUser,
+    userName,
     signup,
     login,
     verifyEmail,
     updateUser,
     verifyBeforeUpdateEmail,
     signout,
+    updateEmail,
+    updatePassword,
     firstLogin,
     setFirstLogin,
     reAuth,

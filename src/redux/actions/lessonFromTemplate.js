@@ -18,7 +18,7 @@ const lessonFromTemplate = (lesson) => async (dispatch) => {
     const schedule = await db
       .doc(`/users/${auth.currentUser.uid}/schedules/${lesson.schedule}/`)
       .get();
-    dispatch(updateSchedule(schedule));
+    dispatch(updateSchedule(schedule.data()));
     return Promise.resolve('success');
   } catch (e) {
     console.error(e);
