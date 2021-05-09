@@ -16,43 +16,33 @@ import { useSelector } from 'react-redux';
 import MenuItem from './MenuItem';
 import MenuHeader from './MenuHeader';
 
-const useStyles = makeStyles({
-  drawerPaper: {
-    position: 'fixed',
-    top: 'auto',
-  },
-});
-
 function MenuSmDrawer() {
   const [open, setOpen] = React.useState(false);
   const business = useSelector(({ user }) => user.business);
 
   const handleDrawer = () => setOpen((prev) => !prev);
 
-  const classes = useStyles();
   return (
     <React.Fragment>
       <AppBar position="static">
         <Toolbar>
-          <IconButton edge="start" color="inherit" aria-label="open drawer" onClick={handleDrawer}>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="Открыть панель навигации"
+            onClick={handleDrawer}>
             <MenuIcon />
           </IconButton>
         </Toolbar>
       </AppBar>
 
-      <Drawer
-        variant="temporary"
-        open={open}
-        onClose={handleDrawer}
-        classes={{
-          paper: classes.drawerPaper,
-        }}>
+      <Drawer variant="temporary" open={open} onClose={handleDrawer}>
         <AppBar position="static">
           <Toolbar>
             <IconButton
               edge="start"
               color="inherit"
-              aria-label="open drawer"
+              aria-label="Открыть панель навигации"
               onClick={handleDrawer}>
               <MenuIcon />
             </IconButton>
@@ -74,9 +64,9 @@ function MenuSmDrawer() {
               <ShowChartIcon className="menu--svg" />
             </MenuItem>
           )}
-          <MenuItem name="Домашняя работа" to="/homework" handleDrawer={() => setOpen(false)}>
+          {/* <MenuItem name="Домашняя работа" to="/homework" handleDrawer={() => setOpen(false)}>
             <FaceIcon className="menu--svg" />
-          </MenuItem>
+          </MenuItem> */}
         </List>
       </Drawer>
     </React.Fragment>

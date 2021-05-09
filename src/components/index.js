@@ -9,6 +9,7 @@ import NotFound from './NotFound';
 import Instruction from './Instruction';
 import MonthPicker from './MonthPicker';
 import LoadingScreen from './LoadingScreen';
+import HomeworkListItem from './homework/HomeworkListItem'
 
 export {
   InfoPanel,
@@ -22,4 +23,5 @@ export {
   Instruction,
   MonthPicker,
   LoadingScreen,
+  HomeworkListItem,
 };

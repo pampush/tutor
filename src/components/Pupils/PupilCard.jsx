@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -14,7 +15,7 @@ import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
-import { Dialog, DialogContent, DialogTitle, Box, Button } from '@material-ui/core';
+import { Dialog, DialogContent, DialogTitle, Box, Button, Tooltip } from '@material-ui/core';
 
 import { deleteLessonsBySmth, fetchLessons } from '../../redux/actions/lessons';
 import { deletePupilAction } from '../../redux/actions/pupils';
@@ -33,18 +34,20 @@ function PupilCard({
   parents = [],
   address = '',
   schedules,
+  storage,
   handleSnack,
   handleViewEditPupilSnack,
 }) {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [viewAddScheduleForm, setViewAddScheduleForm] = React.useState(false);
   const [viewDeleteConsentDialog, setViewDeleteConsentDialog] = React.useState(false);
   const [viewEditPupilForm, setViewEditPupilForm] = React.useState(false);
   const date = useSelector(({ date }) => date.selected);
 
-  const [forParentsMemo, setForParentsMemo] = React.useState([]);
-  const parentsMemo = parents.length ? parents : forParentsMemo;
+  const forParentsMemo = React.useRef([]);
+  const parentsMemo = parents.length ? parents : forParentsMemo.current;
 
   const handleClick = (e) => setAnchorEl(e.currentTarget);
   const handleClose = () => setAnchorEl(null);
@@ -59,6 +62,10 @@ function PupilCard({
     dispatch(fetchLessons(date));
     dispatch(fetchSchedules({ preventIsLoaded: true }));
     dispatch(fetchScheduledLessons(date, { preventIsLoaded: true }));
+  }
+
+  function handleHomework() {
+    history.push(`/homework/${storage}/${id}`);
   }
 
   return (
@@ -114,8 +121,8 @@ function PupilCard({
         <CardHeader
           className="pupils__card-header"
           avatar={
-            <Avatar aria-label="pupil" className="pupils__card-avatar">
-              R
+            <Avatar aria-label="Ученик" className="pupils__card-avatar">
+              {name[0]}
             </Avatar>
           }
           action={
@@ -157,9 +164,11 @@ function PupilCard({
           <Typography component="p">{address && `Адрес: ${address}`}</Typography>
         </CardContent>
         <CardActions className="pupils__homework">
-          <IconButton color="secondary" aria-label="Домашняя работа">
-            <MenuBookIcon aria-label="homework" />
-          </IconButton>
+          <Tooltip title="Домашняя работа" aria-label="Домашняя работа" arrow>
+            <IconButton color="secondary" aria-label="Домашняя работа" onClick={handleHomework}>
+              <MenuBookIcon aria-label="homework" />
+            </IconButton>
+          </Tooltip>
         </CardActions>
       </Card>
     </React.Fragment>

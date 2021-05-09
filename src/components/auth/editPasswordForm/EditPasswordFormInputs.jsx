@@ -28,7 +28,7 @@ function EditPasswordFormInputs() {
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton
-                  aria-label="toggle password visibility"
+                  aria-label="Показать пароль"
                   onClick={handleClickShowPassword}>
                   {viewPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
@@ -49,7 +49,7 @@ function EditPasswordFormInputs() {
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton
-                  aria-label="toggle password visibility"
+                  aria-label="Показать пароль"
                   onClick={handleClickShowPassword}>
                   {viewPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
@@ -70,7 +70,7 @@ function EditPasswordFormInputs() {
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton
-                  aria-label="toggle password visibility"
+                  aria-label="Показать пароль"
                   onClick={handleClickShowPassword}>
                   {viewPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>

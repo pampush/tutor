@@ -34,7 +34,7 @@ function LoginInputs() {
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
-                    aria-label="toggle password visibility"
+                    aria-label="показать пароль"
                     onClick={handleClickShowPassword}>
                     {viewPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>

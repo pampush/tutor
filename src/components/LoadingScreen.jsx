@@ -13,7 +13,7 @@ const useStyles = makeStyles({
   },
 });
 
-function LoadindScreen({ open }) {
+function LoadingScreen({ open }) {
   const classes = useStyles();
   return (
     <Dialog
@@ -21,6 +21,7 @@ function LoadindScreen({ open }) {
       classes={{
         paper: classes.paper,
       }}
+      BackdropProps={{ style: { backgroundColor: '#fafafa' } }}
       PaperProps={{ elevation: 0 }}>
       <DialogContent>
         <CircularProgress />
@@ -29,4 +30,4 @@ function LoadindScreen({ open }) {
   );
 }
 
-export default LoadindScreen;
+export default LoadingScreen;

@@ -13,6 +13,7 @@ import AddPupilForm from '../addPupilForm/AddPupilForm';
 import SnackPopup from '../SnackPopup';
 
 function PupilsList() {
+  const userStorage = useSelector(({ user }) => user.bucketId);
   const pupils = useSelector(({ pupils }) => pupils.items);
   const pupilsLoaded = useSelector(({ pupils }) => pupils.isLoaded);
   const schedules = useSelector(({ schedules }) => schedules.items);
@@ -98,6 +99,7 @@ function PupilsList() {
                   <PupilCard
                     {...pupils[key]}
                     schedules={schedules}
+                    storage={userStorage}
                     handleSnack={setViewAddScheduleSnack}
                     handleViewEditPupilSnack={setViewEditPupilSnack}
                   />

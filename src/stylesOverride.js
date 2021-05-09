@@ -14,7 +14,7 @@ const theme = createMuiTheme({
     },
     text: {
       primary: '#000000',
-      secondary: '#9E9E9E',
+      secondary: '#757575',
     },
   },
   typography: {
@@ -31,20 +31,20 @@ const theme = createMuiTheme({
       label: { color: '#ffffff' },
       containedSecondary: {
         '&:hover': {
-          backgroundColor: 'rgba(255, 192, 70, 0.5)',
+          backgroundColor: '#2196F3',
         },
       },
     },
     MuiIconButton: {
       colorSecondary: {
         '&:hover': {
-          backgroundColor: 'rgba(255, 192, 70, 0.5)',
+          backgroundColor: '#2196F3',
+          color: '#FFFFFF',
           '@media (hover:none)': {
-            backgroundColor: 'transparent',
+            backgroundColor: orange[500],
           },
         },
       },
-      root: {},
     },
     MuiCardContent: {
       root: {

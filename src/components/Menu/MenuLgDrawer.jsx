@@ -17,7 +17,7 @@ function MenuLgDrawer() {
   const business = useSelector(({ user }) => user.business);
 
   return (
-    <Drawer variant="permanent" anchor="left">
+    <Drawer variant="permanent" anchor="left" PaperProps={{ elevation: 2 }}>
       <List className={'menu__list'}>
         <ListItem>
           <MenuHeader />
@@ -33,13 +33,13 @@ function MenuLgDrawer() {
             <FaceIcon className="menu--svg" />
           </MenuItem>
           {business && (
-            <MenuItem open={false} name="Финансы" to="finance">
+            <MenuItem open={false} name="Финансы" to="/finance">
               <ShowChartIcon className="menu--svg" />
             </MenuItem>
           )}
-          <MenuItem open={false} name="Домашняя работа" to="/homework">
+          {/* <MenuItem open={false} name="Домашняя работа" to="/homework">
             <FaceIcon className="menu--svg" />
-          </MenuItem>
+          </MenuItem> */}
         </Box>
       </List>
     </Drawer>

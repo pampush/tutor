@@ -10,7 +10,6 @@ import IconButton from '@material-ui/core/IconButton';
 import { AuthContext } from '../../contexts/AuthContext';
 
 function MenuHeader() {
-  //const name = useSelector(({ user }) => user.name);
   const { userName } = React.useContext(AuthContext);
   return (
     <Grid container className="menu__header">
@@ -18,7 +17,7 @@ function MenuHeader() {
         <AccountCircleIcon />
       </Grid>
       <Grid item xs={4} className="menu__button menu__settings" component={NavLink} to="/settings">
-        <IconButton>
+        <IconButton classes={{ root: { }}}>
           <SettingsIcon />
         </IconButton>
       </Grid>

@@ -32,7 +32,7 @@ function AuthProvider({ children }) {
       url:
         !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
           ? 'https://localhost:3000/schedule/'
-          : 'https://pampush.github.io/tutor/',
+          : 'https://tutor-49686.web.app/schedule/',
       handleCodeInApp: true,
     });
 
@@ -41,7 +41,7 @@ function AuthProvider({ children }) {
       url:
         !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
           ? 'https://localhost:3000/schedule/'
-          : 'https://pampush.github.io/tutor/',
+          : 'https://tutor-49686.web.app/schedule/',
       handleCodeInApp: true,
     });
 

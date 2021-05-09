@@ -15,7 +15,7 @@ import Schedule from './pages/Schedule';
 import Pupils from './pages/Pupils';
 import Finance from './pages/Finance';
 import Settings from './pages/Settings';
-import Homework from './pages/Homework';
+import HomeworkList from './pages/HomeworkList';
 import PrivateRoute from './PrivateRoute';
 import PrivateSignedInRoute from './PrivateSignedInRoute';
 import { AuthContext } from './contexts/AuthContext';
@@ -26,6 +26,7 @@ import { fetchSchedules } from './redux/actions/schedules';
 import { fetchScheduledLessons } from './redux/actions/scheduledLessons';
 import { fetchUser } from './redux/actions/user';
 import { setDate } from './redux/actions/date';
+import LessonHomework from './pages/LessonHomework';
 
 function Content() {
   const dispatch = useDispatch();
@@ -38,7 +39,7 @@ function Content() {
     dispatch(fetchScheduledLessons(new Date()));
     dispatch(fetchPupils());
     dispatch(fetchSchedules());
-    dispatch(fetchUser(auth.currentUser.uid));
+    dispatch(fetchUser(currentUser.uid));
   }, [currentUser]);
 
   return (
@@ -49,7 +50,7 @@ function Content() {
         <Container maxWidth="xl">
           <InfoPanel />
           <Switch>
-            <Route path="/tutor">
+            <Route exact path="/">
               <Schedule />
             </Route>
             <Route path="/schedule">
@@ -58,15 +59,15 @@ function Content() {
             <Route path="/pupils">
               <Pupils />
             </Route>
-            <Route exact path="/homework">
-              <Homework />
-            </Route>
-            <Route path="/homework/:id">
-              <Homework />
-            </Route>
             <Route path="/finance">{business && <Finance />}</Route>
             <Route path="/settings">
               <Settings />
+            </Route>
+            <Route path="/homework/:storageId/:pupil/:date">
+              <LessonHomework currentUser={currentUser} />
+            </Route>
+            <Route path="/homework/:storageId/:pupil">
+              <HomeworkList currentUser={currentUser} />
             </Route>
             <Route path="*">
               <Redirect to="/404" />
@@ -79,6 +80,9 @@ function Content() {
 }
 
 function App() {
+  const dispatch = useDispatch();
+  const { currentUser } = React.useContext(AuthContext);
+
   return (
     <StylesProvider injectFirst>
       <ThemeProvider theme={theme}>
@@ -89,7 +93,15 @@ function App() {
           </Route>
           <PrivateSignedInRoute path="/signup" component={Signup}></PrivateSignedInRoute>
           <PrivateSignedInRoute path="/login" component={Login}></PrivateSignedInRoute>
+
+          {!currentUser && (
+            <Route path="/homework/:storageId/:pupil">
+              <HomeworkList />
+            </Route>
+          )}
+
           <PrivateRoute path="/:page" component={Content}></PrivateRoute>
+          <PrivateRoute exact path="/" component={Content}></PrivateRoute>
         </Switch>
       </ThemeProvider>
     </StylesProvider>

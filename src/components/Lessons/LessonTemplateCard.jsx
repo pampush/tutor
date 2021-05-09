@@ -125,7 +125,7 @@ function LessonTemplateCard({
             <Typography gutterBottom variant="h5" className="lesson__header-text">
               {time} {subject} (шаблон урока)
             </Typography>
-            <IconButton aria-label="menu" className="lesson__header-more" onClick={handleClick}>
+            <IconButton aria-label="Меню" className="lesson__header-more" onClick={handleClick}>
               <MoreVertIcon />
             </IconButton>
           </Box>

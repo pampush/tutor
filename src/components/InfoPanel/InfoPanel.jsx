@@ -25,9 +25,9 @@ function InfoPanel() {
   const date = useSelector(({ date }) => date.selected);
 
   return (
-    <Container maxWidth="md" className="info__container">
-      <Grid container spacing={2}>
-        <Hidden xsDown>
+    <Hidden xsDown>
+      <Container maxWidth="md" className="info__container">
+        <Grid container spacing={2}>
           <Grid item>
             <InfoPanelCard header={days[new Date().getDay()]} date={new Date()}>
               <CalendarTodayIcon />
@@ -38,12 +38,9 @@ function InfoPanel() {
               {numLessons}
             </InfoPanelCard>
           </Grid>
-          <Grid item>
-            <InfoPanelCard date={date} />
-          </Grid>
-        </Hidden>
-      </Grid>
-    </Container>
+        </Grid>
+      </Container>
+    </Hidden>
   );
 }
 

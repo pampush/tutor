@@ -16,6 +16,7 @@ import LessonCard from './LessonCard';
 import LessonTemplateCard from './LessonTemplateCard';
 import AddLessonForm from '../addLessonForm/AddLessonForm';
 import SnackPopup from '../SnackPopup';
+import { Popover } from '@material-ui/core';
 
 function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalendarClick }) {
   const lessons = useSelector(({ lessons }) => lessons.items);
@@ -26,6 +27,8 @@ function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalend
 
   const scheduledLessons = useSelector(({ scheduledLessons }) => scheduledLessons.items);
   const scheduledLessonsLoaded = useSelector(({ scheduledLessons }) => scheduledLessons.isLoaded);
+
+  const userStorage = useSelector(({ user }) => user.bucketId);
 
   const isLoaded = lessonsLoaded && pupilsLoaded && scheduledLessonsLoaded;
 
@@ -75,7 +78,7 @@ function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalend
             className="lessons__button-text">
             Выбрать день
           </Button>
-          <Menu
+          <Popover
             id="simple-menu"
             anchorEl={anchor}
             keepMounted
@@ -85,7 +88,7 @@ function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalend
             open={Boolean(anchor)}
             onClose={handleCalendarClose}>
             <Calendar ref={calendar} handleClick={handleCalendarClick} />
-          </Menu>
+          </Popover>
         </Hidden>
       </Box>
 
@@ -135,6 +138,7 @@ function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalend
                 key={key}
                 name={pupils[value.pupil].name}
                 address={pupils[value.pupil].address}
+                userStorage={userStorage}
                 handleSnack={setSnackNotesView}
                 handleDeleteSnack={setSnackDeleteLesson}
                 handleLessonThemeEditSnack={setSnackLessonThemeEdit}

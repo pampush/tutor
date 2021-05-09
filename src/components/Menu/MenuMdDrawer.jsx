@@ -31,9 +31,6 @@ function MenuControls({ handleDrawer }) {
           <ShowChartIcon className="menu--svg" />
         </MenuItem>
       )}
-      <MenuItem handleDrawer={() => handleDrawer(false)} name="Домашняя работа" to="/homework">
-        <FaceIcon className="menu--svg" />
-      </MenuItem>
     </Box>
   );
 }
@@ -45,7 +42,7 @@ function MenuMdDrawer() {
 
   return (
     <React.Fragment>
-      <Drawer variant="permanent" anchor="left">
+      <Drawer variant="permanent" anchor="left" PaperProps={{ elevation: 2 }}>
         <List className="menu__list">
           <ListItem button className="menu--center" onClick={handleDrawer}>
             <ListItemIcon className="menu--center">
@@ -73,7 +70,6 @@ function MenuMdDrawer() {
           <MenuControls handleDrawer={setOpen} />
         </List>
       </Drawer>
-      )
     </React.Fragment>
   );
 }

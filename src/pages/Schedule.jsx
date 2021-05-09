@@ -16,6 +16,7 @@ function Schedule() {
   const dispatch = useDispatch();
   const [anchorCalendar, setAnchorEl] = React.useState(null);
   const { firstLogin, setFirstLogin } = React.useContext(AuthContext);
+  
   function handleCalendarOpen(e) {
     setAnchorEl(e.currentTarget);
   }

@@ -35,6 +35,7 @@ function LessonCard({
   address = '',
   subject,
   schedule,
+  userStorage,
   handleSnack,
   handleDeleteSnack,
   handleLessonThemeEditSnack,
@@ -65,7 +66,7 @@ function LessonCard({
   }
 
   function handleHomework() {
-    history.push(`/homework/${id}`);
+    history.push(`/homework/${userStorage}/${pupil}/${date}`);
   }
 
   const clickNotesForm = () => setViewNotesForm(true);
@@ -128,7 +129,7 @@ function LessonCard({
             <Typography gutterBottom variant="h5" className="lesson__header-text">
               {time} {subject}
             </Typography>
-            <IconButton aria-label="menu" className="lesson__header-more" onClick={handleClick}>
+            <IconButton aria-label="Меню" className="lesson__header-more" onClick={handleClick}>
               <MoreVertIcon />
             </IconButton>
           </Box>

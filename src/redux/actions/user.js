@@ -1,7 +1,7 @@
 import { db } from '../../firebase';
 
-export const postUser = ({ id, name, timestamp, business }) => async (dispatch) => {
-  await db.doc(`/users/${id}`).set({ id, name, timestamp, business });
+export const postUser = ({id, ...data}) => async (dispatch) => {
+  await db.doc(`/users/${id}`).set({ id, ...data });
 };
 
 export const fetchUser = (id) => async (dispatch) => {

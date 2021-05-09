@@ -30,7 +30,7 @@ function Login() {
     setLoading(true);
     try {
       await login(values.email, values.password);
-      history.push('/tutor');
+      history.push('/schedule');
     } catch (e) {
       switch (e.code) {
         case 'auth/user-not-found': {

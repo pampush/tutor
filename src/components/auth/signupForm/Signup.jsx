@@ -3,6 +3,7 @@ import { Formik, Form } from 'formik';
 import { useHistory } from 'react-router-dom';
 import { Link as RouterLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import uniqid from 'uniqid';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -51,6 +52,7 @@ function Signup() {
           name,
           timestamp: Date.now(),
           business: values.business,
+          bucketId: uniqid(),
         }),
       );
 
