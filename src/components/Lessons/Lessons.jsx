@@ -28,7 +28,7 @@ function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalend
   const scheduledLessons = useSelector(({ scheduledLessons }) => scheduledLessons.items);
   const scheduledLessonsLoaded = useSelector(({ scheduledLessons }) => scheduledLessons.isLoaded);
 
-  const userStorage = useSelector(({ user }) => user.bucketId);
+  const userId = useSelector(({ user }) => user.id);
 
   const isLoaded = lessonsLoaded && pupilsLoaded && scheduledLessonsLoaded;
 
@@ -137,8 +137,8 @@ function Lessons({ anchor, handleCalendarOpen, handleCalendarClose, handleCalend
               <LessonCard
                 key={key}
                 name={pupils[value.pupil].name}
+                userId={userId}
                 address={pupils[value.pupil].address}
-                userStorage={userStorage}
                 handleSnack={setSnackNotesView}
                 handleDeleteSnack={setSnackDeleteLesson}
                 handleLessonThemeEditSnack={setSnackLessonThemeEdit}

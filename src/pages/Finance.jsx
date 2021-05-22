@@ -1,9 +1,9 @@
-import React from 'react';
-import { fetchPrices } from '../redux/actions/finance';
-import { formatISO } from 'date-fns';
+import React from "react";
+import { fetchPrices } from "../redux/actions/finance";
+import { formatISO } from "date-fns";
 
-import { Container } from '@material-ui/core';
-import { MonthPicker } from '../components';
+import { Container } from "@material-ui/core";
+import { MonthPicker } from "../components";
 
 import {
   Chart,
@@ -16,7 +16,7 @@ import {
   Tooltip,
   Legend,
   DoughnutController,
-} from 'chart.js';
+} from "chart.js";
 
 Chart.register(
   LinearScale,
@@ -27,7 +27,7 @@ Chart.register(
   PieController,
   ArcElement,
   Legend,
-  DoughnutController,
+  DoughnutController
 );
 
 function colorGen() {
@@ -47,14 +47,18 @@ function Finance() {
   React.useEffect(() => {
     let mounted = true;
     try {
-      fetchPrices(formatISO(date, { representation: 'date' }).slice(0, -3)).then((prices) => {
+      fetchPrices(
+        formatISO(date, { representation: "date" }).slice(0, -3)
+      ).then((prices) => {
         if (!mounted) return;
 
         setPrices(prices);
 
         if (Object.keys(prices).length) {
           setSum(
-            Object.values(prices).reduce((accum, next) => ({ sum: accum.sum + next.sum })).sum,
+            Object.values(prices).reduce((accum, next) => ({
+              sum: accum.sum + next.sum,
+            })).sum
           );
         }
       });
@@ -71,12 +75,12 @@ function Finance() {
     if (Object.keys(prices).length === 0) return;
 
     const myChart = new Chart(canvas.current, {
-      type: 'doughnut',
+      type: "doughnut",
       data: {
         labels: Object.values(prices).map(({ name }) => name),
         datasets: [
           {
-            label: 'first',
+            label: "first",
             data: Object.values(prices).map(({ sum }) => sum),
             backgroundColor: Object.keys(prices).map(() => colorGen()),
             hoverOffset: 4,
@@ -84,9 +88,12 @@ function Finance() {
         ],
       },
       options: {
+        layout: {
+          padding: 5,
+        },
         plugins: {
           legend: {
-            position: 'bottom',
+            position: "bottom",
           },
         },
       },
@@ -94,15 +101,15 @@ function Finance() {
         {
           afterDraw: (chart) => {
             const ctx = chart.ctx;
-            ctx.font = 'bold 48px sans-serif';
-            ctx.textAlign = 'center';
+            ctx.font = "bold 48px sans-serif";
+            ctx.textAlign = "center";
             ctx.save();
             const imageSize = 200;
             ctx.fillText(
-              sum || 'Уроков не найдено',
+              sum || "Уроков не найдено",
               chart.width / 2,
               (chart.height - chart.legend.height) / 2,
-              imageSize,
+              imageSize
             );
             ctx.restore();
           },

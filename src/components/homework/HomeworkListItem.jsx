@@ -1,5 +1,5 @@
-import React from 'react';
-import { storage } from '../../firebase';
+import React from "react";
+import { storage } from "../../firebase";
 
 import {
   Button,
@@ -14,15 +14,15 @@ import {
   Link,
   Typography,
   Box,
-} from '@material-ui/core';
+} from "@material-ui/core";
 
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
-import FolderIcon from '@material-ui/icons/Folder';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import AddIcon from "@material-ui/icons/Add";
+import DeleteIcon from "@material-ui/icons/Delete";
+import FolderIcon from "@material-ui/icons/Folder";
+import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
-function HomeworkListItem({ date, pupil, storageId, handleSubmit }) {
+function HomeworkListItem({ date, pupil, userId, handleSubmit }) {
   const [opened, setOpened] = React.useState(false);
   const [metas, setMetas] = React.useState([]);
   const [urls, setUrls] = React.useState([]);
@@ -33,7 +33,7 @@ function HomeworkListItem({ date, pupil, storageId, handleSubmit }) {
     const urlPromises = [];
 
     storageRef
-      .child(`${storageId}/${pupil}/${date}`)
+      .child(`${userId}/${pupil}/${date}`)
       .listAll()
       .then((res) => {
         res.items.forEach((item) => {
@@ -87,7 +87,8 @@ function HomeworkListItem({ date, pupil, storageId, handleSubmit }) {
             aria-label="Раскрыть"
             onClick={() => {
               setOpened((prev) => !prev);
-            }}>
+            }}
+          >
             {opened ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </IconButton>
         </ListItemSecondaryAction>
@@ -102,10 +103,11 @@ function HomeworkListItem({ date, pupil, storageId, handleSubmit }) {
               <ListItemSecondaryAction>
                 <IconButton
                   edge="end"
-                  aria-label="Закрыть"
+                  aria-label="Удалить"
                   onClick={() => {
                     handleDelete(meta);
-                  }}>
+                  }}
+                >
                   {<DeleteIcon />}
                 </IconButton>
               </ListItemSecondaryAction>
@@ -118,9 +120,15 @@ function HomeworkListItem({ date, pupil, storageId, handleSubmit }) {
           component="label"
           size="medium"
           startIcon={<AddIcon />}
-          className="lessons__button-text">
+          className="lessons__button-text"
+        >
           Загрузить дз
-          <input type="file" onChange={handleSubmitDecorator} accept="" hidden />
+          <input
+            type="file"
+            onChange={handleSubmitDecorator}
+            accept=""
+            hidden
+          />
         </Button>
       </Collapse>
     </Box>

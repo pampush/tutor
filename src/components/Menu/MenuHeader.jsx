@@ -1,13 +1,13 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import React from "react";
+import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import SettingsIcon from '@material-ui/icons/Settings';
-import IconButton from '@material-ui/core/IconButton';
-import { AuthContext } from '../../contexts/AuthContext';
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import SettingsIcon from "@material-ui/icons/Settings";
+import IconButton from "@material-ui/core/IconButton";
+import { AuthContext } from "../../contexts/AuthContext";
 
 function MenuHeader() {
   const { userName } = React.useContext(AuthContext);
@@ -16,9 +16,15 @@ function MenuHeader() {
       <Grid item xs={8} className="menu__avatar">
         <AccountCircleIcon />
       </Grid>
-      <Grid item xs={4} className="menu__button menu__settings" component={NavLink} to="/settings">
-        <IconButton classes={{ root: { }}}>
-          <SettingsIcon />
+      <Grid
+        item
+        xs={4}
+        className="menu__button menu__settings"
+        component={NavLink}
+        to="/settings"
+      >
+        <IconButton>
+          <SettingsIcon   />
         </IconButton>
       </Grid>
       <Grid item xs={12}>

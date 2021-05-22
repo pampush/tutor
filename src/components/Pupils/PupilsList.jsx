@@ -1,19 +1,19 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React from "react";
+import { useSelector } from "react-redux";
 
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import AddIcon from '@material-ui/icons/Add';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import Skeleton from '@material-ui/lab/Skeleton';
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import AddIcon from "@material-ui/icons/Add";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+import Skeleton from "@material-ui/lab/Skeleton";
 
-import PupilCard from './PupilCard';
-import AddPupilForm from '../addPupilForm/AddPupilForm';
-import SnackPopup from '../SnackPopup';
+import PupilCard from "./PupilCard";
+import AddPupilForm from "../addPupilForm/AddPupilForm";
+import SnackPopup from "../SnackPopup";
 
 function PupilsList() {
-  const userStorage = useSelector(({ user }) => user.bucketId);
+  const userId = useSelector(({ user }) => user.id);
   const pupils = useSelector(({ pupils }) => pupils.items);
   const pupilsLoaded = useSelector(({ pupils }) => pupils.isLoaded);
   const schedules = useSelector(({ schedules }) => schedules.items);
@@ -48,9 +48,18 @@ function PupilsList() {
     setViewAddPupilSnack(state);
   }
 
-  const handleViewAddScheduleSnack = React.useCallback(() => setViewAddScheduleSnack(false), []);
-  const handleViewAddPupilSnack = React.useCallback(() => setViewAddPupilSnack(false), []);
-  const handleViewEditPupilSnack = React.useCallback(() => setViewEditPupilSnack(false), []);
+  const handleViewAddScheduleSnack = React.useCallback(
+    () => setViewAddScheduleSnack(false),
+    []
+  );
+  const handleViewAddPupilSnack = React.useCallback(
+    () => setViewAddPupilSnack(false),
+    []
+  );
+  const handleViewEditPupilSnack = React.useCallback(
+    () => setViewEditPupilSnack(false),
+    []
+  );
 
   return (
     <React.Fragment>
@@ -87,7 +96,8 @@ function PupilsList() {
             color="secondary"
             startIcon={<AddIcon />}
             className="pupils__button-text"
-            onClick={handleAddLessonClick}>
+            onClick={handleAddLessonClick}
+          >
             Новый ученик
           </Button>
         </Box>
@@ -99,7 +109,7 @@ function PupilsList() {
                   <PupilCard
                     {...pupils[key]}
                     schedules={schedules}
-                    storage={userStorage}
+                    userId={userId}
                     handleSnack={setViewAddScheduleSnack}
                     handleViewEditPupilSnack={setViewEditPupilSnack}
                   />
@@ -107,11 +117,17 @@ function PupilsList() {
               ))
             : new Array(6).fill(0).map((_, i) => (
                 <Grid key={i} item md={4} sm={6} xs={12}>
-                  <Skeleton key={i} variant="rect" className="pupils__skeleton" />
+                  <Skeleton
+                    key={i}
+                    variant="rect"
+                    className="pupils__skeleton"
+                  />
                 </Grid>
               ))}
         </Grid>
-        {Object.keys(pupils).length === 0 && <Typography>Ученики отсутствуют</Typography>}
+        {Object.keys(pupils).length === 0 && (
+          <Typography>Ученики отсутствуют</Typography>
+        )}
       </div>
     </React.Fragment>
   );

@@ -34,7 +34,7 @@ function PupilCard({
   parents = [],
   address = '',
   schedules,
-  storage,
+  userId,
   handleSnack,
   handleViewEditPupilSnack,
 }) {
@@ -65,7 +65,7 @@ function PupilCard({
   }
 
   function handleHomework() {
-    history.push(`/homework/${storage}/${id}`);
+    history.push(`/homework/${userId}/${id}`);
   }
 
   return (

@@ -63,10 +63,10 @@ function Content() {
             <Route path="/settings">
               <Settings />
             </Route>
-            <Route path="/homework/:storageId/:pupil/:date">
+            <Route path="/homework/:userId/:pupil/:date">
               <LessonHomework currentUser={currentUser} />
             </Route>
-            <Route path="/homework/:storageId/:pupil">
+            <Route path="/homework/:userId/:pupil">
               <HomeworkList currentUser={currentUser} />
             </Route>
             <Route path="*">
@@ -94,7 +94,7 @@ function App() {
           <PrivateSignedInRoute path="/login" component={Login} />
 
           {!currentUser && (
-            <Route path="/homework/:storageId/:pupil">
+            <Route path="/homework/:userId/:pupil">
               <HomeworkList />
             </Route>
           )}

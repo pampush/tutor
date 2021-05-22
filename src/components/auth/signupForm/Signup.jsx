@@ -130,9 +130,7 @@ function Signup() {
                 <Recaptcha />
                 <Box mb={2}>
                   <Typography align="justify">
-                    Авторизуясь, вы соглашаетесь с{" "}
-                    <RouterLink>правилами пользования</RouterLink> сайтом и
-                    даёте{" "}
+                    Авторизуясь, вы даёте{" "}
                     <RouterLink to="/privacy">
                       {" "}
                       согласие на обработку персональных данных{" "}
