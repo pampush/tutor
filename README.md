@@ -1,3 +1,15 @@
+# Tutor Deck
+ Web-application for tutors. It brings functionality to track lessons, pupils and financial information.   
+ App has authentication, use test-credentials to sign in - bashkaaaa@gmail.com / favsub  
+ #### Tech stack:
+ * React 
+ * Redux
+ * React-router
+ * Firebase
+ * Material UI
+ * Formik, yup
+ * chart.js
+ * sass
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
